@@ -385,8 +385,14 @@ def build_direction_card(
     calibrator: Optional[Calibrator] = None,
     gaps: Optional[Sequence[Dict]] = None,
     score: Optional[float] = None,
+    grounding_text: str = "",
 ) -> DirectionCard:
-    """Assemble a full Direction Card for one candidate."""
+    """Assemble a full Direction Card for one candidate.
+
+    `direction_text` is shown on the card; `grounding_text` (defaults to it) is
+    the text matched against `gaps` for evidence grounding — pass a fuller
+    title+rationale here while keeping a short title for display.
+    """
     sig = _signals(query, cand_id, weights, k)
 
     # attribution: prefer the learned model's SHAP, else exact RRF decomposition
@@ -398,8 +404,8 @@ def build_direction_card(
     ablation = ablation_probe(query, cand_id, weights, k)
 
     addressed, spans = ([], [])
-    if gaps and direction_text:
-        addressed, spans = ground_evidence(direction_text, gaps)
+    if gaps:
+        addressed, spans = ground_evidence(grounding_text or direction_text, gaps)
 
     predicates = _predicates(sig, addressed)
     verdict, trace, _ = reason_logically(predicates)
