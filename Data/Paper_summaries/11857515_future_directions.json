@@ -1,0 +1,58 @@
+{
+  "file": "11857515",
+  "token_count": 14501,
+  "model": "gpt-5-nano-2025-08-07",
+  "timestamp": "2025-11-23T17:15:52.328278Z",
+  "topic_and_scope": "The document presents a scoping review of deep neck infections (DNI) and descending necrotizing mediastinitis (DNM), outlining anatomy-driven spread, etiologies, diagnostic imaging, and multidisciplinary medical-surgical management. It highlights current practices, outcomes, and crucial gaps in guidelines that impede standardized care.",
+  "main_themes": [
+    "Anatomy-driven spread and spaces in the deep neck and mediastinal extension",
+    "Diagnosis and imaging challenges in DNI/DNM, including CT as gold standard but imperfect",
+    "Management strategies: airway protection, antibiotic therapy, and surgical drainage, with multidisciplinary coordination"
+  ],
+  "main_findings": [
+    "Urgent airway management and multidisciplinary care are central to DNI/DNM outcomes; delays in securing the airway or source control markedly increase mortality.",
+    "Dynamic CT is the primary diagnostic and planning tool, but it is not perfectly predictive of abscess necessity or mediastinal spread, so clinical judgement and sometimes repeated imaging guide management."
+  ],
+  "key_gaps": [
+    {
+      "description": "There are no universally accepted guidelines for DNI/DNM management, particularly for timing of intervention, choice of drainage approach, and mediastinal involvement decisions.",
+      "status": "explicit"
+    },
+    {
+      "description": "Limited evidence comparing invasive vs minimally invasive drainage strategies across diverse cervical spaces; reliance on observational data hinders standardized practice.",
+      "status": "implied"
+    }
+  ],
+  "future_directions": [
+    {
+      "id": 1,
+      "title": "Develop and validate international DNI/DNM management guidelines with a standardized airway protocol",
+      "rationale": "The article underscores that DNI/DNM outcomes depend on rapid airway control and aggressive source control, yet there are no unified guidelines for timing or drainage choices. A consensus-driven pathway should be developed across ENT/OMF, infectious disease, thoracic surgery, and critical care, followed by prospective validation in multicenter cohorts. Next steps include forming an international expert panel, defining when to perform tracheostomy versus intubation, and piloting the pathway in high-volume centers with standardized outcome tracking."
+    },
+    {
+      "id": 2,
+      "title": "Create and validate a CT- and clinical data-driven decision-support tool to predict need for tracheostomy and extent of drainage",
+      "rationale": "CT imaging is essential but not fully predictive of airway compromise or optimal drainage strategy. A decision-support tool integrating CT features and clinical parameters could assist early, data-driven decisions about airway management and surgical planning. This would require multicenter data collection, model development using machine learning, and prospective validation to assess impact on time to intervention and patient outcomes."
+    },
+    {
+      "id": 3,
+      "title": "Prospective multicenter study comparing open surgical drainage versus percutaneous/ultrasound-guided drainage for well-defined DNI abscesses",
+      "rationale": "Current practice includes both open drainage and minimally invasive approaches, with limited comparative data. A prospective multicenter study or pragmatic trial would clarify effectiveness, safety, hospitalization length, and recurrence for defined abscess morphologies, informing guidelines on when less invasive approaches are appropriate."
+    },
+    {
+      "id": 4,
+      "title": "Establish a multinational DNI/DNM registry with standardized data collection on etiology, microbiology, antibiotic regimens, surgical approaches, and outcomes",
+      "rationale": "The literature shows shifting microbial patterns and antibiotic resistance, as well as variability in management. A centralized registry would enable real-time epidemiology, facilitate observational studies, and support evidence-based updates to guidelines, including antimicrobial stewardship and empiric therapy recommendations."
+    },
+    {
+      "id": 5,
+      "title": "Thoracic drainage strategy study for descending necrotizing mediastinitis (transcervical vs sternotomy vs VATS) with outcomes and cost-effectiveness",
+      "rationale": "There is ongoing debate about optimal mediastinal drainage approaches, with some data suggesting less invasive methods (e.g., VATS) may reduce morbidity. A prospective observational study or comparative effectiveness research across centers would define indications, complication rates, resource use, and long-term outcomes, guiding standardized recommendations."
+    },
+    {
+      "id": 6,
+      "title": "Preventive dental-network interventions to reduce odontogenic DNI incidence and improve early infection control",
+      "rationale": "Given the role of odontogenic sources and the potential impact of preventive care, implementing and evaluating dental network strategies (early infection detection, prompt treatment, and patient education) could reduce DNI incidence. Studies should assess cost-effectiveness, feasibility, and impact on hospitalization rates and complication incidence."
+    }
+  ]
+}

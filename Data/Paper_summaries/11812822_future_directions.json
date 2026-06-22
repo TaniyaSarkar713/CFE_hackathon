@@ -1,0 +1,72 @@
+{
+  "file": "11812822",
+  "token_count": 12551,
+  "model": "gpt-5-nano-2025-08-07",
+  "timestamp": "2025-11-21T23:45:21.014131Z",
+  "topic_and_scope": "Investigation of how end-of-life health literacy (EOL-HL), as measured by the S-EOL-HLS, relates to end-of-life knowledge and behaviors toward advance care planning (ACP) among adults aged 58+ in Switzerland, using cross-sectional SHARE Wave 8 data. The goal is to identify which HL dimensions drive knowledge and ACP actions to inform policy and intervention design.",
+  "main_themes": [
+    "Dimensionality of end-of-life health literacy and its differential associations with EOL knowledge and ACP behaviours",
+    "Linking EOL health literacy to knowledge and proactive ACP engagement as a public health target",
+    "Need for methodological refinement and policy-oriented interventions to enhance EOL health literacy and ACP uptake"
+  ],
+  "main_findings": [
+    "Higher overall EOL health literacy is positively associated with greater EOL knowledge and with engaging in ACP behaviours (discussing wishes, completing AD, appointing a surrogate).",
+    "Among the three EOL-HL dimensions, interactive EOL health literacy shows the strongest and most consistent associations with knowledge and ACP behaviours; functional HL is not significantly related, while critical HL relates mainly to AD completion and surrogate designation."
+  ],
+  "key_gaps": [
+    {
+      "description": "The study is cross-sectional, limiting causal conclusions about whether higher EOL HL leads to greater ACP engagement or if ACP experiences influence HL perceptions.",
+      "status": "explicit"
+    },
+    {
+      "description": "There is a need to develop and validate objective (performance-based) measures of EOL health literacy to complement the subjective S-EOL-HLS.",
+      "status": "explicit"
+    },
+    {
+      "description": "Generalizability to diverse settings and populations beyond Swiss older adults requires cross-national validation and exploration of cultural and regional differences.",
+      "status": "implied"
+    }
+  ],
+  "future_directions": [
+    {
+      "id": 1,
+      "title": "Conduct longitudinal studies to establish causality between EOL health literacy and ACP engagement",
+      "rationale": "The current study is cross-sectional and cannot determine directionality. A longitudinal design with repeated measures of EOL HL (including its interactive, functional, and critical components) and ACP outcomes (discussions, AD completion, surrogate designation) would allow temporal sequencing and enable cross-lagged analyses to test causal pathways. Implementing this in SHARE or a parallel cohort with diverse populations would also help assess persistence and change over time, as well as potential bidirectional effects between ACP experiences and perceived HL."
+    },
+    {
+      "id": 2,
+      "title": "Develop and validate objective, performance-based measures of EOL health literacy",
+      "rationale": "Subjective HL measures may be biased by self-perception and social desirability. Creating objective tasks that assess understanding of EOL terminology, ability to locate and evaluate EOL information, and capacity to apply information to decision-making would complement the S-EOL-HLS. Validation should include multi-language adaptation, measurement invariance across linguistic regions, test–retest reliability, and sensitivity to change following interventions."
+    },
+    {
+      "id": 3,
+      "title": "Test targeted interventions to enhance interactive and critical EOL HL and ACP uptake",
+      "rationale": "Interactive HL showed the strongest associations with knowledge and ACP behaviors; thus, interventions should focus on communication skills, information seeking, and decision-making. Design randomized controlled trials (or stepped-wedge trials) of components such as physician-led ACP consultations, structured information sessions, and decision aids, with outcomes including ACP discussions, AD completion, surrogate designation, and knowledge gains. Include process measures (fidelity, acceptability) and implementation outcomes to inform scalability."
+    },
+    {
+      "id": 4,
+      "title": "Assess differential effects of EOL-HL interventions across demographic and regional subgroups",
+      "rationale": "Preliminary findings suggest potential variation by education, language region, and living context. Studies should stratify analyses to identify which subgroups benefit most from EOL-HL interventions and tailor content and delivery (e.g., language-appropriate materials, culturally sensitive framing, and accessible formats for lower-education groups) to maximize equity in ACP uptake."
+    },
+    {
+      "id": 5,
+      "title": "Evaluate scalable public health strategies (national EOL day, Personal Healthcare Guide) to raise EOL-HL",
+      "rationale": "The article proposes public initiatives as feasible channels to enhance EOL HL. Pilot national campaigns and a digital or print Personal Healthcare Guide in diverse settings (primary care, community centers, hospitals) to measure reach, engagement, and subsequent ACP actions. Include health economic assessments to determine cost-effectiveness and inform policy adoption at scale."
+    },
+    {
+      "id": 6,
+      "title": "Integrate EOL-HL assessment and communication training into clinician education and routine practice",
+      "rationale": "Provider communication quality influences patient engagement in ACP. Develop curricula and continuing education for clinicians focused on assessing EOL-HL, tailoring information, and guiding ACP discussions. Evaluate effects on patient perceptions, ACP uptake, and satisfaction, as well as provider attitudes and time efficiency in clinical workflows."
+    },
+    {
+      "id": 7,
+      "title": "Develop and test digital tools and EHR-integrated resources to support EOL planning",
+      "rationale": "Digital modules and a digital Personal Healthcare Guide could facilitate information access, values clarification, and documentation of preferences. Trials should assess usability, adoption, and impact on ACP documentation rates, ensuring equity of access across age groups and socio-economic backgrounds. Integration with electronic health records would support timely prompts for discussions and updates."
+    },
+    {
+      "id": 8,
+      "title": "Explore cultural determinants and broader psychosocial factors influencing ACP and EOL literacy",
+      "rationale": "Cultural beliefs, death-related values, and prior experiences may shape EOL HL and ACP engagement. Mixed-methods research should identify culturally specific barriers and facilitators, informing the design of culturally tailored content and implementation strategies. This work would support more inclusive and acceptable interventions across diverse populations."
+    }
+  ]
+}

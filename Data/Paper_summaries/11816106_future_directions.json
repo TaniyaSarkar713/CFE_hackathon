@@ -1,0 +1,72 @@
+{
+  "file": "11816106",
+  "token_count": 21879,
+  "model": "gpt-5-nano-2025-08-07",
+  "timestamp": "2025-11-24T01:29:48.823858Z",
+  "topic_and_scope": "A global scoping review applying intersectionality and the McIntyre access framework to understand how women’s multiple social identities shape access to GBV supports. It synthesizes evidence across geographies to identify barriers and facilitators in availability, affordability, and acceptability of services, highlighting gaps in Global North dominance and underrepresented populations.",
+  "main_themes": [
+    "Availability of GBV supports and the role of informal networks as initial access points",
+    "Affordability barriers including health insurance, immigration status, and indirect costs",
+    "Acceptability shaped by systemic racism, cultural and linguistic competence, and migrant status"
+  ],
+  "main_findings": [
+    "Intersections of race, poverty, immigration status, and geography consistently shape women’s access to GBV services across contexts, affecting availability, affordability, and acceptability.",
+    "Positive prior experiences with culturally competent, respectful service providers and supportive informal networks facilitate continued use of GBV services, while language barriers, time limits, and fear of deportation deter access."
+  ],
+  "key_gaps": [
+    {
+      "description": "Explicit: Predominant Global North bias with limited data from Global South, Indigenous communities, and gender-diverse populations; insufficient inclusion of these groups in access studies.",
+      "status": "explicit"
+    },
+    {
+      "description": "Implied: Lack of quantitative, longitudinal data linking unhindered GBV access to health and non-health outcomes, and limited evidence on non-partner violence access barriers.",
+      "status": "implied"
+    },
+    {
+      "description": "Implied: Need for Global South–led research agendas and locally relevant interventions that address unique structural barriers and resource constraints.",
+      "status": "implied"
+    }
+  ],
+  "future_directions": [
+    {
+      "id": 1,
+      "title": "Prioritize Global South, Indigenous, and gender-diverse populations in GBV access research",
+      "rationale": "The review highlights a heavy Global North bias and underrepresentation of Indigenous, migrant, and gender-diverse groups. Establish Global South–led research consortia and fund participatory studies co-designed with affected communities. Ensure multilingual dissemination, culturally appropriate methodologies, and inclusion of diverse gender identities to generate locally relevant evidence for policy and practice."
+    },
+    {
+      "id": 2,
+      "title": "Quantify health and non-health outcomes of unhindered GBV service access",
+      "rationale": "Few studies link access to measurable outcomes. Implement prospective cohort or quasi-experimental designs to compare outcomes (mental and physical health, safety, economic empowerment, quality of life) between populations with improved access versus persistent barriers. Use standardized, culturally adapted instruments and harmonize outcome measures across settings to enable cross-country comparisons."
+    },
+    {
+      "id": 3,
+      "title": "Co-design and evaluate intersectionality-informed GBV service delivery models",
+      "rationale": "Barriers span availability, affordability, and acceptability. Develop and pilot models offering extended consultation times, integrated care pathways, diverse staff, and robust referral networks. Use implementation science frameworks (e.g., RE-AIM,CFIR) to assess reach, effectiveness, adoption, and sustainability in varied settings and populations."
+    },
+    {
+      "id": 4,
+      "title": "Scale up language access and cultural safety interventions in GBV services",
+      "rationale": "Language barriers and cultural insensitivity hinder disclosure and continuity of care. Implement scalable translator/interpreter services (including tele-interpretation), multilingual client materials, and recruit culturally diverse staff. Evaluate impact on disclosure rates, satisfaction, adherence to care plans, and perceived safety."
+    },
+    {
+      "id": 5,
+      "title": "Policy experiments to reduce financial and immigration-related barriers",
+      "rationale": "Financial constraints and precarious immigration status impede access even in universal-coverage systems. Test policies such as inclusive health coverage for asylum seekers/refugees, subsidized GBV care, and protection from deportation when seeking services. Use natural experiments and cost-effectiveness analyses to determine policy impact on service use, outcomes, and budgetary effects."
+    },
+    {
+      "id": 6,
+      "title": "Engage informal networks while safeguarding against reinforcing stigma",
+      "rationale": "Informal networks can both enable exit from violence and perpetuate silence. Develop community-based programs that educate families about safe help-seeking, create non-stigmatizing disclosure pathways, and clarify when formal services should be engaged. Measure changes in help-seeking behavior, trust in services, and timely access to formal care."
+    },
+    {
+      "id": 7,
+      "title": "Build multinational, standardized datasets with intersectional identity modules",
+      "rationale": "A major barrier is the lack of comparable data across contexts. Create harmonized data collection tools aligned with the McIntyre framework and intersectionality measures, enabling cross-country analyses of access pathways. Promote open data sharing to accelerate evidence synthesis and policy translation."
+    },
+    {
+      "id": 8,
+      "title": "Expand GBV research to non-partner violence and diverse settings",
+      "rationale": "Non-partner violence (workplace, education, housing) remains under-studied. Conduct targeted, mixed-methods studies to characterize access barriers in these contexts and develop interventions appropriate for workplace policies, schools, and community institutions. Include intersectional analyses to capture how multiple identities shape access in these settings."
+    }
+  ]
+}

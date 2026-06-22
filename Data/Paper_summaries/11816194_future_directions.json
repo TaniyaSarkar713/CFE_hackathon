@@ -1,0 +1,63 @@
+{
+  "file": "11816194",
+  "token_count": 9020,
+  "model": "gpt-5-nano-2025-08-07",
+  "timestamp": "2025-11-21T22:26:19.918070Z",
+  "topic_and_scope": "Qualitative assessment of school health professionals' (SHPs) experiences implementing the SEXual health Identification Tool (SEXIT) within Swedish school health services (SHS), focusing on perceived benefits, barriers, and prerequisites for routine use.",
+  "main_themes": [
+    "SEXIT as an educational tool that normalizes and facilitates discussions of sexual health and violence, and aids relationship-building with youth.",
+    "Implementation barriers including lack of supportive leadership, time and resource constraints, unclear guidelines, and weak cross-organizational collaboration.",
+    "Equity and tailoring needs to reach vulnerable groups (language-diverse youths, those with intellectual disabilities) and handling perpetrators of violence."
+  ],
+  "main_findings": [
+    "SEXIT supports SHPs to act as educators, reduces stigma around SRH topics, and provides a structured platform for discussing sensitive topics, aiding identification of students in need of support and enabling routine preventive work within SHS.",
+    "Effective implementation requires supportive leadership and a unified, clearly defined approach across organisations; without adequate resources, time, and clear referral pathways, uptake is inconsistent, and concerns arise about addressing needs of vulnerable groups and perpetrators."
+  ],
+  "key_gaps": [
+    {
+      "description": "Lack of supportive leadership and a unified approach among organisations to clarify roles, responsibilities and referral pathways for SEXIT implementation.",
+      "status": "explicit"
+    },
+    {
+      "description": "Need for tailored adaptations and evaluation of SEXIT for youths with limited language proficiency and intellectual disabilities, including equitable access and efficacy data for these groups.",
+      "status": "implied"
+    }
+  ],
+  "future_directions": [
+    {
+      "id": 1,
+      "title": "Develop and pilot an SHS-wide governance model for SEXIT implementation",
+      "rationale": "The study identifies lack of supportive leadership as a key barrier to scaling SEXIT. A governance model should specify leadership roles, accountability, resource allocation, and standardized processes for roll-out. Next steps include forming a cross-institution steering group, creating policy briefs, and piloting in multiple counties to evaluate uptake, fidelity, and staff satisfaction."
+    },
+    {
+      "id": 2,
+      "title": "Create and test standardized inter-professional guidelines for SEXIT use",
+      "rationale": "Ambiguity over which SHS professionals should employ SEXIT and when was repeatedly noted. Develop national guidelines detailing professional roles, timing within assessments, training requirements, and cross-disciplinary handoffs. Implement in diverse SHS settings and assess consistency of use, perceived burden, and impact on referral quality."
+    },
+    {
+      "id": 3,
+      "title": "Design and evaluate tailored SEXIT adaptations for language-diverse and intellectually diverse youths",
+      "rationale": "Language barriers and intellectual disabilities were highlighted as major access and comprehension challenges. Develop simplified language versions, culturally adapted content, visual or oral formats, and interpreter-support protocols. Test usability, accuracy of reporting, and effect on identification and care planning in targeted subgroups."
+    },
+    {
+      "id": 4,
+      "title": "Establish and validate streamlined referral pathways for perpetrators identified via SEXIT",
+      "rationale": "While SEXIT can identify perpetrators, staff expressed uncertainty about appropriate referrals and available support. The next step is to map services (police, social services, youth clinics, psychiatry), create clear referral criteria, and pilot rapid referral workflows. Evaluate safety outcomes, timeliness of interventions, and youth/guardian satisfaction with the process."
+    },
+    {
+      "id": 5,
+      "title": "Expand translation and dissemination of SEXIT across SHS with targeted training",
+      "rationale": "Translations exist but awareness and usage in SHS remain limited. Plan broad dissemination of multilingual SEXIT materials and provide targeted training for frontline staff. Assess uptake, perceived usability, and impact on equitable access to SRH services across linguistic groups."
+    },
+    {
+      "id": 6,
+      "title": "Conduct an implementation science study with economic evaluation across urban and rural SHS",
+      "rationale": "Time and resource constraints were frequently cited as barriers. A multi-site study should quantify time requirements, staffing needs, and costs, and perform cost-effectiveness analyses to inform scalable adoption. Include fidelity measures and potential economies of scale in different settings."
+    },
+    {
+      "id": 7,
+      "title": "Incorporate youth and caregiver co-design to optimize SEXIT content and delivery",
+      "rationale": "To improve acceptability and reduce stigma, engage youths and families in refining SEXIT items, delivery methods, and follow-up processes. Implement iterative feedback loops, run pilot co-design sessions, and assess changes in youth comfort, engagement, and disclosure rates over time."
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "file": "11816211",
+  "token_count": 11779,
+  "model": "gpt-5-nano-2025-08-07",
+  "timestamp": "2025-11-21T23:34:56.988493Z",
+  "topic_and_scope": "This narrative review frames poor sleep as a public health issue in adults, advocates a multidimensional Sleep Health framework, and proposes an operational definition, detection approaches in primary care, and non-pharmacological strategies for prevention and management.",
+  "main_themes": [
+    "Sleep health as a public health paradigm with multidimensional metrics and a need for standardized definitions and measurement frameworks.",
+    "Under-detection in primary care and the need for feasible, scalable screening tools to identify poor sleepers.",
+    "Prevention and management through lifestyle, circadian-aligned interventions, and CBT-based strategies, with a need for implementation research and validation across diverse populations."
+  ],
+  "main_findings": [
+    "Poor sleep is linked to daytime impairment and a broad spectrum of health risks, including mood disorders, cognitive decline, inflammatory markers, metabolic and cardiovascular disease, and potentially higher infection risk; these associations were highlighted in the context of the COVID-19 pandemic.",
+    "There is a proposed operational definition of poor sleep and recommended detection methods, but a universal global standard is lacking and primary care frequently misses sleep assessment; non-pharmacological strategies show promise but require further validation and implementation research."
+  ],
+  "key_gaps": [
+    {
+      "description": "The field lacks a standardized, operational definition of poor sleep with validated, scalable screening criteria suitable for primary care and public health surveillance.",
+      "status": "explicit"
+    },
+    {
+      "description": "Validated, scalable tools and implementation strategies to detect and address poor sleep across diverse populations and healthcare settings are missing; current reliance on sleep diaries and self-report questionnaires is insufficient and consumer devices require further validation before widespread adoption.",
+      "status": "implied"
+    }
+  ],
+  "future_directions": [
+    {
+      "id": 1,
+      "title": "Establish and validate a global operational definition and measurement framework for poor sleep",
+      "rationale": "A standardized definition and measurement framework are essential to enable cross-country comparisons, surveillance, and epidemiologic consistency. This should include consensus on thresholds (e.g., sleep duration, regularity) and a composite assessment that integrates subjective sleep quality, objective sleep quantity, and daytime functioning. Steps include a Delphi process with international sleep researchers, multicountry validation across diverse populations, and alignment with the Sleep Health dimensions to ensure applicability in both clinical and public health settings."
+    },
+    {
+      "id": 2,
+      "title": "Develop and implement a feasible primary-care screening workflow for poor sleep",
+      "rationale": "To reduce under-detection, create a brief, integrable screening tool that combines patient-reported sleep diaries with 1–2 concise questionnaires, suitable for use by physicians, nurses, and pharmacists. Pilot the workflow in diverse settings (primary care clinics, community health centers, and pharmacy chains) and integrate results into electronic health records to trigger appropriate non-pharmacological interventions or referrals. Evaluate impact on detection rates, referral patterns, patient outcomes, and cost-effectiveness."
+    },
+    {
+      "id": 3,
+      "title": "Conduct longitudinal cohort studies linking poor sleep to disease and immune outcomes",
+      "rationale": "To establish causal inferences and identify at-risk groups, prospective cohorts should track sleep health using both objective measures (actigraphy) and validated subjective tools across age, sex, race/ethnicity, and socioeconomic status. These studies should assess long-term risks for cardiometabolic diseases, mental health outcomes, and immune-related morbidity, incorporating circadian disruption metrics and environmental factors. This work will inform targeted prevention strategies and policy decisions."
+    },
+    {
+      "id": 4,
+      "title": "Test scalable non-pharmacological interventions across the general population",
+      "rationale": "Randomized or pragmatic trials should compare scalable interventions (digital CBT-I variants, circadian-aligned lifestyle programs, scheduled light exposure, and meal-timing adjustments) versus usual care. Include subgroups such as shift workers, older adults, and individuals with comorbid mental health conditions. Outcomes should cover sleep health metrics, quality of life, mood, metabolic endpoints, and health service utilization to determine real-world effectiveness and scalability."
+    },
+    {
+      "id": 5,
+      "title": "Implement and evaluate sleep health promotion in workplaces and public health programs",
+      "rationale": "Translational research is needed to embed sleep health into occupational health, community campaigns, and clinical guidelines. Studies should assess feasibility, stakeholder acceptance, equity of access, and cost-effectiveness across different sectors and countries. Outcomes should include changes in sleep behaviors, productivity, worker well-being, and downstream health impacts to justify broader policy adoption."
+    },
+    {
+      "id": 6,
+      "title": "Validate and integrate digital tools (wearables/apps) for sleep health surveillance",
+      "rationale": "Digital devices offer scalable monitoring but require rigorous validation for accuracy and clinical relevance. Research should establish performance thresholds, develop clinician-facing guidelines for interpreting app-based data, and address privacy and data-security concerns. Pilot implementations in primary care and public health settings should assess acceptability, interoperability with electronic records, and impact on care decisions for poor sleepers."
+    },
+    {
+      "id": 7,
+      "title": "Address disparities in sleep health through culturally tailored interventions and policy changes",
+      "rationale": "Disparities related to race/ethnicity, socioeconomic status, and geography are prominent in sleep health. Research should identify mechanisms driving these disparities and develop culturally appropriate interventions, including community engagement and policy actions addressing housing quality, environmental conditions (noise, light, temperature), and shift-work structures. Trials should evaluate equity-focused strategies and advocate for policies that reduce structural barriers to healthy sleep across populations."
+    }
+  ]
+}

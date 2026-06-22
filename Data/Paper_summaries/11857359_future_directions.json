@@ -1,0 +1,76 @@
+{
+  "file": "11857359",
+  "token_count": 27848,
+  "model": "gpt-5-nano-2025-08-07",
+  "timestamp": "2025-11-24T02:28:18.207301Z",
+  "topic_and_scope": "Evaluation of domoic acid (DA) toxicosis from harmful algal blooms as it affects humans and marine wildlife, with emphasis on production, exposure pathways, toxicokinetics, clinical syndromes, diagnosis, treatment, prognosis, and the California sea lion model as a sentinel.",
+  "main_themes": [
+    "DA production, environmental drivers, and exposure pathways across taxa",
+    "multisystem toxicity mediated by glutamate receptors (primarily iGluRs) with CNS and peripheral organ involvement",
+    "diagnostic challenges, treatment limitations, prognosis, and sentinel species-based surveillance"
+  ],
+  "main_findings": [
+    "Domoic acid acts as a potent glutamate receptor agonist, causing acute and chronic neurobehavioral deficits, cardiotoxicity, reproductive impacts, and renal effects across multiple species, with hippocampal injury being a common central nervous system target.",
+    "California sea lions serve as a well-studied sentinel model for environmental DA exposure, yet diagnostic tests are non-specific and largely rely on a weight-of-evidence approach; treatment is mainly supportive, and prognosis worsens with chronic exposure and significant neurological involvement."
+  ],
+  "key_gaps": [
+    {
+      "description": "No single, definitive diagnostic test for DA toxicosis exists; diagnosis requires integrating environmental, dietary, and clinical data with multiple, imperfect assays (ELISA, LC-MS/MS, serology, imaging, and neurophysiological tests).",
+      "status": "explicit"
+    },
+    {
+      "description": "Toxicokinetic and dose–response data across diverse species and exposure routes are sparse, limiting cross-species risk assessment and the extrapolation of animal model findings to humans and wildlife.",
+      "status": "implied"
+    },
+    {
+      "description": "Therapies beyond symptomatic management are poorly validated across species; robust, evidence-based treatment protocols and novel neuroprotective strategies are lacking for wildlife and for humans with recurrent exposure.",
+      "status": "explicit"
+    },
+    {
+      "description": "Developmental and perinatal windows of heightened susceptibility to DA are not systematically characterized across species, hindering targeted protective guidelines for pregnant individuals and offspring.",
+      "status": "implied"
+    }
+  ],
+  "future_directions": [
+    {
+      "id": 1,
+      "title": "Develop and deploy field-ready DA exposure assays and standardized diagnostic workflows",
+      "rationale": "The review emphasizes that no single test confirms DA toxicosis and that diagnosis relies on a weight-of-evidence approach. Creating field-deployable antigen detection tools (or rapid surrogate assays) paired with standardized sampling and decision trees across species would enable faster epidemiological responses, improve surveillance accuracy, and guide timely management in both wildlife rehabilitation and human seafood safety contexts. Steps include validating ELISA and LC-MS/MS workflows for multiple matrices (serum, urine, feces, tissue) in key species, implementing region-specific vector prey testing, and integrating results into a unified diagnostic protocol."
+    },
+    {
+      "id": 2,
+      "title": "Construct cross-species toxicokinetic and dose–response models for DA",
+      "rationale": "Toxicokinetic properties of DA vary by species, route, and exposure history, complicating risk assessment. Developing physiologically based pharmacokinetic (PBPK) models and dose–response frameworks that incorporate prey-mediated exposure, environmental persistence, and renal and blood–brain barrier dynamics will improve predictions of human and wildlife risk, tailor monitoring thresholds, and support regulatory decision-making. Next steps include compiling existing data across CSLs, SSOs, cetaceans, seabirds, and humans, parameter fitting, and external validation with new exposure episodes."
+    },
+    {
+      "id": 3,
+      "title": "Implement longitudinal cohorts to quantify chronic low-dose DA effects in high-risk populations",
+      "rationale": "Evidence indicates memory deficits and neurobehavioral changes from repetitive, low-dose DA exposure in Indigenous communities and wildlife. Systematic, multi-year cohort studies should track neurocognitive outcomes, kidney and cardiac function, reproductive metrics, and exposure histories to establish dose–response relationships, identify early biomarkers, and evaluate reversibility after exposure reduction. This would inform public health guidance and wildlife management during recurring bloom seasons."
+    },
+    {
+      "id": 4,
+      "title": "Systematically characterize perinatal and developmental DA susceptibility windows",
+      "rationale": "Developmental exposure yields hippocampal damage and long-term neurobehavioral consequences; however, precise sensitive windows are not well delineated across taxa. Research should combine animal model experiments with field data from pregnant individuals and offspring in high-exposure regions to identify critical neurodevelopmental periods, refine exposure guidelines for pregnant populations, and inform conservation strategies for long-lived wildlife."
+    },
+    {
+      "id": 5,
+      "title": "Advance and validate targeted therapeutics and neuroprotective strategies in ecologically relevant models",
+      "rationale": "A range of potential neuroprotectants and anti-epileptic strategies show promise in models but lack robust, ecologically valid validation for wildlife and humans. Systematic preclinical testing followed by carefully designed clinical or field trials should assess efficacy, safety, dosing, and potential interactions with renal impairment or reproductive status. Priorities include evaluation of combination therapies, antioxidant/anti-inflammatory regimens, and innovative approaches such as cell-based or receptor-modulating therapies under controlled conditions."
+    },
+    {
+      "id": 6,
+      "title": "Develop non-invasive CNS diagnostic biomarkers and portable imaging/monitoring tools for wildlife",
+      "rationale": "Imaging and neurophysiological findings are informative but largely limited to post-mortem or highly specialized settings. Portable EEG/EMG protocols, simplified MRI/PET surrogate readouts, and standardized neurobehavioral assays could enable earlier detection of DA-induced CNS injury in live wildlife, support prognosis, and guide rehabilitation decisions. Research should focus on species-specific baseline data, sensor miniaturization, and cross-validation with established laboratory measures."
+    },
+    {
+      "id": 7,
+      "title": "Quantify co-exposures and ecological drivers of DA risk under climate change",
+      "rationale": "DA risk is modulated by bloom dynamics, prey vectors, and environmental stressors that are shifting with warming oceans and eutrophication. Studies should quantify interactions with heavy metals, Vibro spp., and other toxins, as well as how prey selection and bloom timing affect exposure. Integrating oceanography, toxin surveillance, and wildlife health data will improve predictive risk maps and inform management actions to reduce exposure in vulnerable populations."
+    },
+    {
+      "id": 8,
+      "title": "Strengthen sentinel networks and integrate wildlife surveillance with human health monitoring",
+      "rationale": "California sea lions are a valuable sentinel species, but surveillance is patchy and often region-specific. Expanding regional, real-time monitoring networks that connect wildlife health data with seafood safety programs and human health surveillance will enable earlier detection of DA risks, synchronize public health responses, and support One Health efforts in coastal communities. Actions include data-sharing platforms, standardized reporting, and cross-disciplinary collaboration among wildlife agencies, public health, and fisheries."
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "file": "11812686",
+  "token_count": 6926,
+  "model": "gpt-5-nano-2025-08-07",
+  "timestamp": "2025-11-21T21:39:29.682619Z",
+  "topic_and_scope": "This analysis examines how English local authorities implement multiagency working (MAW) for SUDI prevention, highlighting policy variability, limited detailed guidance, and the lack of evaluation frameworks. The focus is on what the field should do next to standardize, implement, train, and assess MAW approaches in at-risk families.",
+  "main_themes": [
+    "Policy variation and lack of standardized MAW guidance across local authorities",
+    "Insufficient detail on MAW roles, responsibilities, and staff training",
+    "Absence of implementation, monitoring, and outcome evaluation mechanisms for MAW in SUDI prevention"
+  ],
+  "main_findings": [
+    "From 152 LAs, 26 unique MAW-related SUDI documents were identified; 19 mentioned MAW but only 4 discussed MAW in detail, and just 15% included a detailed implementation plan, while 73% acknowledged MAW importance but lacked specifics.",
+    "MAW staff composition commonly includes midwives and a mix of non-health professionals; training for MAW staff is rare and there is no unified model or formal evaluation framework for MAW-based SUDI prevention."
+  ],
+  "key_gaps": [
+    {
+      "description": "No clear, standardized national model for MAW in SUDI prevention; few policies provide detailed implementation plans and guidance on how to operationalize MAW across settings.",
+      "status": "explicit"
+    },
+    {
+      "description": "Training for MAW staff is inconsistent or missing; there is no standardized, scalable training framework or curricula for the diverse roles involved in MAW SUDI prevention.",
+      "status": "explicit"
+    },
+    {
+      "description": "Lack of rigorous evaluation of MAW implementation and outcomes; there is no robust evidence on feasibility, fidelity, or impact on SUDI rates among vulnerable families.",
+      "status": "explicit"
+    }
+  ],
+  "future_directions": [
+    {
+      "id": 1,
+      "title": "Develop a national standardized MAW SUDI prevention framework with defined roles and responsibilities",
+      "rationale": "Policy heterogeneity was a core finding; a national framework would provide consistent guidance on which MAW staff should be involved, their specific duties, and how they coordinate. Next steps include forming a multidisciplinary expert panel, synthesizing best practices from existing detailed LA guidance, and producing a core framework that maps roles to common MAW scenarios. The framework should be piloted in a subset of LAs before broader rollout."
+    },
+    {
+      "id": 2,
+      "title": "Create a detailed MAW implementation protocol and governance model for local authorities",
+      "rationale": "Only a minority of policies contained explicit implementation plans; a protocol is needed to specify governance, timelines, inter-agency workflows, and integration with safeguarding structures (LSCP/LSCB). Concrete steps include delineating referral pathways, escalation procedures, accountability mechanisms, and required resources; test the protocol in several diverse LA settings and refine accordingly."
+    },
+    {
+      "id": 3,
+      "title": "Implement a standardized MAW training program for identified staff groups",
+      "rationale": "Training for MAW staff is infrequent and inconsistently delivered; a centralized, accredited training program should cover safe sleep messaging, risk recognition, referral processes, data handling, and collaboration skills. Steps include developing modular curricula for each staff group (e.g., midwives, social workers, police, housing officers), delivering via an LMS plus in-person sessions, and evaluating training impact on knowledge, confidence, and practice."
+    },
+    {
+      "id": 4,
+      "title": "Develop and validate criteria to identify 'vulnerable families' for targeted MAW SUDI prevention",
+      "rationale": "Current policies variably define vulnerability, risking inconsistent targeting and potential stigma. Next steps involve reviewing evidence to create a transparent, multi-domain vulnerability framework (socioeconomic status, parental mental health, substance misuse, domestic violence, etc.), validating it across settings, and embedding it into MAW triage tools with clear inclusion/exclusion criteria."
+    },
+    {
+      "id": 5,
+      "title": "Establish robust data sharing and information governance for MAW activities",
+      "rationale": "Cross-agency MAW requires secure, timely information exchange; a formal governance framework is needed to enable referrals, track actions, and evaluate impact. Actions include drafting data sharing agreements, standardizing data dictionaries, implementing secure information systems, and ensuring compliance with privacy regulations; pilot data workflows in a few partnerships before scaling."
+    },
+    {
+      "id": 6,
+      "title": "Conduct rigorous, multi-site evaluations of MAW SUDI prevention programs",
+      "rationale": "There is currently no robust evidence on implementation feasibility or effectiveness of MAW approaches. Proposed studies should use mixed-methods designs to assess process fidelity, acceptability, reach, and intermediate outcomes, with longitudinal follow-up on SUDI-related indicators in targeted populations; findings should inform iterative policy refinement."
+    },
+    {
+      "id": 7,
+      "title": "Integrate MAW SUDI prevention with safeguarding partnerships and establish monitoring dashboards",
+      "rationale": "To ensure sustainability and accountability, MAW should be embedded within LSCP/LSCB operations with clear KPIs and regular reporting. Steps include defining key performance indicators (training coverage, number of MAW cases engaged, referral rates, and measured changes in sleep safety practices), developing accessible dashboards, and conducting quarterly reviews to drive continuous improvement."
+    }
+  ]
+}

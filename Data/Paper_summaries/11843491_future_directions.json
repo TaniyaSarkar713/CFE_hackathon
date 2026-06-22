@@ -1,0 +1,75 @@
+{
+  "file": "11843491",
+  "token_count": 17159,
+  "model": "gpt-5-nano-2025-08-07",
+  "timestamp": "2025-11-23T20:08:55.463581Z",
+  "topic_and_scope": "Nigeria-focused systematic evaluation of maternal care satisfaction (MCS), examining how MCS is measured, the determinants shaping satisfaction across antenatal, intrapartum, and postnatal care, and the relationship between satisfaction and service utilization and policy implications.",
+  "main_themes": [
+    "Measurement challenges and methodological biases in MCS assessment",
+    "Determinants of MCS across structure, process, access, and individual factors",
+    "Implications of MCS for health-seeking behavior and policy, with a need for robust methodologies"
+  ],
+  "main_findings": [
+    "MCS rates are frequently reported as high (often 80–100%), but these findings may be influenced by measurement and response biases, calling into question their validity.",
+    "Determinants of MCS span multiple domains—positive client-provider relationships, favorable facility environments, geographic accessibility, and affordable care—yet associations with socioeconomic and demographic factors are inconsistent across studies."
+  ],
+  "key_gaps": [
+    {
+      "description": "No nationwide, longitudinal data to track maternal care satisfaction over time and relate it to birth and maternal outcomes.",
+      "status": "explicit"
+    },
+    {
+      "description": "Absence of a standardized, validated instrument for measuring MCS across antenatal, intrapartum, and postnatal care in Nigeria.",
+      "status": "explicit"
+    },
+    {
+      "description": "Predominance of cross-sectional designs limiting causal inference between MCS and subsequent health-seeking behavior or outcomes.",
+      "status": "explicit"
+    },
+    {
+      "description": "Measurement biases related to data collection methods (e.g., interviewer-administered surveys) and timing (postpartum) that may inflate satisfaction scores.",
+      "status": "explicit"
+    },
+    {
+      "description": "Insufficient evidence linking MCS to concrete health outcomes and policy impact beyond self-reported willingness to return or refer.",
+      "status": "implied"
+    }
+  ],
+  "future_directions": [
+    {
+      "id": 1,
+      "title": "Develop and validate a Nigeria-wide standardized MCS measurement instrument",
+      "rationale": "Many studies used heterogeneous, study-specific tools, making cross-study comparisons unreliable. A validated, Nigeria-centered instrument should cover ANC, intrapartum, and postnatal domains and be culturally and linguistically appropriate. Steps include forming a multi-stakeholder panel, conducting cognitive interviews, pilot testing across diverse states, assessing reliability and construct validity, and translating into major local languages. This instrument would enable consistent surveillance and benchmarking of MCS across facilities and regions."
+    },
+    {
+      "id": 2,
+      "title": "Establish a longitudinal cohort to assess the temporal relationship between MCS and health-seeking outcomes",
+      "rationale": "Cross-sectional data limit causal inferences about whether higher MCS leads to increased facility-based deliveries, postpartum follow-up, or improved outcomes. A multicenter cohort following women from pregnancy through the postpartum period should repeatedly measure MCS and track concrete outcomes (delivery setting, postnatal attendance, complication rates). This design will clarify directionality and inform targeted interventions."
+    },
+    {
+      "id": 3,
+      "title": "Evaluate interventions targeting key MCS determinants through rigorous study designs",
+      "rationale": "Evidence is needed on how to improve MCS in practice. Implement randomized or quasi-experimental trials (e.g., provider communication training, environmental improvements, and cost-reduction strategies) across multiple facilities with standardized outcome metrics (using the new instrument). Assess not only satisfaction but also subsequent care utilization and maternal/neonatal outcomes to determine real-world effectiveness and scalability."
+    },
+    {
+      "id": 4,
+      "title": "Incorporate inclusive, mixed-methods research to capture experiences of marginalized groups",
+      "rationale": "Disparities exist in experiences of care, including among deaf or disabled women and those with low literacy. Studies should use purposive, representative sampling and accessible data collection methods (including sign language options, pictorial tools, and audio-visual approaches) and integrate qualitative insights to supplement quantitative measures. This will ensure measurement tools reflect diverse lived experiences and needs."
+    },
+    {
+      "id": 5,
+      "title": "Assess the impact of health financing and insurance on MCS and service utilization",
+      "rationale": "Cost is repeatedly highlighted as a determinant of satisfaction and access. Policy-focused research should pilot and evaluate health insurance or subsidy schemes targeting pregnant women, measuring effects on MCS, affordability, and utilization of ANC, delivery, and postnatal services. This will inform scalable financing solutions that improve satisfaction and outcomes."
+    },
+    {
+      "id": 6,
+      "title": "Integrate MCS monitoring into national health system quality metrics",
+      "rationale": "Sustainable improvement requires routine, system-level surveillance of MCS. Develop a national monitoring framework that embeds standardized MCS measures into health information systems (e.g., DHIS-like platforms), with periodic facility-level and regional reporting and feedback loops to health managers and policymakers. This will facilitate ongoing quality improvement and accountability."
+    },
+    {
+      "id": 7,
+      "title": "Map regional disparities and tailor region-specific MCS improvement strategies",
+      "rationale": "Geographic variation in accessibility, facility type, and cultural context likely shapes MCS. Conduct standardized, multi-state comparisons to identify high-need regions and to design targeted interventions (e.g., mobile clinics, transportation support, region-specific provider training). Outcomes should include both MCS and objective utilization metrics to ensure relevance and effectiveness."
+    }
+  ]
+}

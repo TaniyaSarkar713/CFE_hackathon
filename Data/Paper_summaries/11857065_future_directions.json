@@ -1,0 +1,63 @@
+{
+  "file": "11857065",
+  "token_count": 9985,
+  "model": "gpt-5-nano-2025-08-07",
+  "timestamp": "2025-11-21T22:40:34.796464Z",
+  "topic_and_scope": "Analysis of a rare case of a giant left-frontal arteriovenous malformation (AVM) coexisting with a bilobed posterior communicating artery (PComA) aneurysm, detailing imaging-guided decision making, surgical management, and implications for future research in complex cerebrovascular anomalies.",
+  "main_themes": [
+    "Advanced multimodal imaging and multidisciplinary planning for complex AVMs with coexisting aneurysms",
+    "Definitive microsurgical resection of large high-flow AVMs versus adjunctive endovascular or radiosurgical approaches",
+    "Future directions in technology, surveillance, and patient-centered outcomes for cerebrovascular malformations"
+  ],
+  "main_findings": [
+    "Successful complete microsurgical resection of a giant left frontal AVM with preservation of neurological function and seizure freedom at 3 months, while conservatively monitoring a bilobed stable left PComA aneurysm guided by PHASES scoring.",
+    "Advanced imaging (DSA, 3D rotational angiography, MRI) enabled precise mapping of nidus, feeders, and draining veins, underpinning a tailored, multidisciplinary surgical plan and demonstrating the central role of imaging in managing complex vascular pathologies."
+  ],
+  "key_gaps": [
+    {
+      "description": "Need for long-term prospective data on the hemodynamic impact of AVM resection on coexisting aneurysms and optimal surveillance timing/intervals to prevent rupture.",
+      "status": "explicit"
+    },
+    {
+      "description": "Limited evidence and standardized guidelines for hybrid or minimally invasive approaches in giant AVMs with concurrent aneurysms, including patient selection, sequencing, and outcomes.",
+      "status": "implied"
+    }
+  ],
+  "future_directions": [
+    {
+      "id": 1,
+      "title": "Develop AI-driven hemodynamic modeling to inform preoperative and intraoperative planning",
+      "rationale": "The article highlights AI-driven imaging and computational flow modeling as a future direction. Building predictive models that simulate post-resection flow, assess rupture risk, and optimize feeder occlusion strategies could enhance risk stratification and surgical planning. Next steps include assembling multicenter multimodal imaging datasets, developing validated modeling frameworks, and integrating them into surgical decision workflows with prospective outcome comparison."
+    },
+    {
+      "id": 2,
+      "title": "Establish long-term, multicenter surveillance protocols for AVM ± aneurysm after treatment",
+      "rationale": "Given the case's conservative aneurysm management and the emphasis on long-term imaging surveillance, there is a need for standardized follow-up schedules and imaging modalities. Action items include creating a registry of complex AVM-aneurysm cases, defining imaging intervals (MRI, DSA, or others), and correlating surveillance with rupture-free survival and quality of life outcomes."
+    },
+    {
+      "id": 3,
+      "title": "Prospective evaluation of hybrid embolization–surgery protocols for giant AVMs",
+      "rationale": "Hybrid approaches are described as promising for large AVMs but require systematic evaluation. Proposed steps: design prospective studies or trials comparing staged embolization with microsurgical resection versus resection alone, identifying optimal sequencing, patient selection criteria, and periprocedural risk profiles."
+    },
+    {
+      "id": 4,
+      "title": "Develop and test novel embolic agents and surgical tools tailored to high-flow AVMs",
+      "rationale": "Advances in embolic materials (e.g., Onyx, PHIL) improve selective feeder occlusion but do not guarantee complete obliteration in giant AVMs. Research should focus on agents with better nidus penetration, controllable flow dynamics, and supportive intraoperative tools (e.g., real-time perfusion assessment, enhanced neurophysiological feedback) to reduce intraoperative risk and recurrence."
+    },
+    {
+      "id": 5,
+      "title": "Validate minimally invasive or endovascular-first strategies for select coexisting aneurysms",
+      "rationale": "In cases where the aneurysm may be hemodynamically linked but is stable, minimally invasive approaches or staged endovascular management could reduce overall risk. Studies should define criteria for selecting aneurysm treatment versus continued observation, and assess impacts on subsequent AVM treatment and rupture risk."
+    },
+    {
+      "id": 6,
+      "title": "Systematically integrate intraoperative functional imaging and neurophysiological monitoring",
+      "rationale": "The case notes the potential benefit of functional MRI and neurophysiological monitoring near eloquent cortex. Future work should formalize protocols for integrating intraoperative mapping, awake/oriented monitoring when feasible, and post-operative functional outcomes to minimize deficits."
+    },
+    {
+      "id": 7,
+      "title": "Assess patient-centered outcomes: quality of life and cognitive recovery after complex AVM/aneurysm treatment",
+      "rationale": "Beyond radiographic success, long-term success should include seizure control, cognitive function, physical rehabilitation, and psychosocial well-being. Researchers should adopt standardized patient-reported outcome measures and longitudinal follow-up to capture meaningful, real-world benefits."
+    }
+  ]
+}
