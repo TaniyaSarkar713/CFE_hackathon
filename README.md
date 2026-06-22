@@ -223,9 +223,9 @@ last two columns say what we take from each and which workstream it lands in
 | **Wang, Downey, Ji & Hope, 2023** — *SciMON: Scientific Inspiration Machines Optimized for Novelty* · `References/SciMON/` (code + `scimon.pdf`) | Generates literature-grounded ideas and **optimizes for novelty** via *iterative novelty boosting* (retrieve similar prior work → prompt to increase distance from it). Three knowledge modules: KG (IE entities), CT (citation network), SN (semantic neighbors). Includes a **biomedical** pipeline. | Operationalizes the **§7 novelty signal** (novelty = adjacency-gated distance from neighbor literature); its **biomedical** modules match our PubMed corpus; SciBERT semantic eval reinforces **SPECTER2/SciBERT** for the MRR match function. | Citation graph + Candidates/Agents |
 | **Ivanitskiy, 2026** — *Mechanistic Interpretability* (lecture) · `References/ivanitskiy-interp.pdf` | Survey of interpretability: input attribution (**LIME/SHAP**, with game-theoretic guarantees), **saliency** ("what drove the decision"), causal interventions (**ablation / activation patching**), and the Goodhart/proxy-objective warning. | The blueprint for the **explainability layer** (already built): exact additive attribution, causal **ablation probe**, faithfulness, and abstention as the model-risk-aware response to Goodhart. | Fusion/Explain (done) |
 
-**Status:** Ivanitskiy is already incorporated (the `rank_fusion/explain.py` layer).
-The highest-value next addition from this set is **ListNet** (Cao et al.) as a
-fourth meta-ranker option. Si et al. mainly provides design justification +
+**Status:** Ivanitskiy and **ListNet** (Cao et al.) are incorporated — the latter
+as a fourth meta-ranker option in `rank_fusion/learned_rankers.py` (pointwise →
+pairwise → listwise → soft-MRR). Si et al. mainly provides design justification +
 concrete recipes (dedup threshold, Swiss tournament, MMR). ResearchAgent and
 SciMON are primarily upstream recipes (candidate generation, citation graph,
 novelty) that feed this project through the `Query` contract. See

@@ -25,7 +25,7 @@ from rank_fusion import (
     DEFAULT_SKILLS, evaluate, corpus_mrr,
     make_rrf_rank_fn, make_single_source_rank_fn,
     tune_rrf, fit_select_meta_ranker,
-    fit_select_ranknet, fit_select_soft_mrr,
+    fit_select_ranknet, fit_select_listnet, fit_select_soft_mrr,
     oracle_mrr, candidate_recall_table, bootstrap_mrr_ci,
 )
 
@@ -105,6 +105,10 @@ def main(seed: int = 7):
                  corpus_mrr(ds.test, rn.rank_fn()),
                  bootstrap_mrr_ci(ds.test, rn.rank_fn(), n_boot=500, seed=1)[1:],
                  str(rn_info)))
+
+    ln, ln_dev, ln_info = fit_select_listnet(ds.train, ds.dev, sources, seed=seed)
+    rows.append(("meta-ranker: listwise ListNet", ln_dev,
+                 corpus_mrr(ds.test, ln.rank_fn()), None, str(ln_info)))
 
     # --- Level 4: differentiable soft-MRR surrogate ---------------------- #
     sm, sm_dev, sm_info = fit_select_soft_mrr(ds.train, ds.dev, sources, seed=seed)

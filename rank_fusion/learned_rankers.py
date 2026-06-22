@@ -73,6 +73,12 @@ def _sigmoid(z):
     return 1.0 / (1.0 + np.exp(-np.clip(z, -30, 30)))
 
 
+def _softmax(z):
+    z = z - np.max(z)
+    e = np.exp(np.clip(z, -30, 30))
+    return e / (e.sum() + 1e-12)
+
+
 # --------------------------------------------------------------------------- #
 # Level 3 — pairwise RankNet / BPR with hard-negative mining
 # --------------------------------------------------------------------------- #
@@ -137,6 +143,76 @@ class PairwiseRankNet:
                 return list(query.candidate_ids)
             scores = Xs @ self.w
             order = np.argsort(-scores, kind="stable")
+            return [cand_ids[i] for i in order]
+        return fn
+
+
+# --------------------------------------------------------------------------- #
+# Level 3 (listwise) — ListNet: top-one cross-entropy over the whole list
+# --------------------------------------------------------------------------- #
+class ListNetRanker:
+    """ListNet (Cao et al. 2007): the listwise learning-to-rank loss.
+
+    For each paper (a query group) the candidate scores and the binary relevance
+    labels are each turned into a **top-one probability distribution** via
+    softmax; the loss is the cross-entropy between them:
+
+        P_s = softmax(X w),  P_y = softmax(y)
+        L   = - sum_j P_y(j) log P_s(j)      (summed over papers)
+
+    Unlike pointwise (each candidate alone) or pairwise (each pair), this scores
+    the *whole list* at once. For a linear scorer the gradient is clean:
+    dL/dw = X^T (P_s - P_y). Model-selected by dev MRR.
+    """
+
+    def __init__(self, sources, k=60.0, lr=0.05, epochs=400, l2=1e-3,
+                 grad_clip=0.1, seed=0):
+        self.fs = _FeatureSpace(sources, k)
+        self.lr, self.epochs, self.l2, self.seed = lr, epochs, l2, seed
+        self.grad_clip = grad_clip
+        self.w = None
+
+    def _groups(self, queries):
+        data = []
+        for q in queries:
+            if not q.has_ground_truth():
+                continue
+            cand_ids, Xs = self.fs.transform(q)
+            if Xs.shape[0] == 0:
+                continue
+            y = _labels(q, cand_ids)
+            if y.sum() == 0:                       # need >=1 positive per group
+                continue
+            data.append((Xs, _softmax(y)))         # cache the target distribution
+        return data
+
+    def fit(self, train_queries):
+        self.fs.fit(train_queries)
+        data = self._groups(train_queries)
+        self.w = np.zeros(self.fs.dim)
+        if not data:
+            return self
+        for _ in range(self.epochs):
+            grad = np.zeros(self.fs.dim)
+            for Xs, Py in data:
+                Ps = _softmax(Xs @ self.w)
+                grad += Xs.T @ (Ps - Py)           # dL/dw for softmax cross-entropy
+            grad = grad / len(data) + self.l2 * self.w
+            # clip the gradient norm: full-batch GD on this listwise loss can
+            # otherwise overshoot and converge to a sign-flipped solution. The
+            # clip is well-scaled because features are standardised.
+            gnorm = float(np.linalg.norm(grad))
+            if gnorm > self.grad_clip:
+                grad *= self.grad_clip / gnorm
+            self.w -= self.lr * grad
+        return self
+
+    def rank_fn(self):
+        def fn(query):
+            cand_ids, Xs = self.fs.transform(query)
+            if Xs.shape[0] == 0:
+                return list(query.candidate_ids)
+            order = np.argsort(-(Xs @ self.w), kind="stable")
             return [cand_ids[i] for i in order]
         return fn
 
@@ -222,6 +298,19 @@ def fit_select_ranknet(train, dev, sources, k=60.0,
         for ep in epochs_grid:
             m = PairwiseRankNet(sources, k=k, lr=lr, epochs=ep,
                                 n_hard=n_hard, seed=seed).fit(train)
+            d = corpus_mrr(dev, m.rank_fn(), per_direction)
+            if d > best_mrr:
+                best, best_mrr, best_info = m, d, {"lr": lr, "epochs": ep}
+    return best, best_mrr, best_info
+
+
+def fit_select_listnet(train, dev, sources, k=60.0,
+                       lr_grid=(0.02, 0.05, 0.1), epochs_grid=(300, 600),
+                       per_direction=True, seed=0):
+    best, best_mrr, best_info = None, -1.0, {}
+    for lr in lr_grid:
+        for ep in epochs_grid:
+            m = ListNetRanker(sources, k=k, lr=lr, epochs=ep, seed=seed).fit(train)
             d = corpus_mrr(dev, m.rank_fn(), per_direction)
             if d > best_mrr:
                 best, best_mrr, best_info = m, d, {"lr": lr, "epochs": ep}

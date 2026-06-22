@@ -20,8 +20,8 @@ from .fusion import (
 from .optimize import tune_rrf, RRFConfig
 from .meta_ranker import MetaRanker, fit_select_meta_ranker
 from .learned_rankers import (
-    PairwiseRankNet, SoftMRRRanker,
-    fit_select_ranknet, fit_select_soft_mrr,
+    PairwiseRankNet, ListNetRanker, SoftMRRRanker,
+    fit_select_ranknet, fit_select_listnet, fit_select_soft_mrr,
 )
 from .diagnostics import (
     oracle_mrr, candidate_recall, candidate_recall_table, bootstrap_mrr_ci,
@@ -39,7 +39,8 @@ from .realdata import load_real_dataset
 
 __all__ = [
     "load_real_dataset",
-    "PairwiseRankNet", "SoftMRRRanker", "fit_select_ranknet", "fit_select_soft_mrr",
+    "PairwiseRankNet", "ListNetRanker", "SoftMRRRanker",
+    "fit_select_ranknet", "fit_select_listnet", "fit_select_soft_mrr",
     "oracle_mrr", "candidate_recall", "candidate_recall_table", "bootstrap_mrr_ci",
     "make_candidate_generation_dataset", "DEFAULT_GENERATORS",
     "DirectionCard", "build_direction_card", "explain_ranking", "render_card_markdown",

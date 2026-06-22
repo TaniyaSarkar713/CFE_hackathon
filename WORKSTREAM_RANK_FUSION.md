@@ -37,7 +37,7 @@ LightGBM is an optional path). **21/21 tests pass.**
 | `rank_fusion/fusion.py` | **Weighted RRF** `Σ_a w_a/(k_a+r_a(c)) + β·x(c)` (per-source `k_a`, additive feature term) + Borda / CombSUM baselines. | §5 |
 | `rank_fusion/optimize.py` | **MRR-driven tuning** of `(weights, k)` via random search + coordinate ascent on **dev** MRR; optional **cost-aware** objective `MRR − λ·cost`. | §5 |
 | `rank_fusion/meta_ranker.py` | **Learned meta-ranker** — pointwise logistic (or LightGBM `LGBMRanker`) over rank-fusion + agreement features; hyper-params selected by dev MRR. | §5 |
-| `rank_fusion/learned_rankers.py` | **Pairwise RankNet/BPR** (hard-negative mining) and the **differentiable soft-MRR surrogate** (scipy L-BFGS). | §4, §9 |
+| `rank_fusion/learned_rankers.py` | **Pairwise RankNet/BPR** (hard-negative mining), **listwise ListNet** (top-one cross-entropy), and the **differentiable soft-MRR surrogate** (scipy L-BFGS) — the full pointwise→pairwise→listwise loss menu. | §4, §9 |
 | `rank_fusion/diagnostics.py` | **Candidate-recall ceiling** — `oracle_mrr`, per-source `candidate_recall_table`, and `bootstrap_mrr_ci` (95% CIs). | §8.2 |
 
 ### Explainability layer (§6)

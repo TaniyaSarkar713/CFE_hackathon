@@ -22,7 +22,7 @@ retrieval / citation ────┘         └─► learned meta-ranker (stre
 | `fusion.py` | **Weighted RRF** `Σ_a w_a/(k_a+r_a(c)) + β·x(c)` — per-source `k_a` and an additive feature term (Level 2), plus Borda & CombSUM baselines. |
 | `optimize.py` | **MRR-driven tuning** — random search + coordinate ascent over `(w, k)` to maximise **dev** MRR, optionally **cost-aware** `MRR − λ·cost` (Level 5). |
 | `meta_ranker.py` | **Learned meta-ranker** — pointwise logistic (or LightGBM `LGBMRanker`) over rank-fusion + agreement features; selected by dev MRR (Level 3). |
-| `learned_rankers.py` | **Pairwise RankNet/BPR** with hard-negative mining (Level 3) and the **differentiable soft-MRR surrogate** (Level 4) — pure numpy/scipy. |
+| `learned_rankers.py` | **Pairwise RankNet/BPR** (hard-negative mining), **listwise ListNet** (top-one cross-entropy), and the **differentiable soft-MRR surrogate** (Levels 3–4) — pure numpy/scipy. |
 | `explain.py` | **Explainability layer (§6)** — Direction Cards: exact attribution, causal ablation probe, defeasible logical reasoning, calibration/abstention, faithfulness check, evidence grounding. |
 | `synthetic.py` | `make_synthetic_dataset` (per-source skill + diverse noise; optional horizon features) and `make_candidate_generation_dataset` (generators with partial recall, for Level 1). |
 | `realdata.py` | Adapter for `Data/` — matches generated `future_directions` to masked ground-truth text via TF-IDF cosine (stand-in for SPECTER2 until embeddings land). |
@@ -70,7 +70,7 @@ in stages — measure the ceiling first, then ordering:
 |------:|-------------------|-------|
 | **1** | candidate-pool **recall** (oracle MRR ceiling, per-source recall) | `diagnostics.py` |
 | **2** | weighted RRF `Σ w_a/(k_a+r_a) + β·x`, tuned on dev MRR | `fusion.py` + `optimize.py` |
-| **3** | learned meta-ranker (logistic / LightGBM / **pairwise RankNet+BPR**) | `meta_ranker.py`, `learned_rankers.py` |
+| **3** | learned meta-ranker — pointwise (logistic / LightGBM), **pairwise RankNet+BPR**, **listwise ListNet** | `meta_ranker.py`, `learned_rankers.py` |
 | **4** | **differentiable soft-MRR** surrogate (soft ranks) | `learned_rankers.py` |
 | **5** | **cost-aware** objective `MRR − λ·cost` (compute-risk governor) | `optimize.py` |
 

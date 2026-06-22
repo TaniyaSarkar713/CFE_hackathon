@@ -136,6 +136,19 @@ def test_ranknet_beats_best_single():
     assert rn_dev >= best_single - 1e-3, (rn_dev, best_single)
 
 
+def test_listnet_beats_best_single():
+    from rank_fusion import fit_select_listnet
+    ds = make_synthetic_dataset(n_papers=200, seed=7)
+    src = ds.all_sources()
+    best_single = max(corpus_mrr(ds.dev, make_single_source_rank_fn(s)) for s in src)
+    ln, ln_dev, _ = fit_select_listnet(ds.train, ds.dev, src,
+                                       lr_grid=(0.05, 0.1), epochs_grid=(300,), seed=7)
+    # listwise loss should at least match the best single ranker on dev MRR
+    assert ln_dev >= best_single - 1e-3, (ln_dev, best_single)
+    ranked = ln.rank_fn()(ds.test[0])
+    assert set(ranked) == set(ds.test[0].candidate_ids)  # valid permutation
+
+
 def test_soft_mrr_runs_and_ranks():
     ds = make_synthetic_dataset(n_papers=120, seed=7)
     src = ds.all_sources()
