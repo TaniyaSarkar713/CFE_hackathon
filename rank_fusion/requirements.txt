@@ -1,0 +1,6 @@
+# Rank-fusion / MRR harness (Agent 3) — minimal deps
+numpy>=1.21
+scikit-learn>=1.0
+scipy>=1.7
+# optional: enables the LightGBM LGBMRanker meta-ranker (model="lgbm")
+# lightgbm>=3.3
