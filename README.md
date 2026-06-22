@@ -208,6 +208,31 @@ This project builds on the **Next Product Recommendation** task from MLRC-BENCH.
 
 ---
 
+## References & Related Work
+
+Papers and codebases in [`References/`](References/) that inform the design. The
+last two columns say what we take from each and which workstream it lands in
+(**Fusion/Explain** = Taniya, Agent 3 · **Candidates/Agents** = Nourah, Agents
+1–2 · **Citation graph** = Naz, §7).
+
+| Reference | What it is | Key ideas we use | Where it lands |
+|-----------|------------|------------------|----------------|
+| **Cao et al., 2007** — *Learning to Rank: From Pairwise to Listwise Approach* (ListNet) · `References/Listwise ranking loss.pdf` | Foundational learning-to-rank paper. Defines **permutation probability** and **top-one probability**, and the **ListNet** loss = cross-entropy between the top-one softmax distributions of predicted vs. ground-truth scores. Shows listwise > pairwise because it optimizes the whole list, not isolated pairs. | The canonical **listwise loss** for the meta-ranker, completing the pointwise → pairwise → listwise menu (we already have pointwise logistic, pairwise RankNet/BPR, and a soft-MRR surrogate). | Fusion/Explain |
+| **Si, Yang & Hashimoto, 2024** — *Can LLMs Generate Novel Research Ideas? A Large-Scale Human Study with 100+ NLP Researchers* · `References/Can LLMs Generate Novel Research Ideas?.pdf` | Stanford study: 100+ experts blind-review human vs. LLM research ideas. LLM ideas judged **more novel** but slightly less feasible. Their agent does **overgenerate (4000 seeds) → dedup → rerank**. Key findings: LLMs are **poorly calibrated for pointwise scoring but good at pairwise** (Claude-3.5 71% vs GPT-4o 61%); LLMs **cannot reliably self-evaluate** and **lack diversity** when scaled. | (1) Empirical justification for **pairwise ranking** and for the core principle *the metric decides, not a single LLM judge*; (2) **Swiss-system tournament** to aggregate pairwise comparisons; (3) **dedup recipe** (all-MiniLM-L6-v2 cosine, threshold 0.8); (4) lack-of-diversity → motivates **MMR** diversity re-ranking; (5) richer idea template (problem/method/plan/test/fallback). | Fusion/Explain + Candidates/Agents |
+| **Baek et al., 2024** — *ResearchAgent: Iterative Research Idea Generation over Scientific Literature with LLMs* · `References/ResearchAgent-...pdf` | LLM ideation system: starts from a core paper, expands over the **citation graph**, augments with an **entity-centric knowledge store** (concepts mined from co-occurrence across papers), and iterates via multiple **ReviewingAgents** scored on clarity / relevance / originality / feasibility / significance. | Turnkey recipe for the **citation-graph literature survey** and **entity-based relevance**; the reviewing-agent criteria become extra **Direction-Card badges / reasoning predicates** and meta-ranker features. | Citation graph + Explain |
+| **Wang, Downey, Ji & Hope, 2023** — *SciMON: Scientific Inspiration Machines Optimized for Novelty* · `References/SciMON/` (code + `scimon.pdf`) | Generates literature-grounded ideas and **optimizes for novelty** via *iterative novelty boosting* (retrieve similar prior work → prompt to increase distance from it). Three knowledge modules: KG (IE entities), CT (citation network), SN (semantic neighbors). Includes a **biomedical** pipeline. | Operationalizes the **§7 novelty signal** (novelty = adjacency-gated distance from neighbor literature); its **biomedical** modules match our PubMed corpus; SciBERT semantic eval reinforces **SPECTER2/SciBERT** for the MRR match function. | Citation graph + Candidates/Agents |
+| **Ivanitskiy, 2026** — *Mechanistic Interpretability* (lecture) · `References/ivanitskiy-interp.pdf` | Survey of interpretability: input attribution (**LIME/SHAP**, with game-theoretic guarantees), **saliency** ("what drove the decision"), causal interventions (**ablation / activation patching**), and the Goodhart/proxy-objective warning. | The blueprint for the **explainability layer** (already built): exact additive attribution, causal **ablation probe**, faithfulness, and abstention as the model-risk-aware response to Goodhart. | Fusion/Explain (done) |
+
+**Status:** Ivanitskiy is already incorporated (the `rank_fusion/explain.py` layer).
+The highest-value next addition from this set is **ListNet** (Cao et al.) as a
+fourth meta-ranker option. Si et al. mainly provides design justification +
+concrete recipes (dedup threshold, Swiss tournament, MMR). ResearchAgent and
+SciMON are primarily upstream recipes (candidate generation, citation graph,
+novelty) that feed this project through the `Query` contract. See
+[`WORKSTREAM_RANK_FUSION.md`](WORKSTREAM_RANK_FUSION.md) for the dependency map.
+
+---
+
 ## Contributing
 
 Contributions are welcome. Please open an issue to discuss proposed changes before submitting a pull request.
