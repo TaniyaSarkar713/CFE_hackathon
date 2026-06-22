@@ -23,11 +23,42 @@ retrieval / citation ────┘         └─► learned meta-ranker (stre
 | `optimize.py` | **MRR-driven tuning** — random search + coordinate ascent over `(w, k)` to maximise **dev** MRR, optionally **cost-aware** `MRR − λ·cost` (Level 5). |
 | `meta_ranker.py` | **Learned meta-ranker** — pointwise logistic (or LightGBM `LGBMRanker`) over rank-fusion + agreement features; selected by dev MRR (Level 3). |
 | `learned_rankers.py` | **Pairwise RankNet/BPR** with hard-negative mining (Level 3) and the **differentiable soft-MRR surrogate** (Level 4) — pure numpy/scipy. |
-| `synthetic.py` | `make_synthetic_dataset` (per-source skill + diverse noise) and `make_candidate_generation_dataset` (generators with partial recall, for Level 1). |
+| `explain.py` | **Explainability layer (§6)** — Direction Cards: exact attribution, causal ablation probe, defeasible logical reasoning, calibration/abstention, faithfulness check, evidence grounding. |
+| `synthetic.py` | `make_synthetic_dataset` (per-source skill + diverse noise; optional horizon features) and `make_candidate_generation_dataset` (generators with partial recall, for Level 1). |
 | `realdata.py` | Adapter for `Data/` — matches generated `future_directions` to masked ground-truth text via TF-IDF cosine (stand-in for SPECTER2 until embeddings land). |
 
-Top-level demos: **`run_synthetic.py`** (staged Level 1→5 ablation with CIs) and
-**`run_realdata.py`** (MRR on the real `Data/` files + tau sweep).
+Top-level demos: **`run_synthetic.py`** (staged Level 1→5 ablation with CIs),
+**`run_realdata.py`** (MRR on the real `Data/` files + tau sweep), and
+**`run_explain.py`** (Direction Cards on synthetic + evidence grounding on real `Data/`).
+
+## Explainability — Direction Cards (§6)
+
+Every recommended direction ships as an auditable **Direction Card**, not a
+black-box rank. The design borrows from interpretability practice (SHAP;
+Ivanitskiy, *Mechanistic Interpretability*):
+
+| Layer | Idea | Interp analogue |
+|-------|------|-----------------|
+| **Attribution** | decompose the score into per-source / per-feature contributions | input attribution / saliency (exact for RRF & linear SHAP) |
+| **Ablation probe** | leave-one-signal-out re-rank: "remove citation → drops to #7" | causal intervention / activation patching |
+| **Logical reasoning** | PRO/CON arguments resolved under **grounded argumentation semantics** → verdict (recommend / caveat / abstain) + trace | defeasible (non-monotonic) logic |
+| **Calibration** | fused score → calibrated P(relevant), ECE reported; abstain on thin evidence | model-risk-aware (Goodhart) |
+| **Faithfulness** | the shown rationale must cite the factors that *actually* drove the rank | faithfulness audit |
+| **Evidence grounding** | link a direction to the `key_gaps` it addresses (explicit/implied), with quoted spans | extractive grounding |
+
+The attribution is **faithful by construction**: for RRF the score is literally
+`Σ w_a/(k_a+r_a)`, so the per-source decomposition is exact; for the logistic
+meta-ranker the logit is linear in standardised features, so SHAP values are
+exact (`coef_j·z_j`) and sum with the intercept back to the logit (both asserted
+in tests). The natural-language rationale is generated *from* the attribution, so
+it cannot drift into a plausible-but-wrong post-hoc story.
+
+```python
+from rank_fusion import explain_ranking, render_card_markdown, make_rrf_rank_fn
+ranked = make_rrf_rank_fn(cfg.weights, cfg.k)(query)
+cards = explain_ranking(query, ranked, top_k=3, weights=cfg.weights, k=cfg.k)
+print(render_card_markdown(cards[0]))
+```
 
 ## Staged optimisation strategy (the whole pipeline, not just a model)
 

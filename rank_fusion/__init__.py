@@ -26,6 +26,11 @@ from .learned_rankers import (
 from .diagnostics import (
     oracle_mrr, candidate_recall, candidate_recall_table, bootstrap_mrr_ci,
 )
+from .explain import (
+    DirectionCard, build_direction_card, explain_ranking, render_card_markdown,
+    rrf_attribution, linear_shap, ablation_probe, reason_logically,
+    faithfulness_check, ground_evidence, Calibrator,
+)
 from .synthetic import (
     make_synthetic_dataset, make_candidate_generation_dataset,
     DEFAULT_SKILLS, DEFAULT_GENERATORS,
@@ -37,6 +42,9 @@ __all__ = [
     "PairwiseRankNet", "SoftMRRRanker", "fit_select_ranknet", "fit_select_soft_mrr",
     "oracle_mrr", "candidate_recall", "candidate_recall_table", "bootstrap_mrr_ci",
     "make_candidate_generation_dataset", "DEFAULT_GENERATORS",
+    "DirectionCard", "build_direction_card", "explain_ranking", "render_card_markdown",
+    "rrf_attribution", "linear_shap", "ablation_probe", "reason_logically",
+    "faithfulness_check", "ground_evidence", "Calibrator",
     "Query", "Dataset",
     "evaluate", "corpus_mrr", "paper_mrr", "recall_at_k", "ndcg_at_k",
     "weighted_rrf", "borda_count", "combsum",

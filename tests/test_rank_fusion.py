@@ -165,6 +165,83 @@ def test_bootstrap_ci_brackets_point():
     assert lo <= pt <= hi
 
 
+# --- Explainability layer (Direction Cards, plan §6) ------------------------ #
+def test_rrf_attribution_sums_to_score():
+    from rank_fusion.explain import rrf_attribution
+    from rank_fusion import weighted_rrf
+    q = make_synthetic_dataset(n_papers=5, seed=1).queries[0]
+    cid = q.candidate_ids[0]
+    _, scores = weighted_rrf(q.rankings, {s: 1.0 for s in q.sources}, 60.0,
+                             q.candidate_ids)
+    attr = rrf_attribution(q, cid, {s: 1.0 for s in q.sources}, 60.0)
+    assert abs(sum(attr.values()) - scores[cid]) < 1e-9  # exact decomposition
+
+
+def test_ablation_probe_signs():
+    from rank_fusion.explain import ablation_probe
+    q = make_synthetic_dataset(n_papers=5, seed=2).queries[0]
+    cid = q.candidate_ids[0]
+    deltas = ablation_probe(q, cid, {s: 1.0 for s in q.sources}, 60.0)
+    assert set(deltas.keys()) == set(q.sources)
+    assert all(isinstance(v, int) for v in deltas.values())
+
+
+def test_logical_reasoner_verdicts():
+    from rank_fusion import reason_logically
+    # strong consensus + multi-source -> recommend
+    v, _, _ = reason_logically({"agent_agreement": True, "multi_source": True})
+    assert v == "recommend"
+    # thin evidence defeats everything -> abstain
+    v, _, _ = reason_logically({"agent_agreement": True, "multi_source": True,
+                                "thin": True})
+    assert v == "abstain"
+    # disagreement downgrades consensus -> caveat
+    v, _, _ = reason_logically({"agent_agreement": True, "multi_source": True,
+                                "disagreement": True})
+    assert v == "recommend_with_caveat"
+
+
+def test_linear_shap_sums_to_logit():
+    import numpy as np
+    from rank_fusion import fit_select_meta_ranker, linear_shap
+    ds = make_synthetic_dataset(n_papers=120, seed=3)
+    src = ds.all_sources()
+    mr, _, _ = fit_select_meta_ranker(ds.train, ds.dev, src, seed=3)
+    q = ds.test[0]
+    cid = q.candidate_ids[0]
+    shap = linear_shap(mr, q, cid)
+    # SHAP values + intercept must reconstruct the model logit (exactness)
+    from rank_fusion.meta_ranker import _query_features
+    cand_ids, X = _query_features(q, src, mr.k)
+    i = cand_ids.index(cid)
+    z = (X[i, mr.keep_cols] - mr.scaler.mean_) / mr.scaler.scale_
+    logit = float(mr.model.intercept_[0] + mr.model.coef_[0] @ z)
+    assert abs(sum(shap.values()) + mr.model.intercept_[0] - logit) < 1e-6
+
+
+def test_faithfulness_and_evidence():
+    from rank_fusion import faithfulness_check, ground_evidence
+    assert faithfulness_check(["gpt"], ["gpt", "claude"])["faithful"] is True
+    assert faithfulness_check(["recency"], ["gpt", "claude"])["faithful"] is False
+    gaps = [{"description": "single-dataset evaluation limits generality",
+             "status": "explicit"}]
+    addressed, spans = ground_evidence(
+        "Evaluate on multiple datasets to test generality across domains.",
+        gaps, tau=0.05)
+    assert addressed and "explicit" in addressed[0]
+
+
+def test_build_direction_card_end_to_end():
+    from rank_fusion import build_direction_card
+    ds = make_synthetic_dataset(n_papers=20, attach_features=True, seed=7)
+    q = ds.queries[0]
+    w = {s: 1.0 for s in q.sources}
+    card = build_direction_card(q, q.candidate_ids[0], rank=1, weights=w, k=60.0)
+    assert card.verdict in {"recommend", "recommend_with_caveat", "abstain"}
+    assert card.faithfulness["faithful"] in (True, False)
+    assert abs(sum(card.attribution.values()) - card.score) < 1e-3
+
+
 if __name__ == "__main__":
     import warnings
     warnings.filterwarnings("ignore")

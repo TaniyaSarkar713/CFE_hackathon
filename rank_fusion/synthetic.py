@@ -43,9 +43,15 @@ def make_synthetic_dataset(
     noise_sd: float = 1.0,
     shared_noise_sd: float = 0.4,
     split: Sequence[float] = (0.5, 0.25, 0.25),
+    attach_features: bool = False,
     seed: int = 7,
 ) -> Dataset:
-    """Build a `Dataset` of synthetic ranking instances with a temporal-style split."""
+    """Build a `Dataset` of synthetic ranking instances with a temporal-style split.
+
+    If `attach_features=True`, each candidate also gets horizon-style features
+    (adjacency / novelty / popularity / recency) on `Query.features`, so the
+    explainability layer (rank_fusion.explain) has signals to reason over.
+    """
     skills = dict(skills or DEFAULT_SKILLS)
     rng = np.random.default_rng(seed)
     pyrng = random.Random(seed)
@@ -75,7 +81,22 @@ def make_synthetic_dataset(
         # exact-id ground truth: each true candidate is its own direction g_j
         relevance = {f"g{n}": {cand_ids[j]} for n, j in enumerate(sorted(true_idx))}
 
-        queries.append(Query(pid, cand_ids, rankings, relevance))
+        features: Dict[str, Dict[str, float]] = {}
+        if attach_features:
+            for j, cid in enumerate(cand_ids):
+                is_true = j in true_idx
+                features[cid] = {
+                    # true candidates are more on-topic (higher adjacency)
+                    "adjacency": float(rng.uniform(0.4, 0.9) if is_true
+                                       else rng.uniform(0.1, 0.6)),
+                    "sim_to_paper": float(rng.uniform(0.4, 0.9) if is_true
+                                          else rng.uniform(0.1, 0.6)),
+                    "novelty": float(rng.uniform(0.0, 1.0)),
+                    "popularity": float(rng.uniform(0.0, 1.0)),
+                    "recency": float(rng.uniform(0.0, 1.0)),
+                }
+
+        queries.append(Query(pid, cand_ids, rankings, relevance, features=features))
 
     # temporal-style split: oldest papers train, newest test (by index order)
     n = len(queries)
