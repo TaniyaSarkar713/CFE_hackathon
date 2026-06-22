@@ -24,12 +24,16 @@ retrieval / citation ────┘         └─► learned meta-ranker (stre
 | `meta_ranker.py` | **Learned meta-ranker** — pointwise logistic (or LightGBM `LGBMRanker`) over rank-fusion + agreement features; selected by dev MRR (Level 3). |
 | `learned_rankers.py` | **Pairwise RankNet/BPR** (hard-negative mining), **listwise ListNet** (top-one cross-entropy), and the **differentiable soft-MRR surrogate** (Levels 3–4) — pure numpy/scipy. |
 | `explain.py` | **Explainability layer (§6)** — Direction Cards: exact attribution, causal ablation probe, defeasible logical reasoning, calibration/abstention, faithfulness check, evidence grounding. |
-| `synthetic.py` | `make_synthetic_dataset` (per-source skill + diverse noise; optional horizon features) and `make_candidate_generation_dataset` (generators with partial recall, for Level 1). |
+| `diversity.py` | **MMR re-ranking** (§9.3) — trade relevance vs. redundancy so the top-K covers distinct gaps; lifts per-direction MRR when near-duplicates would crowd it out. |
+| `pairwise.py` | **Swiss-tournament** aggregation of pairwise comparisons into a global ranking (~N·n/2 calls vs n²/2) — for a pairwise Agent-2, cheaper than Bradley-Terry/Elo. |
+| `dedup.py` | **Candidate dedup** (Si et al.) — all-MiniLM-L6-v2 cosine ≥ 0.8 (TF-IDF fallback) collapses near-duplicate directions in the pool to one representative. |
+| `synthetic.py` | `make_synthetic_dataset`, `make_candidate_generation_dataset` (Level 1), and `make_redundancy_dataset` (near-duplicate clusters, for MMR). |
 | `realdata.py` | Adapter for `Data/` — matches generated `future_directions` to masked ground-truth text via TF-IDF cosine (stand-in for SPECTER2 until embeddings land). |
 
 Top-level demos: **`run_synthetic.py`** (staged Level 1→5 ablation with CIs),
-**`run_realdata.py`** (MRR on the real `Data/` files + tau sweep), and
-**`run_explain.py`** (Direction Cards on synthetic + evidence grounding on real `Data/`).
+**`run_realdata.py`** (MRR on the real `Data/` files + tau sweep),
+**`run_explain.py`** (Direction Cards), and **`run_diversity.py`** (MMR +
+Swiss tournament + dedup).
 
 ## Explainability — Direction Cards (§6)
 

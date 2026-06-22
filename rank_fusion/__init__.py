@@ -33,8 +33,13 @@ from .explain import (
 )
 from .synthetic import (
     make_synthetic_dataset, make_candidate_generation_dataset,
-    DEFAULT_SKILLS, DEFAULT_GENERATORS,
+    make_redundancy_dataset, DEFAULT_SKILLS, DEFAULT_GENERATORS,
 )
+from .diversity import (
+    mmr_rerank, make_mmr_rank_fn, feature_embedding_sim, cosine_sim_callable,
+)
+from .pairwise import swiss_tournament, comparator_from_scores
+from .dedup import dedup_candidates, embed_minilm
 from .realdata import load_real_dataset
 
 __all__ = [
@@ -42,7 +47,10 @@ __all__ = [
     "PairwiseRankNet", "ListNetRanker", "SoftMRRRanker",
     "fit_select_ranknet", "fit_select_listnet", "fit_select_soft_mrr",
     "oracle_mrr", "candidate_recall", "candidate_recall_table", "bootstrap_mrr_ci",
-    "make_candidate_generation_dataset", "DEFAULT_GENERATORS",
+    "make_candidate_generation_dataset", "make_redundancy_dataset", "DEFAULT_GENERATORS",
+    "mmr_rerank", "make_mmr_rank_fn", "feature_embedding_sim", "cosine_sim_callable",
+    "swiss_tournament", "comparator_from_scores",
+    "dedup_candidates", "embed_minilm",
     "DirectionCard", "build_direction_card", "explain_ranking", "render_card_markdown",
     "rrf_attribution", "linear_shap", "ablation_probe", "reason_logically",
     "faithfulness_check", "ground_evidence", "Calibrator",

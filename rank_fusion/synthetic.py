@@ -179,3 +179,79 @@ def make_candidate_generation_dataset(
     n_tr, n_dev = int(split[0] * n), int(split[1] * n)
     ids = [q.query_id for q in queries]
     return Dataset(queries, ids[:n_tr], ids[n_tr:n_tr + n_dev], ids[n_tr + n_dev:])
+
+
+def make_redundancy_dataset(
+    n_papers: int = 200,
+    n_clusters: int = 6,
+    cluster_size: int = 4,
+    n_true: int = 2,
+    emb_dim: int = 8,
+    emb_noise: float = 0.25,
+    skills: Optional[Dict[str, float]] = None,
+    noise_sd: float = 0.2,
+    split: Sequence[float] = (0.5, 0.25, 0.25),
+    seed: int = 21,
+) -> Dataset:
+    """Synthetic data with near-duplicate candidate clusters (for MMR, §9.3).
+
+    Each paper has `n_clusters` concept clusters of `cluster_size` near-duplicate
+    candidates (similar embeddings). `n_true` *distinct* clusters each contain one
+    true direction (its cleanest member). True clusters have different *salience*,
+    so a relevance-only ranking fills the top with one salient cluster's
+    near-duplicates and buries the other true direction — exactly the case MMR
+    fixes. Candidate embeddings are stored on `Query.features` as `emb_*` dims so
+    `feature_embedding_sim` can build the similarity for MMR.
+    """
+    skills = dict(skills or DEFAULT_SKILLS)
+    dim = max(emb_dim, n_clusters)
+    rng = np.random.default_rng(seed)
+    pyrng = random.Random(seed)
+
+    queries: List[Query] = []
+    for p in range(n_papers):
+        pid = f"P{p:04d}"
+        true_clusters = pyrng.sample(range(n_clusters), n_true)
+        # decreasing salience so one true cluster dominates the top
+        salience = {c: s for c, s in zip(true_clusters,
+                    [1.0, 0.65, 0.5, 0.4][:n_true])}
+
+        cand_ids, embs, true_ids = [], [], {}
+        for c in range(n_clusters):
+            center = np.zeros(dim)
+            center[c] = 1.0
+            for m in range(cluster_size):
+                cid = f"{pid}_c{c}m{m}"
+                if m == 0:
+                    e = center.copy()                 # cleanest member = the true one
+                else:
+                    e = center + emb_noise * rng.normal(0, 1, dim)
+                e = e / (np.linalg.norm(e) + 1e-9)
+                cand_ids.append(cid)
+                embs.append(e)
+                if c in true_clusters and m == 0:
+                    true_ids[c] = cid
+
+        embs = np.asarray(embs)
+        # quality: proximity to a true cluster centre, weighted by its salience
+        quality = np.zeros(len(cand_ids))
+        for c, sal in salience.items():
+            center = np.zeros(dim)
+            center[c] = 1.0
+            quality += sal * (embs @ center)
+        qz = (quality - quality.mean()) / (quality.std() + 1e-9)
+
+        rankings: Dict[str, List[str]] = {}
+        for src, skill in skills.items():
+            obs = skill * qz + rng.normal(0, noise_sd, len(cand_ids))
+            rankings[src] = [cand_ids[i] for i in np.argsort(-obs)]
+
+        relevance = {f"g{n}": {true_ids[c]} for n, c in enumerate(true_clusters)}
+        features = {cid: {f"emb_{j}": float(embs[i, j]) for j in range(dim)}
+                    for i, cid in enumerate(cand_ids)}
+        queries.append(Query(pid, cand_ids, rankings, relevance, features=features))
+
+    n = len(queries)
+    n_tr, n_dev = int(split[0] * n), int(split[1] * n)
+    ids = [q.query_id for q in queries]
+    return Dataset(queries, ids[:n_tr], ids[n_tr:n_tr + n_dev], ids[n_tr + n_dev:])

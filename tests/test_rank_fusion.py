@@ -255,6 +255,50 @@ def test_build_direction_card_end_to_end():
     assert abs(sum(card.attribution.values()) - card.score) < 1e-3
 
 
+# --- Diversity (MMR), Swiss tournament, dedup ------------------------------- #
+def test_mmr_improves_redundancy_mrr():
+    from rank_fusion import (make_redundancy_dataset, make_rrf_rank_fn,
+                             make_mmr_rank_fn, feature_embedding_sim, corpus_mrr)
+    ds = make_redundancy_dataset(n_papers=150, noise_sd=0.2, seed=21)
+    src = ds.all_sources()
+    base = make_rrf_rank_fn({s: 1.0 for s in src}, 60.0)
+    mmr = make_mmr_rank_fn(base, feature_embedding_sim, lambda_=0.8)
+    rel_only = corpus_mrr(ds.queries, base)
+    with_mmr = corpus_mrr(ds.queries, mmr)
+    # diversifying near-duplicate clusters surfaces the buried true direction
+    assert with_mmr > rel_only, (with_mmr, rel_only)
+
+
+def test_mmr_lambda_one_is_relevance_only():
+    from rank_fusion import mmr_rerank
+    ids = ["a", "b", "c"]
+    scores = {"a": 3.0, "b": 2.0, "c": 1.0}
+    sim = lambda x, y: 1.0 if x == y else 0.9   # everything near-duplicate
+    assert mmr_rerank(ids, scores, sim, lambda_=1.0) == ["a", "b", "c"]
+
+
+def test_swiss_tournament_recovers_order():
+    from rank_fusion import swiss_tournament, comparator_from_scores
+    items = [f"d{i}" for i in range(16)]
+    true = {it: 16 - i for i, it in enumerate(items)}     # d0 best
+    cmp = comparator_from_scores(true, noise=0.3, seed=1)
+    ranked, pts = swiss_tournament(items, cmp, n_rounds=6, seed=1)
+    # the true best should land in the top quartile of the aggregated ranking
+    assert "d0" in ranked[:4]
+    assert pts[ranked[0]] >= pts[ranked[-1]]
+
+
+def test_dedup_removes_duplicate():
+    from rank_fusion import dedup_candidates
+    import numpy as np
+    ids = ["a", "b", "c"]
+    texts = ["x", "y", "z"]
+    vecs = {"x": [1.0, 0.0], "y": [0.99, 0.01], "z": [0.0, 1.0]}  # a≈b, c distinct
+    kept, rep, backend = dedup_candidates(
+        ids, texts, threshold=0.8, embed_fn=lambda ts: np.array([vecs[t] for t in ts]))
+    assert kept == ["a", "c"] and rep == {"b": "a"}
+
+
 if __name__ == "__main__":
     import warnings
     warnings.filterwarnings("ignore")

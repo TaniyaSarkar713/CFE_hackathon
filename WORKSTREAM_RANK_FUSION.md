@@ -38,6 +38,9 @@ LightGBM is an optional path). **21/21 tests pass.**
 | `rank_fusion/optimize.py` | **MRR-driven tuning** of `(weights, k)` via random search + coordinate ascent on **dev** MRR; optional **cost-aware** objective `MRR − λ·cost`. | §5 |
 | `rank_fusion/meta_ranker.py` | **Learned meta-ranker** — pointwise logistic (or LightGBM `LGBMRanker`) over rank-fusion + agreement features; hyper-params selected by dev MRR. | §5 |
 | `rank_fusion/learned_rankers.py` | **Pairwise RankNet/BPR** (hard-negative mining), **listwise ListNet** (top-one cross-entropy), and the **differentiable soft-MRR surrogate** (scipy L-BFGS) — the full pointwise→pairwise→listwise loss menu. | §4, §9 |
+| `rank_fusion/diversity.py` | **MMR re-ranking** — diversity-aware re-rank so the top-K covers distinct gaps (lifts per-direction MRR under near-duplicates). | §9.3 |
+| `rank_fusion/pairwise.py` | **Swiss-tournament** aggregation of pairwise comparisons into a global ranking (cheaper than Bradley-Terry/Elo). | §4, §9.4 |
+| `rank_fusion/dedup.py` | **Candidate dedup** (Si et al.) — all-MiniLM-L6-v2 cosine ≥ 0.8 (TF-IDF fallback). | §3 |
 | `rank_fusion/diagnostics.py` | **Candidate-recall ceiling** — `oracle_mrr`, per-source `candidate_recall_table`, and `bootstrap_mrr_ci` (95% CIs). | §8.2 |
 
 ### Explainability layer (§6)
@@ -115,9 +118,11 @@ then call `tune_rrf(...)` and `explain_ranking(...)` exactly as the demos do.
 - [ ] Apply the real temporal split (**D7**); re-tune on dev, report **once** on test.
 
 ### B. Engine hardening
+- [x] **Diversity-aware re-ranking (MMR)** so the top-K covers distinct gaps (§9.3) — `diversity.py`.
+- [x] **Swiss-tournament** aggregation for a pairwise Agent-2 (§9.4) — `pairwise.py`.
+- [x] **Candidate dedup** (all-MiniLM-L6-v2 cosine ≥ 0.8, §3) — `dedup.py`; wire the real embed model once it lands.
 - [ ] Out-of-fold candidate/feature generation for the meta-ranker (plan §8.3 leakage control).
-- [ ] Diversity-aware re-ranking (MMR) so the top-K covers distinct gaps (§9.3) — directly helps MRR when a paper has several true directions.
-- [ ] Disagreement-routed tie-break: spend a pairwise (PRP) call only where GPT/Claude disagree most (§9.4), gated by the cost-aware governor (already in `optimize.py`).
+- [ ] Disagreement-routed tie-break: spend the pairwise (PRP) call only where GPT/Claude disagree most (§9.4), gated by the cost-aware governor (already in `optimize.py`); the Swiss aggregator (`pairwise.py`) is ready for it.
 - [ ] Cross-encoder reranker distilled from the LLM rankers (§9.2) — cheap at inference.
 
 ### C. Explainability polish
