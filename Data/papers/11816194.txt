@@ -1,0 +1,132 @@
+Experiences of school health professionals in implementing structured assessments of sexual health and experiences of violence among youth in Sweden using the SEXual health Identification Tool (SEXIT): a qualitative sequential study
+========================================================================================================================================================================================================================================
+
+Miranda Håkansson, Sanny Söderström, Marlene Makenzius
+
+ABSTRACT
+--------
+  Introduction
+  Poor sexual and reproductive health (SRH) is a global public health concern, particularly among adolescents. While school health services (SHS) play a crucial role in preventative care, professionals are inconsistent in addressing SRH issues. This study explored school health professionals’ (SHPs) experiences of an implementation of structured assessments of sexual health and experiences of violence among youth in Sweden using the SEXual health Identification Tool (SEXIT).
+
+  Methods
+  A qualitative sequential study was conducted from October 2023 to January 2024 to explore the experiences of 57 SHPs trained in the SEXIT method. Data collection included a questionnaire with open-ended questions, group discussions and individual interviews, analysed using qualitative content analysis.
+
+  Results
+  Addressing sexual risk taking and violence was considered a priority to help youths make informed SRH choices. SEXIT aided SHPs in acting as educators to promote SRH and freedom from violence, normalised conversations about sensitive topics, facilitated the identification of students needing support, and could be integrated as a routine part of preventive work within SHS. However, hindering factors for effective implementation included a lack of supportive leadership and a unified approach among involved organisations to clarify roles, responsibilities and referral pathways. Furthermore, it is essential to further adapt SEXIT and train SHPs to meet the specific needs of vulnerable youths and perpetrators, ensuring equitable support.
+
+  Conclusions
+  SEXIT offers unique opportunities for SHPs to discuss SRH and violence with school youths, a priority part of their preventive work; however, it is not routinely used, underscoring the need for supportive leadership and a unified approach among organisations.
+
+
+
+INTRODUCTION
+------------
+Poor sexual and reproductive health (SRH) is a global public health issue, particularly for adolescents aged 10–19.1 Adolescence is critical for establishing healthy sexual and reproductive behaviours and addressing harmful issues such as inequitable gender norms and gender-based violence.2 Violence includes intimate partner violence (IPV) and non-partner violence, which can be physical, psychological or sexual.3 One in three women worldwide will experience IPV or non-partner sexual violence in their lifetime, leading to poorer physical and mental health outcomes.3 A Swedish study found that 60% of respondents aged 15–19 had experienced some form of IPV.4
+Sexual risk behaviour, defined as unprotected sexual intercourse, increases the risk of adverse health outcomes such as unwanted pregnancy and sexually transmitted infections (STIs).5 Factors associated with sexual risk taking include substance use,6 early sexual initiation,7 multiple sexual partners8 and limited ability to negotiate safer sex.9 There is a strong association between sexual risk taking, poor SRH and exposure to multiple forms of violence, and lesbian, gay, bisexual and transgender youths being particularly at risk.10
+In Sweden, SRH promotion for youth is carried out through schools and youth-friendly clinics. All schools must have school health services (SHS) covering medical, psychological and social well-being needs.11 SHS are required to offer regular preventive health assessments for students, which can include SRH, but standardised protocols are lacking.11
+Young people often hesitate to discuss SRH with professionals and rarely disclose experiences of sexual violence.12 Healthcare providers also infrequently and inconsistently address SRH topics with young people.13 A recent study in Sweden demonstrated that the systematic use of the SEXual health Identification Tool (SEXIT), an assessment tool to identify youth with experiences of sexual risk taking and violence, facilitated important conversations about SRH in youth clinics.14 SEXIT is increasingly being used within SHS,15 though its use and feasibility in this context have not yet been evaluated.
+
+Aim
+~~~
+The aim of this study was to explore school health professionals’ (SHPs) experiences of implementing structured assessments of sexual health and experiences of violence among youth in Sweden using SEXIT.
+
+METHODS
+-------
+
+Study design
+~~~~~~~~~~~~
+This study had a qualitative sequential design16 based on a qualitative questionnaire with open-ended questions, group discussions and individual interviews, to explore the experiences of SHPs trained in the SEXIT method in one county in Sweden (figure 1). The study was planned and reported according to the Consolidated Criteria for Reporting Qualitative Research Checklist.17
+
+The SEXual health Identification Tool
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The SEXIT package includes staff training, a questionnaire and a guidance handbook to support conversations and risk assessments. SEXIT 3.0 is a 22-item questionnaire covering various topics, such as age, gender identity, sexual orientation, living situation, substance use, experiences of violence, sexual initiation, sexual partners, use of contraception and STI protection, previous STIs, unintended pregnancy, transactional sex, unwanted sexual experiences and sexual coercion.15
+
+Study population and setting
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The informants were SHPs working in a Swedish county with a population of about 130 000, characterised by a diverse demographic and socioeconomic composition, with one-third of the population living in rural areas. Approximately 9000 students aged 13–19 are enrolled in grades 7–12 of lower and upper secondary schools. The implementation of SEXIT in the county is ongoing (2021–2024), aiming to train all SHPs. Participating professions included registered nurses, midwives, counsellors, social workers, psychologists and general practitioners, all trained in SEXIT, with varying levels of experience (0–2 years). Inclusion criteria consisted of SHPs who were trained in SEXIT and currently working within SHS in the county, while those who had not yet been trained were excluded.
+
+Questionnaire and interview topic guide
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The qualitative questionnaire included five open-ended questions addressing the value of SEXIT interviews, potential outcomes, challenges, reasons for not yet initiating SEXIT assessments and perceptions of youths’ attitudes towards SEXIT (online supplemental file 1). The group discussions covered the same topics. The topic guide used for the follow-up interviews (online supplemental file 2) was informed by the findings from the questionnaire and group discussions, aiming to further explore and gain deeper insights.17
+
+Data collection
+~~~~~~~~~~~~~~~
+The data collection followed a qualitative sequential study design,16 as illustrated in figure 1. Steps I (a qualitative questionnaire survey) and II (group discussions) were conducted during a one-day workshop aimed at exchanging experiences related to the use of SEXIT and its implementation in the county. The workshop was organised by the county’s public health department at a conference facility with a capacity of 60 people in October 2023. At the time of data collection, 160 SHPs met the inclusion criteria and were invited to participate in the workshop on a first-come, first-served basis. Sixty SHPs participated, and all participants received an information letter and consent form 2 weeks prior. Three out of the 60 participants declined to participate in the study due to scheduling conflicts during the day. After a 30-minute briefing by the principal investigator (MM), the remaining 57 participants individually and anonymously completed the questionnaire (step I). Immediately afterward, they were split into smaller groups of 3–4 participants for 60-minute group discussions (step II), during which their discussions were documented using an online tool (Padlet).
+During the workshop, six study participants were voluntarily recruited for individual semistructured online interviews (step III). This included three school nurses and three school counsellors from different SHS, representing both urban and rural areas. The interviews were conducted online by MH in December 2023 and January 2024, with SS acting as note-taker and using automatic transcription (Microsoft Teams). Each interview lasted 30–45 min, scheduled at a time chosen by the participant and conducted in a private setting.
+
+Data analysis
+~~~~~~~~~~~~~
+Qualitative content analysis was conducted according to Graneheim and Lundman.18 An inductive approach was taken to explore the SHPs’ experiences of using SEXIT, allowing for the discovery of new concepts.19 The data from steps I and II were read repeatedly to extract meaning units, which were then condensed and labelled with codes. MH and SS coded the data concurrently and separately to ensure accuracy. The codes were compared, grouped into subcategories, and then into categories through reflection and discussion among MH, SS and MM. Following the analysis and comparison of the two data sources, it became evident that the insights from the group discussions (step II) aligned with the results of the questionnaire (step I), with no new codes emerging, suggesting that saturation had been reached.20
+The data from step III were analysed using a deductive approach as the focus shifted to verifying and deepening the understanding of the previous findings.19 The data were coded and grouped according to the subcategories identified in steps I and II by MH, and this process was verified by MM. The predetermined subcategories were well represented in the data collected from the individual interviews (step III), suggesting saturation.20 Finally, two themes emerged through latent content analysis, unifying the content within the categories.18 Four informants validated the results. The analysis was conducted in Swedish, and the main findings, along with illustrative quotes, were translated into English.
+
+Patient and public involvement
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SEXIT was developed and tested in collaboration with youths.21
+
+RESULTS
+-------
+The analysis revealed 17 subcategories, eight categories and two themes—SEXIT aids providers in acting as educators promoting sexual health and freedom from violence, while a lack of supportive leadership and a unified approach hinders effective implementation (table 1).
+
+SEXIT aids providers in acting as educators promoting sexual health and freedom from violence
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SEXIT promoted education on SRH and violence (table 1), requiring SHPs to explain terms such as “sexual orientation” and various forms of violence. It also provided a platform for discussing sensitive topics, helping informants establish trustful relationships with youth, which is essential for identifying those in need of support.
+
+Reduces stigma
+~~~~~~~~~~~~~~
+The detailed descriptions in SEXIT helped explain terms and normalise conversations about sensitive topics such as sexual initiation, unintended pregnancy, contraception, STIs and various forms of violence. This approach reduced the stigma associated with these topics among both students and professionals. Informants noted that the routine use of SEXIT ensured no student felt targeted by specific questions. SHS were described as safe spaces for youth to discuss personal concerns, facilitating the implementation of SEXIT. Although some youth seemed embarrassed, most took the conversations seriously and did not view them as a ‘big deal’. Participation in SEXIT assessments is voluntary but reportedly high.
+
+Nuanced discussions on violence
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SEXIT helped informants define ‘violence’ and broaden discussions about various forms of violence with youth. For younger students (12–13 years), conversations focused more on relationships with friends and family and experiences of violence, rather than SRH-related issues. The detailed questions about violence highlighted the normalisation of online bullying and sexualised violence. SEXIT also facilitated the identification of perpetrators of violence, marking a shift from a previous focus solely on victimisation. Informants were surprised by the youth’s honesty and had identified not only victims but also perpetrators. However, there was uncertainty about where to refer young perpetrators and what support is available to them.
+
+Identifies poor sexual health and risk-taking behaviour
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SEXIT was described as a valuable tool for identifying risk factors and ongoing SRH issues, as well as exposure to violence. It was emphasised that SEXIT complemented the regular health assessments, which often lack specific inquiries in these areas. Additionally, it also helped identify underlying causes of problematic behaviour and absenteeism, enhancing the preventive work within SHS. The routine use of SEXIT improved the consistency and quality of health consultations, as all students were asked the same questions. Informants valued the questionnaire as a conversation starter, easing the pressure on youth to initiate discussions.
+
+Facilitates providing youth with support
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The use of SEXIT, along with its recurrent presence within the school and community-based youth health services, was perceived as enhancing relationship building between youths and professionals. By consistently being exposed to SEXIT, youth became aware of where to seek help when they had issues or questions, even if they were not ready to discuss them during their initial visit. Informants also noted that when more specific questions were asked, the responses tended to be more detailed, facilitating the compilation of clearer and more comprehensive reports and referrals.
+
+Lack of supportive leadership and a unified approach hinders effective implementation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A successful full-scale implementation of SEXIT depends on supportive leadership and a unified approach from all organisations involved (table 1). This includes addressing key factors such as resource allocation, clear guidelines, increased attention on vulnerable groups and collaborative efforts with external partners.
+
+Lack of time and resources
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+The lack of time and resources were the main issues hindering or slowing SEXIT implementation within some organisations. Informants who had not yet started using SEXIT viewed it as just another form to fill out. Some school health nurses hesitated to extend the already lengthy regular health assessment and were concerned about managing follow-up appointments without additional resources, such as protected time or more colleagues. Conversely, informants who had been using SEXIT for some time described it as a time saver, noting that the structured questionnaire facilitated the efficient and sensitive asking of difficult questions, helping them identify issues more quickly.
+
+Vulnerable groups need increased attention
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Youth with limited understanding of the Swedish language and those with intellectual disabilities were identified as facing significant challenges in using SEXIT. Informants were concerned that language and cultural barriers could lead to misinterpretation and under-reporting of issues with some youth of immigrant background. Additionally, most informants completely avoided using SEXIT with youth who had intellectual disabilities, assuming that the disability would hinder their full comprehension of the questions. The informants expressed a need for tailored interventions and adaptations, such as simplified language, culturally relevant content and alternative communication methods, to ensure all youth can access and benefit from SEXIT.
+
+Need for clearer guidelines
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The implementation process of SEXIT varied, with some workplaces initiating it at the management level and others at the individual staff level. Concerns were raised about inconsistencies in addressing SRH issues, with some colleagues hesitant to ask SEXIT questions. In some schools, nurses incorporated SEXIT in the regular health assessments, while in others, counsellors managed it. Some workplaces adopted a collaborative approach involving multiple professions. Opinions differed on which profession should use SEXIT, but most agreed that the key was having someone comfortable discussing these topics.
+Early introduction of SEXIT was seen as beneficial for normalising discussions around SRH and violence, as well as equipping youth with preventive knowledge. Although younger students often required more explanation and rarely provided substantive responses, some viewed this as an opportunity to raise awareness and educate.
+
+Collaboration with external organisations required
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+For successful SEXIT implementation and equitable support for youth, informants emphasised the need for strong collaboration between schools and external organisations, such as the police, social services, youth clinics and psychiatry services. There was considerable uncertainty about where to report or refer cases, particularly those involving young perpetrators of violence, which made some informants uncomfortable asking questions. The informants requested streamlined referral pathways to enable SHPs to confidently address and act on youth responses to SEXIT.
+
+DISCUSSION
+----------
+SEXIT promoted educational opportunities that helped reduce stigma, normalise conversations about sensitive topics, and identify students in need of support. However, supportive leadership and a unified approach are required for further implementation to clarify roles, responsibilities and referral pathways, as well as to ensure equitable SHS.
+The systematic use of a questionnaire as basis for conversation with all youth was perceived as increasing the consistency and quality of the preventive work within SHS. Previous studies on routine assessments of sexual health, alcohol consumption and violence victimisation have also emphasised the importance of systematic approaches to assess health risks among youth.22 23 SHPs have a unique opportunity to educate and promote SRH to all youth due to their presence in students’ daily lives.24 Implementing preventive measures, such as the routine use of SEXIT, provides an opportunity to reduce poor SRH at an early age. However, our findings suggest that without leadership support for these routines, providers’ personal beliefs, values and attitudes related to sexuality may affect how and with whom SRH questions are raised.
+Previous research recommends intervening during early adolescence (around age 13), when romantic relationships begin to emerge and violent behaviours have not yet surfaced for most individuals.25 Some studies suggest starting even earlier to address predictors of dating violence, such as bullying and sexual harassment, which are common in this age group.26 27 Our findings indicate that routine use of SEXIT within SHS provides a natural opportunity to address SRH topics early, often before sexual initiation, helping to shape healthy sexual relationships throughout the lifespan. However, despite caregivers and adolescents recognising the importance of discussing SRH topics with healthcare providers, these discussions often do not occur during preventive health visits, resulting in missed critical opportunities for screening, education and guidance.22 28
+Students with an immigrant background and/or intellectual disabilities were described as doubly vulnerable, facing a higher risk of poor SRH outcomes and violence, while also being harder to detect and support. Youths from immigrant backgrounds encounter language and sociocultural barriers that may hinder their access to SRH services, often lacking knowledge about where to seek help.29 30 Those with intellectual disabilities tend to engage in unsafe sex more often than their peers and have significant unmet needs for SRH services.31 32 Tailored interventions and adaptations of SEXIT are essential to ensure that all youths can access the necessary services. Currently, SEXIT has been translated into several languages,15 but there appears to be limited awareness and use of these versions within SHS.
+
+Methodological considerations
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The study had limitations due to its restricted geographical area. However, several factors enhanced its trustworthiness. Purposive sampling created a diverse sample in terms of age, occupation and work experience, thereby strengthening the credibility of the results.18 This diversity was advantageous for exploring different perspectives, although the impact of hierarchy on group discussions could not be entirely excluded. The qualitative sequential study design was a significant asset, allowing for a comprehensive understanding and cross-checking of findings through methodological triangulation.16 33 The group discussions (step II) enabled informants to share and clarify their experiences collectively, while the individual interviews (step III) confirmed the findings.17 The short data collection period minimised the risk of external factors that could affect the outcome, enhancing dependability.18
+To ensure transferability, the study context, informant characteristics, data collection and analysis processes were clearly described. Additionally, quotes were presented to illustrate the connection between the data and findings, further strengthening trustworthiness.18
+
+Implications of results and future research
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This study builds on previous research on the use of SEXIT within youth-friendly clinics14 by evaluating its application within SHS. The findings are valuable for policy development and for the continued implementation of SEXIT on a larger scale in various settings. SEXIT provides an opportunity to identify perpetrators of violence; however, referral pathways for these individuals need to be established. Further research is required on the use of SEXIT among youth from immigrant backgrounds and/or intellectual disabilities.
+
+CONCLUSIONS
+-----------
+SEXIT has the potential to provide an equitable platform for discussing sensitive topics such as sexual risk taking and violence, fostering a deeper connection between youths and professionals. However, SEXIT is not yet routinely used in all SHS, highlighting the need for supportive leadership and a unified approach among organisations. Addressing sexual risk taking and violence through SEXIT is considered a priority to help youths make informed SRH choices, achieve healthy relationships and attain freedom from violence.
+
+SUPPLEMENTARY MATERIAL
+----------------------
