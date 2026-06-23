@@ -1,0 +1,8 @@
+numpy>=1.21
+requests>=2.28
+scikit-learn>=1.0
+scipy>=1.7
+# optional — enables local embedding for dedup and better ground-truth matching
+# sentence-transformers>=2.2
+# optional — enables LightGBM meta-ranker (future extension)
+# lightgbm>=3.3
