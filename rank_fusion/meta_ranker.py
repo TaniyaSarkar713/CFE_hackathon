@@ -182,23 +182,27 @@ def fit_select_meta_ranker(
     C_grid: Sequence[float] = (0.05, 0.1, 0.25, 0.5, 1.0, 2.0, 5.0),
     k: float = 60.0,
     per_direction: bool = True,
+    extra_feature_keys: Optional[Sequence[str]] = None,
     seed: int = 0,
 ) -> Tuple[MetaRanker, float, Dict]:
     """Train on `train`, **select hyper-parameters by dev MRR**, return best.
 
-    Returns (best_ranker, best_dev_mrr, info).
+    `extra_feature_keys` pulls those columns from `Query.features` (e.g.
+    consensus features). Returns (best_ranker, best_dev_mrr, info).
     """
     best_ranker: Optional[MetaRanker] = None
     best_mrr = -1.0
     best_info: Dict = {}
 
     if model == "lgbm":
-        mr = MetaRanker(sources, model="lgbm", k=k, seed=seed).fit(train_queries)
+        mr = MetaRanker(sources, model="lgbm", k=k, seed=seed,
+                        extra_feature_keys=extra_feature_keys).fit(train_queries)
         dev = corpus_mrr(dev_queries, mr.rank_fn(), per_direction)
         return mr, dev, {"model": "lgbm"}
 
     for C in C_grid:
-        mr = MetaRanker(sources, model="logistic", k=k, seed=seed)
+        mr = MetaRanker(sources, model="logistic", k=k, seed=seed,
+                        extra_feature_keys=extra_feature_keys)
         mr.fit(train_queries, C=C)
         dev = corpus_mrr(dev_queries, mr.rank_fn(), per_direction)
         if dev > best_mrr:

@@ -49,7 +49,13 @@ from .explain import (
 )
 from .synthetic import (
     make_synthetic_dataset, make_candidate_generation_dataset,
-    make_redundancy_dataset, DEFAULT_SKILLS, DEFAULT_GENERATORS,
+    make_redundancy_dataset, make_consensus_dataset,
+    DEFAULT_SKILLS, DEFAULT_GENERATORS,
+)
+from .consensus import (
+    ConsensusConfig, consensus_score, make_consensus_rank_fn, corpus_mrr_at_k,
+    tune_consensus, add_consensus_features, cluster_sources,
+    build_consensus_query, CONSENSUS_KEYS,
 )
 from .diversity import (
     mmr_rerank, make_mmr_rank_fn, feature_embedding_sim, cosine_sim_callable,
@@ -71,7 +77,11 @@ __all__ = [
     "evaluate_pool", "candidate_texts_from_paper", "keywords_of",
     "pool_to_query", "graph_signal_fn", "attach_features", "add_horizon_source",
     "horizon_prior", "beta_from_horizon_weights", "HORIZON_KEYS", "GRAPH_SIGNAL_MAP",
-    "make_candidate_generation_dataset", "make_redundancy_dataset", "DEFAULT_GENERATORS",
+    "make_candidate_generation_dataset", "make_redundancy_dataset",
+    "make_consensus_dataset", "DEFAULT_GENERATORS",
+    "ConsensusConfig", "consensus_score", "make_consensus_rank_fn", "corpus_mrr_at_k",
+    "tune_consensus", "add_consensus_features", "cluster_sources",
+    "build_consensus_query", "CONSENSUS_KEYS",
     "mmr_rerank", "make_mmr_rank_fn", "feature_embedding_sim", "cosine_sim_callable",
     "swiss_tournament", "comparator_from_scores",
     "dedup_candidates", "embed_minilm",

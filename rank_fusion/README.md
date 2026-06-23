@@ -23,6 +23,7 @@ retrieval / citation ────┘         └─► learned meta-ranker (stre
 | `matching.py` | **The §1 match function** — `match_relevance` with a pluggable `embed_fn` (TF-IDF default; SPECTER2/SciBERT = the D4 dependency) + optional entailment judge (D5), and `calibrate_tau`. |
 | `agent.py` | **Autonomous candidate-harvesting agent** — runs Naz's S2 client in a tool-loop to read neighbours' keywords + future directions, adds non-duplicate candidates, and **stops when coverage of the paper's gaps stops improving**. The one agentic component; everything downstream stays a deterministic workflow. |
 | `integrate.py` | **Adapters into fusion** — `pool_to_query` (agent pool → `Query`), and `graph_signal_fn` / `attach_features` / `add_horizon_source` to feed Naz's S2 graph signals in as features, an extra RRF source, or meta-ranker features. |
+| `consensus.py` | **Consensus-aware fusion** (GPT + Claude + S2/KG) — cross-source clustering, RRF + LLM-agreement (η) + agreement×S2-support (ρ) terms, an MRR@K tuner over (w, η, ρ, k, t), and consensus features for the meta-ranker. |
 | `fusion.py` | **Weighted RRF** `Σ_a w_a/(k_a+r_a(c)) + β·x(c)` — per-source `k_a` and an additive feature term (Level 2), plus Borda & CombSUM baselines. |
 | `optimize.py` | **MRR-driven tuning** — random search + coordinate ascent over `(w, k)` to maximise **dev** MRR, optionally **cost-aware** `MRR − λ·cost` (Level 5). |
 | `meta_ranker.py` | **Learned meta-ranker** — pointwise logistic (or LightGBM `LGBMRanker`) over rank-fusion + agreement features; selected by dev MRR (Level 3). |
@@ -38,8 +39,29 @@ Top-level demos: **`run_synthetic.py`** (staged Level 1→5 ablation with CIs),
 **`run_realdata.py`** (MRR on the real `Data/` files + tau sweep),
 **`run_explain.py`** (Direction Cards), **`run_diversity.py`** (MMR + Swiss
 tournament + dedup), **`run_significance.py`** (paired-bootstrap + Bonferroni
-+ ranker separation), **`run_candidate_agent.py`** (the autonomous agent), and
-**`run_integration.py`** (agent output + S2 graph signals → fusion).
++ ranker separation), **`run_candidate_agent.py`** (the autonomous agent),
+**`run_integration.py`** (agent output + S2 graph signals → fusion), and
+**`run_consensus.py`** (consensus-aware GPT+Claude+S2 fusion).
+
+## Consensus-aware fusion (`consensus.py`)
+
+Encodes the intuition *"when both LLMs independently rank the same direction
+near the top, that's strong evidence; the S2 knowledge graph is a supporting
+signal — strongest when it backs the LLM consensus — and dev MRR decides how
+much each matters."* Candidates from the three sources are first **clustered**
+semantically (`cluster_sources` / `build_consensus_query`) so differently-phrased
+versions of one direction share a cluster and accumulate per-source ranks. Then:
+
+```
+S(c) = Σ_m w_m/(k+r_m(c))  +  η1·A12_top1(c) + η3·A12_top3(c)  +  ρ·A12_top3(c)·R_s2(c)
+```
+tuned over (w, η, ρ, k, t) on dev MRR@K (`tune_consensus`), with a Stage-2
+meta-ranker over the same quantities as features (`add_consensus_features`,
+`MetaRanker(extra_feature_keys=CONSENSUS_KEYS)`). **Honest finding** on synthetic
+data: additive RRF already captures most LLM agreement, so the explicit η terms
+rarely beat tuned RRF — the value is interpretability (you *see* learned η/ρ) and
+the framework being ready when agreement is genuinely extra-predictive on real
+LLMs; the ρ interaction (agreement × S2) is the one term linear RRF can't express.
 
 ## Incorporating the agent output and S2 graph signals (`integrate.py`)
 

@@ -481,6 +481,56 @@ def test_meta_ranker_consumes_query_features():
     assert any(k in ("sim_to_paper", "novelty") for k in shap)
 
 
+# --- Consensus-aware fusion (GPT + Claude + S2/KG) -------------------------- #
+def test_consensus_agreement_and_interaction_terms():
+    from rank_fusion import Query, ConsensusConfig, consensus_score
+    # 'a' is ranked #1 by both LLMs and present in s2; 'b' is not both-#1
+    q = Query("p", ["a", "b", "c"],
+              {"llm1": ["a", "b", "c"], "llm2": ["a", "c", "b"], "s2": ["a", "b", "c"]}, {})
+    w = {"llm1": 1.0, "llm2": 1.0, "s2": 1.0}
+    base = consensus_score(q, ConsensusConfig(weights=w, k=60))
+    boosted = consensus_score(q, ConsensusConfig(weights=w, k=60, eta1=5.0))
+    assert abs((boosted["a"] - base["a"]) - 5.0) < 1e-9   # a got the both-#1 boost
+    assert abs(boosted["b"] - base["b"]) < 1e-9           # b did not
+    # rho interaction: a is both-top-t AND in s2 -> extra support
+    inter = consensus_score(q, ConsensusConfig(weights=w, k=60, rho=10.0, t=3))
+    assert inter["a"] > base["a"]
+
+
+def test_tune_consensus_beats_uniform_on_dev():
+    from rank_fusion import (make_consensus_dataset, tune_consensus,
+                             make_rrf_rank_fn, corpus_mrr_at_k)
+    ds = make_consensus_dataset(n_papers=150, seed=23)
+    src = ds.all_sources()
+    cfg = tune_consensus(ds.dev, n_random=150, coord_rounds=2, mrr_k=3, seed=23)
+    uni = corpus_mrr_at_k(ds.dev, make_rrf_rank_fn({s: 1.0 for s in src}, 60.0), 3)
+    assert cfg.dev_mrr >= uni - 1e-9
+
+
+def test_cluster_sources_merges_paraphrases():
+    from rank_fusion import cluster_sources
+    cl, rk, txt = cluster_sources({
+        "llm1": ["extend the method to multimodal data"],
+        "llm2": ["extend method to multimodal data now"],
+        "s2": ["a totally different research topic"]}, threshold=0.3)
+    assert len(cl) == 2                              # the two paraphrases merged
+    merged = set(rk["llm1"]) & set(rk["llm2"])       # same cluster ranked by both LLMs
+    assert len(merged) == 1
+
+
+def test_build_consensus_query_end_to_end():
+    from rank_fusion import build_consensus_query, CONSENSUS_KEYS
+    q = build_consensus_query("p", {
+        "llm1": ["evaluate on multiple datasets for generalization"],
+        "llm2": ["test the method across many datasets"],
+        "s2": ["dataset evaluation across domains"]},
+        gt_texts=["evaluate on more datasets to test generalization"],
+        tau=0.05, threshold=0.2)
+    assert q.candidate_ids and q.has_ground_truth()
+    feats = next(iter(q.features.values()))
+    assert all(key in feats for key in CONSENSUS_KEYS)
+
+
 if __name__ == "__main__":
     import warnings
     warnings.filterwarnings("ignore")

@@ -181,6 +181,62 @@ def make_candidate_generation_dataset(
     return Dataset(queries, ids[:n_tr], ids[n_tr:n_tr + n_dev], ids[n_tr + n_dev:])
 
 
+def make_consensus_dataset(
+    n_papers: int = 300,
+    pool_size: int = 40,
+    min_true: int = 1,
+    max_true: int = 3,
+    llm_skill: float = 1.5,
+    s2_skill: float = 0.7,
+    noise_sd: float = 1.0,
+    salient_frac: float = 0.6,
+    split: Sequence[float] = (0.5, 0.25, 0.25),
+    seed: int = 23,
+) -> Dataset:
+    """Synthetic data for consensus-aware fusion (sources: llm1, llm2, s2).
+
+    Some true directions are *salient*: both LLMs rank them at the top (so
+    LLM-LLM agreement fires) AND S2 supports them — making the agreement term and
+    the agreement×S2 interaction genuinely predictive, so a dev-MRR tuner learns
+    positive eta/rho. Non-salient trues get only a weak S2 signal; distractors get
+    independent noise (rarely both LLMs at once).
+    """
+    rng = np.random.default_rng(seed)
+    pyrng = random.Random(seed)
+    queries: List[Query] = []
+    for p in range(n_papers):
+        pid = f"P{p:04d}"
+        cand = [f"{pid}_c{j:02d}" for j in range(pool_size)]
+        n_true = pyrng.randint(min_true, max_true)
+        true_idx = set(pyrng.sample(range(pool_size), n_true))
+        q = rng.normal(0.0, 1.0, pool_size)
+        for j in true_idx:
+            q[j] = rng.normal(2.0, 0.4)
+        salient = {j for j in true_idx if rng.random() < salient_frac}
+
+        l1 = llm_skill * q + rng.normal(0, noise_sd, pool_size)
+        l2 = llm_skill * q + rng.normal(0, noise_sd, pool_size)
+        s2 = rng.normal(0, noise_sd, pool_size)            # s2 is mostly noise...
+        for j in salient:                                   # ...except it backs consensus
+            bump = rng.normal(3.0, 0.3)
+            l1[j] += bump
+            l2[j] += bump
+            s2[j] += s2_skill * 2.5
+        for j in true_idx - salient:
+            s2[j] += s2_skill * q[j]
+
+        def order(v):
+            return [cand[i] for i in np.argsort(-v)]
+        rankings = {"llm1": order(l1), "llm2": order(l2), "s2": order(s2)}
+        relevance = {f"g{n}": {cand[j]} for n, j in enumerate(sorted(true_idx))}
+        queries.append(Query(pid, cand, rankings, relevance))
+
+    n = len(queries)
+    n_tr, n_dev = int(split[0] * n), int(split[1] * n)
+    ids = [x.query_id for x in queries]
+    return Dataset(queries, ids[:n_tr], ids[n_tr:n_tr + n_dev], ids[n_tr + n_dev:])
+
+
 def make_redundancy_dataset(
     n_papers: int = 200,
     n_clusters: int = 6,
