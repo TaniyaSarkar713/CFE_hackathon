@@ -578,6 +578,31 @@ def test_select_falls_back_when_fusion_dilutes():
     assert sel["best_name"] == "single:llm1"                 # falls back to best single
 
 
+# --- Entity-grounded S2 re-ranking ------------------------------------------ #
+def test_entity_rerank_surfaces_gap_aligned():
+    from rank_fusion import entity_rerank_texts
+    gap = ("referral pathways for perpetrators; tailored adaptations for youths "
+           "with intellectual disabilities and limited language proficiency")
+    cands = ["Battery cathode materials optimization for energy storage",
+             "Adapt the tool for youths with intellectual disabilities and language barriers",
+             "Citation network recency trend analysis"]
+    ids = ["c0", "c1", "c2"]
+    ranked, info = entity_rerank_texts(ids, cands, gap)
+    assert ranked[0] == "c1"                       # gap-aligned candidate first
+    assert info["c1"]["gap_hits"] >= 2
+    assert info["c0"]["gap_hits"] == 0             # off-topic -> no gap entities
+
+
+def test_entity_rerank_core_on_sets():
+    from rank_fusion import entity_rerank
+    cand_ents = {"a": {"intellectual disabilities", "language"},
+                 "b": {"battery", "cathode"}}
+    ranked, info = entity_rerank(["a", "b"], cand_ents,
+                                 gap_entities={"intellectual disabilities", "language", "referral"})
+    assert ranked == ["a", "b"]
+    assert info["a"]["gap_hits"] == 2 and info["b"]["gap_hits"] == 0
+
+
 if __name__ == "__main__":
     import warnings
     warnings.filterwarnings("ignore")

@@ -26,7 +26,7 @@ warnings.filterwarnings("ignore")
 logging.basicConfig(level=logging.WARNING, format="   [s2] %(message)s")
 
 from rank_fusion import (
-    build_consensus_query, cluster_sources, s2_agent_source,
+    build_consensus_query, cluster_sources, s2_agent_source, rerank_s2_source,
     make_rrf_rank_fn, make_single_source_rank_fn, paper_mrr,
     compare_strategies, select_best_strategy,
 )
@@ -40,7 +40,9 @@ def llm_sources(pid):
     llm1 = [f"{d['title']}. {d.get('rationale','')}" for d in s.get("future_directions", [])]
     llm2 = [g["description"] for g in s.get("key_gaps", [])] + s.get("main_themes", [])
     title = open(os.path.join(DATA, "papers", f"{pid}.txt")).readline().strip()
-    return llm1, llm2, title
+    gap_text = " ".join(g["description"] for g in s.get("key_gaps", []))
+    covered_text = " ".join(s.get("main_findings", []))
+    return llm1, llm2, title, gap_text, covered_text
 
 
 def ground_truth(pid):
@@ -70,7 +72,7 @@ def run_agent_c(pid, title):
 
 def main():
     pid = sys.argv[1] if len(sys.argv) > 1 else "11816194"
-    llm1, llm2, title = llm_sources(pid)
+    llm1, llm2, title, gap_text, covered_text = llm_sources(pid)
     gt = ground_truth(pid)
     print(f"SEED {pid}: {title[:90]}")
     print(f"sources: llm1(future_dirs)={len(llm1)}  llm2(gaps+themes)={len(llm2)}  "
@@ -83,7 +85,9 @@ def main():
 
     sources = {"llm1": llm1, "llm2": llm2}
     if s2:
-        sources["s2"] = s2
+        # entity-ground the S2 list: re-rank by overlap with the seed's open-gap
+        # entities (graph topology -> future-work alignment) before fusing
+        sources["s2"] = rerank_s2_source(s2, gap_text, covered_text=covered_text)
 
     # cluster across sources + build the fusion Query (relevance vs masked GT)
     _cids, _rk, ctext = cluster_sources(sources, threshold=0.5)
