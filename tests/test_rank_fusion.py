@@ -299,6 +299,54 @@ def test_dedup_removes_duplicate():
     assert kept == ["a", "c"] and rep == {"b": "a"}
 
 
+# --- Significance, separation diagnostic, match function -------------------- #
+def test_paired_bootstrap_detects_real_gap():
+    from rank_fusion import (paired_bootstrap_delta, make_rrf_rank_fn,
+                             make_single_source_rank_fn)
+    ds = make_synthetic_dataset(n_papers=300, seed=7)
+    src = ds.all_sources()
+    fused = make_rrf_rank_fn({s: 1.0 for s in src}, 60.0)
+    weak = make_single_source_rank_fn("citation")   # clearly worse
+    res = paired_bootstrap_delta(ds.queries, fused, weak, n_boot=1000, seed=0)
+    assert res["delta"] > 0 and res["significant"] and res["p_value"] < 0.05
+
+
+def test_paired_bootstrap_no_gap_for_identical():
+    from rank_fusion import paired_bootstrap_delta, make_rrf_rank_fn
+    ds = make_synthetic_dataset(n_papers=150, seed=7)
+    fn = make_rrf_rank_fn({s: 1.0 for s in ds.all_sources()}, 60.0)
+    res = paired_bootstrap_delta(ds.queries, fn, fn, n_boot=500, seed=0)
+    assert abs(res["delta"]) < 1e-9 and not res["significant"]
+
+
+def test_bonferroni_correction():
+    from rank_fusion import bonferroni
+    out = bonferroni([0.01, 0.04], alpha=0.05)   # *2 -> 0.02 sig, 0.08 not
+    assert out[0]["significant"] and not out[1]["significant"]
+
+
+def test_separation_diagnostic():
+    from rank_fusion import topk_bottomk_separation, make_rrf_rank_fn
+    ds = make_synthetic_dataset(n_papers=200, seed=7)
+    fn = make_rrf_rank_fn({s: 1.0 for s in ds.all_sources()}, 60.0)
+    sep = topk_bottomk_separation(ds.queries, fn, k=5)
+    assert sep["gap"] > 0 and sep["top_k_relevance"] > sep["bottom_k_relevance"]
+
+
+def test_match_relevance_and_tau_calibration():
+    from rank_fusion import match_relevance, calibrate_tau
+    cand_ids = ["d1", "d2", "d3"]
+    cand_texts = ["Evaluate on multiple datasets to test generalization",
+                  "Develop a user-friendly decision support tool",
+                  "Quantify long-term outcomes with longitudinal cohorts"]
+    gt = ["Further evaluation across multiple datasets is needed for generalization"]
+    rel = match_relevance(cand_ids, cand_texts, gt, tau=0.05)
+    assert "g0" in rel and "d1" in rel["g0"]      # d1 matches the GT
+    best = calibrate_tau([("multi dataset evaluation", "evaluate on many datasets"),
+                          ("user tool", "quantify health outcomes")], [1, 0])
+    assert 0.0 <= best["tau"] <= 0.5 and best["f1"] >= 0.0
+
+
 if __name__ == "__main__":
     import warnings
     warnings.filterwarnings("ignore")

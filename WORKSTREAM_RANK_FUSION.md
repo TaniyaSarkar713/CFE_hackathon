@@ -131,9 +131,13 @@ then call `tune_rrf(...)` and `explain_ranking(...)` exactly as the demos do.
 - [ ] Calibrate confidence on the full temporal-test corpus (current ECE is from small dev) and report it in the ablation table.
 
 ### D. Reporting for the submission
+- [x] **Significance testing** — paired-bootstrap + Welch/paired t-test + Bonferroni (`significance.py`, `run_significance.py`).
+- [x] **Ranker validation** — top-K vs bottom-K relevance separation, Si et al. Table 1 (`diagnostics.topk_bottomk_separation`).
+- [x] **Pluggable §1 match function** with `tau` calibration (`matching.py`) — drop in SPECTER2/SciBERT (D4) + entailment judge (D5).
 - [ ] Fill the §10 ablation table with **real** numbers once D1–D7 land.
 - [ ] Candidate-recall diagnostic table (§8.2) on real candidate sources — show recall is the ceiling *before* showing fusion lifts ordering.
 - [ ] Match-function sensitivity (sweep `tau`) on real data (`run_realdata.py` already does this for TF-IDF).
+- [ ] *Upstream-dependent:* style normalization to remove GPT-vs-Claude writing confounders (needs an LLM pass — Nourah).
 
 ### Not in scope for this workstream
 Agent-1 comprehension, Agent-2 prompt engineering, candidate generation, and the

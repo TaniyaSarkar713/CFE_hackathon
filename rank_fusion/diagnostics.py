@@ -107,3 +107,36 @@ def bootstrap_mrr_ci(
     lo = boots[int((alpha / 2) * n_boot)]
     hi = boots[min(n_boot - 1, int((1 - alpha / 2) * n_boot))]
     return point, lo, hi
+
+
+# --------------------------------------------------------------------------- #
+# Ranker validation: does the ranker separate good candidates from bad?
+# --------------------------------------------------------------------------- #
+def topk_bottomk_separation(
+    queries: Sequence[Query], rank_fn: Callable, k: int = 10
+) -> Dict[str, float]:
+    """Top-K vs bottom-K relevance separation (Si et al. 2024, Table 1).
+
+    A sanity check that a ranker actually orders candidates: the fraction of
+    *relevant* candidates among its top-K should clearly exceed the fraction
+    among its bottom-K. Returns mean top-K relevance, mean bottom-K relevance,
+    and the gap (averaged over papers). A positive, large gap = the ranker works.
+    """
+    tops: List[float] = []
+    bottoms: List[float] = []
+    for q in queries:
+        if not q.has_ground_truth():
+            continue
+        ranked = rank_fn(q)
+        rel = q.relevant_ids
+        if len(ranked) < 2 * k:                       # need disjoint top/bottom
+            kk = max(1, len(ranked) // 2)
+        else:
+            kk = k
+        top = ranked[:kk]
+        bottom = ranked[-kk:]
+        tops.append(sum(1 for d in top if d in rel) / kk)
+        bottoms.append(sum(1 for d in bottom if d in rel) / kk)
+    mt = sum(tops) / len(tops) if tops else 0.0
+    mb = sum(bottoms) / len(bottoms) if bottoms else 0.0
+    return {"top_k_relevance": mt, "bottom_k_relevance": mb, "gap": mt - mb, "k": k}

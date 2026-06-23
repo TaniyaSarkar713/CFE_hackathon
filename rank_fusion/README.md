@@ -18,7 +18,9 @@ retrieval / citation ────┘         └─► learned meta-ranker (stre
 |------|------|
 | `schema.py` | `Query` (one paper: candidate pool, per-source rankings, free-text ground truth, optional candidate provenance + features) and `Dataset` (train/dev/test split). |
 | `metrics.py` | **MRR harness** — per-direction Paper MRR (plan §1), corpus MRR, MRR@K, Recall@K, nDCG@K, and `evaluate()` for the full bundle. |
-| `diagnostics.py` | **Level 1** — `oracle_mrr` (the ranking-independent ceiling), per-source `candidate_recall_table`, and `bootstrap_mrr_ci` (95% CIs). |
+| `diagnostics.py` | **Level 1 + validation** — `oracle_mrr` (ceiling), per-source `candidate_recall_table`, `bootstrap_mrr_ci` (95% CIs), and `topk_bottomk_separation` (does the ranker separate good from bad? — Si et al. Table 1). |
+| `significance.py` | **System-comparison rigor** — `paired_bootstrap_delta`, `paired_ttest` / `welch_ttest`, `bonferroni`, and `compare_to_baseline` ("is the MRR gain real after correction?"). |
+| `matching.py` | **The §1 match function** — `match_relevance` with a pluggable `embed_fn` (TF-IDF default; SPECTER2/SciBERT = the D4 dependency) + optional entailment judge (D5), and `calibrate_tau`. |
 | `fusion.py` | **Weighted RRF** `Σ_a w_a/(k_a+r_a(c)) + β·x(c)` — per-source `k_a` and an additive feature term (Level 2), plus Borda & CombSUM baselines. |
 | `optimize.py` | **MRR-driven tuning** — random search + coordinate ascent over `(w, k)` to maximise **dev** MRR, optionally **cost-aware** `MRR − λ·cost` (Level 5). |
 | `meta_ranker.py` | **Learned meta-ranker** — pointwise logistic (or LightGBM `LGBMRanker`) over rank-fusion + agreement features; selected by dev MRR (Level 3). |
@@ -32,8 +34,9 @@ retrieval / citation ────┘         └─► learned meta-ranker (stre
 
 Top-level demos: **`run_synthetic.py`** (staged Level 1→5 ablation with CIs),
 **`run_realdata.py`** (MRR on the real `Data/` files + tau sweep),
-**`run_explain.py`** (Direction Cards), and **`run_diversity.py`** (MMR +
-Swiss tournament + dedup).
+**`run_explain.py`** (Direction Cards), **`run_diversity.py`** (MMR + Swiss
+tournament + dedup), and **`run_significance.py`** (paired-bootstrap + Bonferroni
++ ranker separation).
 
 ## Explainability — Direction Cards (§6)
 

@@ -25,6 +25,14 @@ from .learned_rankers import (
 )
 from .diagnostics import (
     oracle_mrr, candidate_recall, candidate_recall_table, bootstrap_mrr_ci,
+    topk_bottomk_separation,
+)
+from .significance import (
+    per_paper_mrr, paired_bootstrap_delta, paired_ttest, welch_ttest,
+    bonferroni, compare_to_baseline,
+)
+from .matching import (
+    match_relevance, similarity_matrix, calibrate_tau,
 )
 from .explain import (
     DirectionCard, build_direction_card, explain_ranking, render_card_markdown,
@@ -47,6 +55,10 @@ __all__ = [
     "PairwiseRankNet", "ListNetRanker", "SoftMRRRanker",
     "fit_select_ranknet", "fit_select_listnet", "fit_select_soft_mrr",
     "oracle_mrr", "candidate_recall", "candidate_recall_table", "bootstrap_mrr_ci",
+    "topk_bottomk_separation",
+    "per_paper_mrr", "paired_bootstrap_delta", "paired_ttest", "welch_ttest",
+    "bonferroni", "compare_to_baseline",
+    "match_relevance", "similarity_matrix", "calibrate_tau",
     "make_candidate_generation_dataset", "make_redundancy_dataset", "DEFAULT_GENERATORS",
     "mmr_rerank", "make_mmr_rank_fn", "feature_embedding_sim", "cosine_sim_callable",
     "swiss_tournament", "comparator_from_scores",
