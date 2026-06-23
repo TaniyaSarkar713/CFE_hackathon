@@ -551,6 +551,33 @@ def test_build_consensus_query_end_to_end():
     assert all(key in feats for key in CONSENSUS_KEYS)
 
 
+# --- Best-of selection (LLM1 / LLM2 / S2 / fused, by MRR) -------------------- #
+def test_compare_and_select_strategies():
+    from rank_fusion import (make_consensus_dataset, compare_strategies,
+                             select_best_strategy, make_rrf_rank_fn)
+    ds = make_consensus_dataset(n_papers=150, seed=23)
+    src = ds.all_sources()                          # llm1, llm2, s2
+    fused = {"fused:RRF": make_rrf_rank_fn({s: 1.0 for s in src}, 60.0)}
+    rows = compare_strategies(ds.dev, src, fused_rank_fns=fused)
+    assert {r["name"] for r in rows} == {
+        "single:llm1", "single:llm2", "single:s2", "fused:RRF"}
+    assert rows == sorted(rows, key=lambda r: -r["mrr"])     # sorted desc
+    sel = select_best_strategy(ds.dev, src, fused_rank_fns=fused)
+    assert sel["best_dev_mrr"] == rows[0]["mrr"]             # winner tops the table
+    best_single = max(r["mrr"] for r in rows if r["name"].startswith("single:"))
+    assert sel["best_dev_mrr"] >= best_single - 1e-12        # never worse than best single
+
+
+def test_select_falls_back_when_fusion_dilutes():
+    from rank_fusion import Query, select_best_strategy
+    # llm1 is perfect (true 'a' at #1); llm2/s2 bury 'a' -> uniform RRF demotes it
+    qs = [Query(f"p{i}", ["a", "b", "c", "d"],
+                {"llm1": ["a", "b", "c", "d"], "llm2": ["b", "c", "d", "a"],
+                 "s2": ["c", "d", "b", "a"]}, {"g0": {"a"}}) for i in range(15)]
+    sel = select_best_strategy(qs, ["llm1", "llm2", "s2"])
+    assert sel["best_name"] == "single:llm1"                 # falls back to best single
+
+
 if __name__ == "__main__":
     import warnings
     warnings.filterwarnings("ignore")
