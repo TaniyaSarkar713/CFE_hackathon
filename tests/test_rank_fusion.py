@@ -518,6 +518,26 @@ def test_cluster_sources_merges_paraphrases():
     assert len(merged) == 1
 
 
+def test_s2_agent_source_follows_agent_rank():
+    from rank_fusion import s2_agent_source
+    # Agent C output: (cand_ids, cand_texts, ranked_ids, features)
+    out = (["p_C1", "p_C2", "p_C3"], ["beta", "alpha", "gamma"],
+           ["p_C1", "p_C3", "p_C2"], {})
+    assert s2_agent_source(out) == ["beta", "gamma", "alpha"]   # ranked order
+
+
+def test_s2_source_fuses_into_consensus_query():
+    from rank_fusion import build_consensus_query
+    q = build_consensus_query("p", {
+        "llm1": ["evaluate on multiple datasets for generalization"],
+        "llm2": ["test across many datasets"],
+        "s2": ["A study on dataset evaluation across clinical domains"]},
+        gt_texts=["evaluate on more datasets to test generalization"],
+        tau=0.05, threshold=0.5)
+    assert "s2" in q.rankings and q.rankings["s2"]    # the S2 source is fused in
+    assert q.candidate_ids
+
+
 def test_build_consensus_query_end_to_end():
     from rank_fusion import build_consensus_query, CONSENSUS_KEYS
     q = build_consensus_query("p", {

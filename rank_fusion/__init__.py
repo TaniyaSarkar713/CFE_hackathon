@@ -41,6 +41,7 @@ from .agent import (
 from .integrate import (
     pool_to_query, graph_signal_fn, attach_features, add_horizon_source,
     horizon_prior, beta_from_horizon_weights, HORIZON_KEYS, GRAPH_SIGNAL_MAP,
+    s2_agent_source, s2_agent_features,
 )
 from .explain import (
     DirectionCard, build_direction_card, explain_ranking, render_card_markdown,
@@ -77,6 +78,7 @@ __all__ = [
     "evaluate_pool", "candidate_texts_from_paper", "keywords_of",
     "pool_to_query", "graph_signal_fn", "attach_features", "add_horizon_source",
     "horizon_prior", "beta_from_horizon_weights", "HORIZON_KEYS", "GRAPH_SIGNAL_MAP",
+    "s2_agent_source", "s2_agent_features",
     "make_candidate_generation_dataset", "make_redundancy_dataset",
     "make_consensus_dataset", "DEFAULT_GENERATORS",
     "ConsensusConfig", "consensus_score", "make_consensus_rank_fn", "corpus_mrr_at_k",
