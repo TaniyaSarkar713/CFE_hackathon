@@ -17,6 +17,7 @@ from .fusion      import (weighted_rrf, borda_count, combsum,
                            make_rrf_rank_fn, make_single_source_rank_fn)
 from .optimize    import tune_rrf, RRFConfig
 from .s2_client   import S2Client, GraphSignalExtractor, GraphContext
+from .s2_agent    import S2DirectionAgent
 from .data_loader import load_dataset
 
 __all__ = [
@@ -26,5 +27,6 @@ __all__ = [
     "feature_bias_term", "make_rrf_rank_fn", "make_single_source_rank_fn",
     "tune_rrf", "RRFConfig",
     "S2Client", "GraphSignalExtractor", "GraphContext",
+    "S2DirectionAgent",
     "load_dataset",
 ]

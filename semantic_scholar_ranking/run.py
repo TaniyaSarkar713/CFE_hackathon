@@ -5,17 +5,19 @@ What this does
 1. Load all papers from Data/Paper_summaries into Query objects
 2. Optionally fetch S2 graph signals (graph_relevance, graph_novelty,
    graph_recency, citation_velocity) for each candidate direction
-3. Evaluate baselines:  Agent A alone, Agent B alone, uniform RRF
-4. Tune RRF weights + beta (S2 signal weights) on dev set toward MRR
-5. Evaluate tuned RRF on test set
-6. Print ablation table + save results.json
+3. Run Agent C (S2DirectionAgent): autonomous graph search for candidates
+4. Evaluate baselines:  Agent A, Agent B, Agent C alone; uniform RRF A+B;
+   3-way RRF A+B+C
+5. Tune RRF weights + beta (S2 signal weights) on dev set toward MRR
+6. Evaluate tuned RRF on test set
+7. Print ablation table + save results.json
 
 Usage
 -----
-  # offline — no S2 calls, fast
+  # offline — no S2 calls (Agent C disabled), fast
   python run.py
 
-  # with S2 graph signals
+  # with S2 graph signals + Agent C
   python run.py --api-key YOUR_KEY
 
   # single paper
@@ -42,15 +44,15 @@ import sys
 logging.basicConfig(level=logging.INFO, format="%(levelname)s | %(message)s")
 logger = logging.getLogger(__name__)
 
-# make `ranking/` importable when running as a script from its parent folder
+# make `semantic_scholar_ranking/` importable when running as a script
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from ranking.data_loader  import load_dataset, DEFAULT_DATA_DIR
-from ranking.fusion       import (make_rrf_rank_fn, make_single_source_rank_fn,
-                                   feature_bias_term, weighted_rrf)
-from ranking.metrics      import evaluate, corpus_mrr
-from ranking.optimize     import tune_rrf
-from ranking.s2_client    import S2Client
+from semantic_scholar_ranking.data_loader  import load_dataset, DEFAULT_DATA_DIR
+from semantic_scholar_ranking.fusion       import (make_rrf_rank_fn, make_single_source_rank_fn,
+                                                   feature_bias_term, weighted_rrf)
+from semantic_scholar_ranking.metrics      import evaluate, corpus_mrr
+from semantic_scholar_ranking.optimize     import tune_rrf
+from semantic_scholar_ranking.s2_client    import S2Client
 
 S2_SIGNALS = ["graph_relevance", "graph_novelty", "graph_recency", "citation_velocity"]
 
@@ -134,12 +136,14 @@ def main():
 
     has_s2  = any(q.features for q in dataset.queries)
     has_gt  = any(q.has_ground_truth() for q in dataset.queries)
-    sources = ["agent_a", "agent_b"]
+    has_c   = any("agent_c" in q.rankings for q in dataset.queries)
+    sources = ["agent_a", "agent_b"] + (["agent_c"] if has_c else [])
 
     print(f"\nCFE Hackathon — Rank Fusion")
     print(f"Papers loaded : {len(dataset.queries)}")
-    print(f"Ground truth  : {'YES (TF-IDF proxy)' if has_gt else 'NO'}")
+    print(f"Ground truth  : {'YES' if has_gt else 'NO'}")
     print(f"S2 signals    : {'YES' if has_s2 else 'NO (offline mode)'}")
+    print(f"Agent C (S2)  : {'YES' if has_c else 'NO (needs --api-key)'}")
 
     # --- per-paper ranked output -------------------------------------------
     uniform_rrf = make_rrf_rank_fn(weights={s: 1.0 for s in sources}, k=args.k)
@@ -173,15 +177,22 @@ def main():
         test_q = dataset.test
 
         # baselines
-        a_fn   = make_single_source_rank_fn("agent_a")
-        b_fn   = make_single_source_rank_fn("agent_b")
-        uni_fn = make_rrf_rank_fn({s: 1.0 for s in sources}, args.k)
+        a_fn     = make_single_source_rank_fn("agent_a")
+        b_fn     = make_single_source_rank_fn("agent_b")
+        ab_fn    = make_rrf_rank_fn({"agent_a": 1.0, "agent_b": 1.0}, args.k)
+        uni_fn   = make_rrf_rank_fn({s: 1.0 for s in sources}, args.k)
 
         rows = [
-            ("Agent A only",   f"{corpus_mrr(test_q, a_fn):.4f}"),
-            ("Agent B only",   f"{corpus_mrr(test_q, b_fn):.4f}"),
-            ("Uniform RRF",    f"{corpus_mrr(test_q, uni_fn):.4f}"),
+            ("Agent A only",      f"{corpus_mrr(test_q, a_fn):.4f}"),
+            ("Agent B only",      f"{corpus_mrr(test_q, b_fn):.4f}"),
+            ("Uniform RRF A+B",   f"{corpus_mrr(test_q, ab_fn):.4f}"),
         ]
+
+        if has_c:
+            c_fn  = make_single_source_rank_fn("agent_c")
+            abc_fn = make_rrf_rank_fn({s: 1.0 for s in sources}, args.k)
+            rows.append(("Agent C only (S2)",  f"{corpus_mrr(test_q, c_fn):.4f}"))
+            rows.append(("Uniform RRF A+B+C",  f"{corpus_mrr(test_q, abc_fn):.4f}"))
 
         if has_s2:
             s2_fn = make_rrf_rank_fn(

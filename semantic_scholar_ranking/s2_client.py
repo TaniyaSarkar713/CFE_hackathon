@@ -27,9 +27,15 @@ import requests
 
 logger = logging.getLogger(__name__)
 
-S2_BASE   = "https://api.semanticscholar.org/graph/v1"
-S2_SEARCH = f"{S2_BASE}/paper/search"
-FIELDS    = "title,abstract,year,citationCount,embedding"
+S2_BASE          = "https://api.semanticscholar.org/graph/v1"
+S2_SEARCH        = f"{S2_BASE}/paper/search"
+S2_BATCH         = f"{S2_BASE}/paper/batch"
+FIELDS_PAPER     = "title,year,citationCount,embedding"   # single-paper lookup
+FIELDS_NEIGHBOR  = "title,year,citationCount"             # citations/references (no embedding)
+FIELDS_SEARCH    = FIELDS_PAPER + ",externalIds"          # title search
+
+# keep the old name as alias so existing callers don't break
+FIELDS = FIELDS_PAPER
 
 
 # ===========================================================================
@@ -79,25 +85,57 @@ class S2Client:
 
     def get_paper(self, corpus_id: str) -> dict:
         return self._get(f"{S2_BASE}/paper/CorpusID:{corpus_id}",
-                         {"fields": FIELDS})
+                         {"fields": FIELDS_PAPER})
 
     def get_citations(self, corpus_id: str, limit: int = 50) -> List[dict]:
         data = self._get(f"{S2_BASE}/paper/CorpusID:{corpus_id}/citations",
-                         {"fields": FIELDS, "limit": limit})
+                         {"fields": FIELDS_NEIGHBOR, "limit": limit})
         if not data: return []
         return [i.get("citingPaper", {}) for i in (data.get("data") or [])]
 
     def get_references(self, corpus_id: str, limit: int = 50) -> List[dict]:
         data = self._get(f"{S2_BASE}/paper/CorpusID:{corpus_id}/references",
-                         {"fields": FIELDS, "limit": limit})
+                         {"fields": FIELDS_NEIGHBOR, "limit": limit})
         if not data: return []
         return [i.get("citedPaper", {}) for i in (data.get("data") or [])]
 
+    def get_papers_batch(self, paper_ids: List[str]) -> List[dict]:
+        """Batch-fetch year, citationCount, and embedding for a list of paperIds."""
+        if not paper_ids:
+            return []
+        gap = self._min_interval - (time.time() - self._last_call)
+        if gap > 0:
+            time.sleep(gap)
+        try:
+            r = requests.post(
+                S2_BATCH,
+                params={"fields": FIELDS_PAPER},
+                json={"ids": paper_ids},
+                headers=self._headers,
+                timeout=30,
+            )
+            self._last_call = time.time()
+            if r.status_code == 200:
+                return r.json() or []
+            logger.warning("S2 batch %d for %d papers", r.status_code, len(paper_ids))
+        except requests.RequestException as e:
+            logger.error("S2 batch error: %s", e)
+        return []
+
     def search(self, query: str, limit: int = 3) -> List[dict]:
-        data = self._get(S2_SEARCH, {"query": query, "fields": FIELDS,
+        data = self._get(S2_SEARCH, {"query": query, "fields": FIELDS_SEARCH,
                                      "limit": limit})
         if not data: return []
         return data.get("data") or []
+
+    def resolve_corpus_id(self, title: str) -> Optional[str]:
+        """Search S2 by title and return the real CorpusId string, or None."""
+        results = self.search(title, limit=1)
+        if not results:
+            return None
+        ext = results[0].get("externalIds") or {}
+        cid = ext.get("CorpusId")
+        return str(cid) if cid is not None else None
 
 
 # ===========================================================================
@@ -124,8 +162,19 @@ class GraphSignalExtractor:
         self.client = client
 
     # -----------------------------------------------------------------------
-    def build_context(self, corpus_id: str) -> Optional[GraphContext]:
-        """Fetch seed paper's neighbourhood from S2. Returns None on failure."""
+    def build_context(self, corpus_id: str, title: Optional[str] = None) -> Optional[GraphContext]:
+        """Fetch seed paper's neighbourhood from S2. Returns None on failure.
+
+        If `title` is given, resolves the real S2 CorpusId via a title search
+        first (the local file IDs are not S2 CorpusIds).
+        """
+        if title:
+            real_id = self.client.resolve_corpus_id(title)
+            if real_id:
+                logger.info("  [S2] resolved '%s' -> CorpusID:%s", corpus_id, real_id)
+                corpus_id = real_id
+            else:
+                logger.warning("  [S2] title search found nothing for '%s'", corpus_id)
         logger.info("  [S2] fetching CorpusID:%s", corpus_id)
         seed = self.client.get_paper(corpus_id)
         if not seed:
@@ -139,17 +188,27 @@ class GraphSignalExtractor:
         logger.info("  [S2] fetching citations + references ...")
         neighbours = (self.client.get_citations(corpus_id, 50) +
                       self.client.get_references(corpus_id, 50))
+
+        # citations/references don't carry embeddings; batch-fetch them separately
+        nb_ids   = [n["paperId"] for n in neighbours if n.get("paperId")]
+        nb_meta  = {n["paperId"]: n for n in neighbours if n.get("paperId")}
+        nb_full  = self.client.get_papers_batch(nb_ids) if nb_ids else []
+
         embs, years, counts = [], [], []
-        for n in neighbours:
-            e = self._emb(n)
+        for paper in nb_full:
+            if not paper:
+                continue
+            e = self._emb(paper)
             if e is not None:
+                pid = paper.get("paperId", "")
+                meta = nb_meta.get(pid, paper)
                 embs.append(e)
-                years.append(n.get("year") or self.CURRENT_YEAR)
-                counts.append(n.get("citationCount") or 0)
+                years.append(meta.get("year") or paper.get("year") or self.CURRENT_YEAR)
+                counts.append(meta.get("citationCount") or paper.get("citationCount") or 0)
         if not embs:
             logger.warning("  [S2] no neighbour embeddings — graph signals unavailable")
             return None
-        logger.info("  [S2] %d neighbours", len(embs))
+        logger.info("  [S2] %d neighbours with embeddings", len(embs))
         return GraphContext(seed_emb, embs, years, counts)
 
     # -----------------------------------------------------------------------
