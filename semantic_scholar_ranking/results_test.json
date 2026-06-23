@@ -1,0 +1,119 @@
+[
+  {
+    "paper_id": "11812686",
+    "pool_size": 18,
+    "gt_matched": 0,
+    "ranked": [
+      {
+        "rank": 1,
+        "id": "11812686_C1",
+        "rrf_score": 0.119183,
+        "s2_signals": {
+          "graph_relevance": 0.9434970021247864,
+          "graph_novelty": 0.10428873896598811,
+          "graph_recency": 1.0,
+          "citation_velocity": 0.008
+        }
+      },
+      {
+        "rank": 2,
+        "id": "11812686_C3",
+        "rrf_score": 0.118544,
+        "s2_signals": {
+          "graph_relevance": 0.9501179456710815,
+          "graph_novelty": 0.09529689550399778,
+          "graph_recency": 1.0,
+          "citation_velocity": 0.008
+        }
+      },
+      {
+        "rank": 3,
+        "id": "11812686_C2",
+        "rrf_score": 0.118499,
+        "s2_signals": {
+          "graph_relevance": 0.9223906695842743,
+          "graph_novelty": 0.11700987815856934,
+          "graph_recency": 1.0,
+          "citation_velocity": 0.008
+        }
+      },
+      {
+        "rank": 4,
+        "id": "11812686_C4",
+        "rrf_score": 0.118064,
+        "s2_signals": {
+          "graph_relevance": 0.942537933588028,
+          "graph_novelty": 0.09823903441429138,
+          "graph_recency": 1.0,
+          "citation_velocity": 0.008
+        }
+      },
+      {
+        "rank": 5,
+        "id": "11812686_C5",
+        "rrf_score": 0.117177,
+        "s2_signals": {
+          "graph_relevance": 0.9526776671409607,
+          "graph_novelty": 0.09567812085151672,
+          "graph_recency": 0.976,
+          "citation_velocity": 0.0115
+        }
+      },
+      {
+        "rank": 6,
+        "id": "11812686_A1",
+        "rrf_score": 0.116393,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 7,
+        "id": "11812686_Bgap1",
+        "rrf_score": 0.116393,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 8,
+        "id": "11812686_A2",
+        "rrf_score": 0.116129,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 9,
+        "id": "11812686_Bgap2",
+        "rrf_score": 0.116129,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 10,
+        "id": "11812686_A3",
+        "rrf_score": 0.115873,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      }
+    ]
+  }
+]

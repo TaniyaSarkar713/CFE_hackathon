@@ -84,7 +84,7 @@ def print_ranked(paper_id, query, ranked_ids, scores=None, top_k=5):
         feats = query.features.get(cid, {})
         sc    = f"{scores[cid]:.4f}" if scores and cid in scores else "  —  "
         # reconstruct title from candidate id suffix
-        src   = "A" if "_A" in cid else "B"
+        src   = "A" if "_A" in cid else "C" if "_C" in cid else "B"
         print(
             f"{i:<4} {src:<8} {sc:>7}"
             f"  {feats.get('graph_relevance',0):>4.2f}"

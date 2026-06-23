@@ -1,0 +1,1712 @@
+[
+  {
+    "paper_id": "11812686",
+    "pool_size": 18,
+    "gt_matched": 0,
+    "ranked": [
+      {
+        "rank": 1,
+        "id": "11812686_C1",
+        "rrf_score": 0.119183,
+        "s2_signals": {
+          "graph_relevance": 0.9434970021247864,
+          "graph_novelty": 0.10428873896598811,
+          "graph_recency": 1.0,
+          "citation_velocity": 0.008
+        }
+      },
+      {
+        "rank": 2,
+        "id": "11812686_C3",
+        "rrf_score": 0.118544,
+        "s2_signals": {
+          "graph_relevance": 0.9501179456710815,
+          "graph_novelty": 0.09529689550399778,
+          "graph_recency": 1.0,
+          "citation_velocity": 0.008
+        }
+      },
+      {
+        "rank": 3,
+        "id": "11812686_C2",
+        "rrf_score": 0.118499,
+        "s2_signals": {
+          "graph_relevance": 0.9223906695842743,
+          "graph_novelty": 0.11700987815856934,
+          "graph_recency": 1.0,
+          "citation_velocity": 0.008
+        }
+      },
+      {
+        "rank": 4,
+        "id": "11812686_C4",
+        "rrf_score": 0.118064,
+        "s2_signals": {
+          "graph_relevance": 0.942537933588028,
+          "graph_novelty": 0.09823903441429138,
+          "graph_recency": 1.0,
+          "citation_velocity": 0.008
+        }
+      },
+      {
+        "rank": 5,
+        "id": "11812686_C5",
+        "rrf_score": 0.117177,
+        "s2_signals": {
+          "graph_relevance": 0.9526776671409607,
+          "graph_novelty": 0.09567812085151672,
+          "graph_recency": 0.976,
+          "citation_velocity": 0.0115
+        }
+      },
+      {
+        "rank": 6,
+        "id": "11812686_A1",
+        "rrf_score": 0.116393,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 7,
+        "id": "11812686_Bgap1",
+        "rrf_score": 0.116393,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 8,
+        "id": "11812686_A2",
+        "rrf_score": 0.116129,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 9,
+        "id": "11812686_Bgap2",
+        "rrf_score": 0.116129,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 10,
+        "id": "11812686_A3",
+        "rrf_score": 0.115873,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      }
+    ]
+  },
+  {
+    "paper_id": "11812693",
+    "pool_size": 16,
+    "gt_matched": 2,
+    "ranked": [
+      {
+        "rank": 1,
+        "id": "11812693_C1",
+        "rrf_score": 0.117387,
+        "s2_signals": {
+          "graph_relevance": 0.9448050260543823,
+          "graph_novelty": 0.07206735610961912,
+          "graph_recency": 0.8879999999999999,
+          "citation_velocity": 0.115
+        }
+      },
+      {
+        "rank": 2,
+        "id": "11812693_A1",
+        "rrf_score": 0.116393,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 3,
+        "id": "11812693_Bgap1",
+        "rrf_score": 0.116393,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 4,
+        "id": "11812693_A2",
+        "rrf_score": 0.116129,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 5,
+        "id": "11812693_Bgap2",
+        "rrf_score": 0.116129,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 6,
+        "id": "11812693_C2",
+        "rrf_score": 0.115925,
+        "s2_signals": {
+          "graph_relevance": 0.9396966397762299,
+          "graph_novelty": 0.05983885526657107,
+          "graph_recency": 0.8959999999999999,
+          "citation_velocity": 0.10038095238095238
+        }
+      },
+      {
+        "rank": 7,
+        "id": "11812693_A3",
+        "rrf_score": 0.115873,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 8,
+        "id": "11812693_Bgap3",
+        "rrf_score": 0.115873,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 9,
+        "id": "11812693_A4",
+        "rrf_score": 0.115625,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 10,
+        "id": "11812693_Bgap4",
+        "rrf_score": 0.115625,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      }
+    ]
+  },
+  {
+    "paper_id": "11812716",
+    "pool_size": 56,
+    "gt_matched": 0,
+    "ranked": [
+      {
+        "rank": 1,
+        "id": "11812716_A1",
+        "rrf_score": 0.116393,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 2,
+        "id": "11812716_Bgap1",
+        "rrf_score": 0.116393,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 3,
+        "id": "11812716_A2",
+        "rrf_score": 0.116129,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 4,
+        "id": "11812716_Bgap2",
+        "rrf_score": 0.116129,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 5,
+        "id": "11812716_A3",
+        "rrf_score": 0.115873,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 6,
+        "id": "11812716_Btheme1",
+        "rrf_score": 0.115873,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 7,
+        "id": "11812716_A4",
+        "rrf_score": 0.115625,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 8,
+        "id": "11812716_Btheme2",
+        "rrf_score": 0.115625,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 9,
+        "id": "11812716_A5",
+        "rrf_score": 0.115385,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 10,
+        "id": "11812716_Btheme3",
+        "rrf_score": 0.115385,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      }
+    ]
+  },
+  {
+    "paper_id": "11812816",
+    "pool_size": 30,
+    "gt_matched": 1,
+    "ranked": [
+      {
+        "rank": 1,
+        "id": "11812816_C3",
+        "rrf_score": 0.152053,
+        "s2_signals": {
+          "graph_relevance": 0.8082245886325836,
+          "graph_novelty": 0.20338315367698667,
+          "graph_recency": 0.712,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 2,
+        "id": "11812816_C4",
+        "rrf_score": 0.148802,
+        "s2_signals": {
+          "graph_relevance": 0.7411211580038071,
+          "graph_novelty": 0.25041171014308927,
+          "graph_recency": 0.672,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 3,
+        "id": "11812816_C6",
+        "rrf_score": 0.148733,
+        "s2_signals": {
+          "graph_relevance": 0.8478546738624573,
+          "graph_novelty": 0.16777657270431523,
+          "graph_recency": 0.6559999999999999,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 4,
+        "id": "11812816_C5",
+        "rrf_score": 0.14859,
+        "s2_signals": {
+          "graph_relevance": 0.8077974915504456,
+          "graph_novelty": 0.20030605196952822,
+          "graph_recency": 0.656,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 5,
+        "id": "11812816_C8",
+        "rrf_score": 0.146279,
+        "s2_signals": {
+          "graph_relevance": 0.7887364029884338,
+          "graph_novelty": 0.2107162535190582,
+          "graph_recency": 0.632,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 6,
+        "id": "11812816_C9",
+        "rrf_score": 0.143036,
+        "s2_signals": {
+          "graph_relevance": 0.7186070382595062,
+          "graph_novelty": 0.27626358568668363,
+          "graph_recency": 0.576,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 7,
+        "id": "11812816_C10",
+        "rrf_score": 0.142555,
+        "s2_signals": {
+          "graph_relevance": 0.7339264452457428,
+          "graph_novelty": 0.2634688764810562,
+          "graph_recency": 0.568,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 8,
+        "id": "11812816_C16",
+        "rrf_score": 0.141527,
+        "s2_signals": {
+          "graph_relevance": 0.798930287361145,
+          "graph_novelty": 0.2084420084953308,
+          "graph_recency": 0.5599999999999999,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 9,
+        "id": "11812816_C17",
+        "rrf_score": 0.141489,
+        "s2_signals": {
+          "graph_relevance": 0.8086831867694855,
+          "graph_novelty": 0.20135174989700322,
+          "graph_recency": 0.5599999999999999,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 10,
+        "id": "11812816_C11",
+        "rrf_score": 0.114085,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      }
+    ]
+  },
+  {
+    "paper_id": "11812822",
+    "pool_size": 14,
+    "gt_matched": 1,
+    "ranked": [
+      {
+        "rank": 1,
+        "id": "11812822_A1",
+        "rrf_score": 0.116393,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 2,
+        "id": "11812822_Bgap1",
+        "rrf_score": 0.116393,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 3,
+        "id": "11812822_A2",
+        "rrf_score": 0.116129,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 4,
+        "id": "11812822_Bgap2",
+        "rrf_score": 0.116129,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 5,
+        "id": "11812822_A3",
+        "rrf_score": 0.115873,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 6,
+        "id": "11812822_Bgap3",
+        "rrf_score": 0.115873,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 7,
+        "id": "11812822_A4",
+        "rrf_score": 0.115625,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 8,
+        "id": "11812822_Btheme1",
+        "rrf_score": 0.115625,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 9,
+        "id": "11812822_A5",
+        "rrf_score": 0.115385,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 10,
+        "id": "11812822_Btheme2",
+        "rrf_score": 0.115385,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      }
+    ]
+  },
+  {
+    "paper_id": "11812839",
+    "pool_size": 22,
+    "gt_matched": 1,
+    "ranked": [
+      {
+        "rank": 1,
+        "id": "11812839_C2",
+        "rrf_score": 0.139651,
+        "s2_signals": {
+          "graph_relevance": 0.674049973487854,
+          "graph_novelty": 0.32260205447673795,
+          "graph_recency": 0.792,
+          "citation_velocity": 0.6817777777777778
+        }
+      },
+      {
+        "rank": 2,
+        "id": "11812839_C8",
+        "rrf_score": 0.12281,
+        "s2_signals": {
+          "graph_relevance": 0.5902238413691521,
+          "graph_novelty": 0.38785843253135677,
+          "graph_recency": 0.184,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 3,
+        "id": "11812839_C9",
+        "rrf_score": 0.122597,
+        "s2_signals": {
+          "graph_relevance": 0.5902238413691521,
+          "graph_novelty": 0.38785843253135677,
+          "graph_recency": 0.184,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 4,
+        "id": "11812839_C10",
+        "rrf_score": 0.120867,
+        "s2_signals": {
+          "graph_relevance": 0.5944762825965881,
+          "graph_novelty": 0.37715481668710704,
+          "graph_recency": 0.16,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 5,
+        "id": "11812839_A1",
+        "rrf_score": 0.116393,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 6,
+        "id": "11812839_Bgap1",
+        "rrf_score": 0.116393,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 7,
+        "id": "11812839_A2",
+        "rrf_score": 0.116129,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 8,
+        "id": "11812839_Bgap2",
+        "rrf_score": 0.116129,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 9,
+        "id": "11812839_A3",
+        "rrf_score": 0.115873,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 10,
+        "id": "11812839_Btheme1",
+        "rrf_score": 0.115873,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      }
+    ]
+  },
+  {
+    "paper_id": "11812850",
+    "pool_size": 40,
+    "gt_matched": 1,
+    "ranked": [
+      {
+        "rank": 1,
+        "id": "11812850_C1",
+        "rrf_score": 0.15622,
+        "s2_signals": {
+          "graph_relevance": 0.6095644980669022,
+          "graph_novelty": 0.37096960395574574,
+          "graph_recency": 0.8160000000000001,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 2,
+        "id": "11812850_C4",
+        "rrf_score": 0.154196,
+        "s2_signals": {
+          "graph_relevance": 0.7602396309375763,
+          "graph_novelty": 0.2511857628822327,
+          "graph_recency": 0.7600000000000001,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 3,
+        "id": "11812850_C3",
+        "rrf_score": 0.154021,
+        "s2_signals": {
+          "graph_relevance": 0.7256615608930588,
+          "graph_novelty": 0.28528962731361385,
+          "graph_recency": 0.752,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 4,
+        "id": "11812850_C5",
+        "rrf_score": 0.153454,
+        "s2_signals": {
+          "graph_relevance": 0.7211080193519592,
+          "graph_novelty": 0.2882715553045273,
+          "graph_recency": 0.752,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 5,
+        "id": "11812850_C6",
+        "rrf_score": 0.152897,
+        "s2_signals": {
+          "graph_relevance": 0.7061485648155212,
+          "graph_novelty": 0.29675895571708677,
+          "graph_recency": 0.752,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 6,
+        "id": "11812850_C7",
+        "rrf_score": 0.149967,
+        "s2_signals": {
+          "graph_relevance": 0.6820636987686157,
+          "graph_novelty": 0.3147592693567276,
+          "graph_recency": 0.704,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 7,
+        "id": "11812850_C8",
+        "rrf_score": 0.149582,
+        "s2_signals": {
+          "graph_relevance": 0.6768849343061447,
+          "graph_novelty": 0.33262768387794495,
+          "graph_recency": 0.6880000000000001,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 8,
+        "id": "11812850_C9",
+        "rrf_score": 0.148424,
+        "s2_signals": {
+          "graph_relevance": 0.701702430844307,
+          "graph_novelty": 0.3049158066511154,
+          "graph_recency": 0.672,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 9,
+        "id": "11812850_C11",
+        "rrf_score": 0.146644,
+        "s2_signals": {
+          "graph_relevance": 0.6775759309530258,
+          "graph_novelty": 0.3336049288511276,
+          "graph_recency": 0.64,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 10,
+        "id": "11812850_C12",
+        "rrf_score": 0.145493,
+        "s2_signals": {
+          "graph_relevance": 0.6984317451715469,
+          "graph_novelty": 0.3096485555171966,
+          "graph_recency": 0.624,
+          "citation_velocity": 1.0
+        }
+      }
+    ]
+  },
+  {
+    "paper_id": "11812852",
+    "pool_size": 106,
+    "gt_matched": 2,
+    "ranked": [
+      {
+        "rank": 1,
+        "id": "11812852_C2",
+        "rrf_score": 0.159959,
+        "s2_signals": {
+          "graph_relevance": 0.6994151026010513,
+          "graph_novelty": 0.28918425440788265,
+          "graph_recency": 0.8880000000000001,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 2,
+        "id": "11812852_C26",
+        "rrf_score": 0.151706,
+        "s2_signals": {
+          "graph_relevance": 0.7362483888864517,
+          "graph_novelty": 0.25731119811534886,
+          "graph_recency": 0.808,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 3,
+        "id": "11812852_C31",
+        "rrf_score": 0.15123,
+        "s2_signals": {
+          "graph_relevance": 0.7808763086795807,
+          "graph_novelty": 0.23994158506393437,
+          "graph_recency": 0.784,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 4,
+        "id": "11812852_C27",
+        "rrf_score": 0.151207,
+        "s2_signals": {
+          "graph_relevance": 0.7117569148540497,
+          "graph_novelty": 0.27449122071266174,
+          "graph_recency": 0.808,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 5,
+        "id": "11812852_C41",
+        "rrf_score": 0.145331,
+        "s2_signals": {
+          "graph_relevance": 0.6735071241855621,
+          "graph_novelty": 0.3070919185876846,
+          "graph_recency": 0.7280000000000001,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 6,
+        "id": "11812852_C49",
+        "rrf_score": 0.141582,
+        "s2_signals": {
+          "graph_relevance": 0.6748940646648407,
+          "graph_novelty": 0.30125712454319,
+          "graph_recency": 0.6719999999999999,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 7,
+        "id": "11812852_A1",
+        "rrf_score": 0.116393,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 8,
+        "id": "11812852_Bgap1",
+        "rrf_score": 0.116393,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 9,
+        "id": "11812852_A2",
+        "rrf_score": 0.116129,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 10,
+        "id": "11812852_Bgap2",
+        "rrf_score": 0.116129,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      }
+    ]
+  },
+  {
+    "paper_id": "11812885",
+    "pool_size": 23,
+    "gt_matched": 1,
+    "ranked": [
+      {
+        "rank": 1,
+        "id": "11812885_C4",
+        "rrf_score": 0.161274,
+        "s2_signals": {
+          "graph_relevance": 0.9039588868618011,
+          "graph_novelty": 0.10168141722679136,
+          "graph_recency": 0.9199999999999999,
+          "citation_velocity": 0.9873333333333334
+        }
+      },
+      {
+        "rank": 2,
+        "id": "11812885_C2",
+        "rrf_score": 0.136131,
+        "s2_signals": {
+          "graph_relevance": 0.8967937231063843,
+          "graph_novelty": 0.09757815003395076,
+          "graph_recency": 0.9359999999999999,
+          "citation_velocity": 0.4696666666666667
+        }
+      },
+      {
+        "rank": 3,
+        "id": "11812885_C7",
+        "rrf_score": 0.129736,
+        "s2_signals": {
+          "graph_relevance": 0.8589000403881073,
+          "graph_novelty": 0.09411017894744877,
+          "graph_recency": 0.9359999999999999,
+          "citation_velocity": 0.4072
+        }
+      },
+      {
+        "rank": 4,
+        "id": "11812885_C1",
+        "rrf_score": 0.11988,
+        "s2_signals": {
+          "graph_relevance": 0.8893426060676575,
+          "graph_novelty": 0.06537899971008299,
+          "graph_recency": 0.976,
+          "citation_velocity": 0.139
+        }
+      },
+      {
+        "rank": 5,
+        "id": "11812885_C6",
+        "rrf_score": 0.118023,
+        "s2_signals": {
+          "graph_relevance": 0.9089631140232086,
+          "graph_novelty": 0.05880703926086428,
+          "graph_recency": 0.944,
+          "citation_velocity": 0.14566666666666667
+        }
+      },
+      {
+        "rank": 6,
+        "id": "11812885_C3",
+        "rrf_score": 0.117878,
+        "s2_signals": {
+          "graph_relevance": 0.9042979180812836,
+          "graph_novelty": 0.0701362729072571,
+          "graph_recency": 0.952,
+          "citation_velocity": 0.11366666666666665
+        }
+      },
+      {
+        "rank": 7,
+        "id": "11812885_A1",
+        "rrf_score": 0.116393,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 8,
+        "id": "11812885_Bgap1",
+        "rrf_score": 0.116393,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 9,
+        "id": "11812885_A2",
+        "rrf_score": 0.116129,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 10,
+        "id": "11812885_Bgap2",
+        "rrf_score": 0.116129,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      }
+    ]
+  },
+  {
+    "paper_id": "11816094",
+    "pool_size": 28,
+    "gt_matched": 0,
+    "ranked": [
+      {
+        "rank": 1,
+        "id": "11816094_C12",
+        "rrf_score": 0.153378,
+        "s2_signals": {
+          "graph_relevance": 0.8827151358127594,
+          "graph_novelty": 0.11506549119949339,
+          "graph_recency": 0.792,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 2,
+        "id": "11816094_C2",
+        "rrf_score": 0.118204,
+        "s2_signals": {
+          "graph_relevance": 0.9007722735404968,
+          "graph_novelty": 0.11125491261482234,
+          "graph_recency": 0.944,
+          "citation_velocity": 0.08546666666666666
+        }
+      },
+      {
+        "rank": 3,
+        "id": "11816094_A1",
+        "rrf_score": 0.116393,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 4,
+        "id": "11816094_Bgap1",
+        "rrf_score": 0.116393,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 5,
+        "id": "11816094_C4",
+        "rrf_score": 0.116221,
+        "s2_signals": {
+          "graph_relevance": 0.9190892577171326,
+          "graph_novelty": 0.09352962970733647,
+          "graph_recency": 0.9279999999999999,
+          "citation_velocity": 0.0713
+        }
+      },
+      {
+        "rank": 6,
+        "id": "11816094_A2",
+        "rrf_score": 0.116129,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 7,
+        "id": "11816094_Bgap2",
+        "rrf_score": 0.116129,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 8,
+        "id": "11816094_A3",
+        "rrf_score": 0.115873,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 9,
+        "id": "11816094_Btheme1",
+        "rrf_score": 0.115873,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 10,
+        "id": "11816094_A4",
+        "rrf_score": 0.115625,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      }
+    ]
+  },
+  {
+    "paper_id": "11816103",
+    "pool_size": 21,
+    "gt_matched": 1,
+    "ranked": [
+      {
+        "rank": 1,
+        "id": "11816103_C1",
+        "rrf_score": 0.118219,
+        "s2_signals": {
+          "graph_relevance": 0.9559426605701447,
+          "graph_novelty": 0.07500020265579221,
+          "graph_recency": 0.9119999999999999,
+          "citation_velocity": 0.09356666666666666
+        }
+      },
+      {
+        "rank": 2,
+        "id": "11816103_C2",
+        "rrf_score": 0.117567,
+        "s2_signals": {
+          "graph_relevance": 0.9359528422355652,
+          "graph_novelty": 0.08724462985992432,
+          "graph_recency": 0.9119999999999999,
+          "citation_velocity": 0.09356666666666666
+        }
+      },
+      {
+        "rank": 3,
+        "id": "11816103_Bgap1",
+        "rrf_score": 0.116459,
+        "s2_signals": {
+          "graph_relevance": 0.9389476180076599,
+          "graph_novelty": 0.10079576373100285,
+          "graph_recency": 0.8640000000000001,
+          "citation_velocity": 0.09756666666666666
+        }
+      },
+      {
+        "rank": 4,
+        "id": "11816103_A1",
+        "rrf_score": 0.116393,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 5,
+        "id": "11816103_A2",
+        "rrf_score": 0.116129,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 6,
+        "id": "11816103_Bgap2",
+        "rrf_score": 0.116129,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 7,
+        "id": "11816103_A3",
+        "rrf_score": 0.115873,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 8,
+        "id": "11816103_Btheme1",
+        "rrf_score": 0.115873,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 9,
+        "id": "11816103_A4",
+        "rrf_score": 0.115625,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 10,
+        "id": "11816103_Btheme2",
+        "rrf_score": 0.115625,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      }
+    ]
+  },
+  {
+    "paper_id": "11816106",
+    "pool_size": 30,
+    "gt_matched": 3,
+    "ranked": [
+      {
+        "rank": 1,
+        "id": "11816106_C8",
+        "rrf_score": 0.120395,
+        "s2_signals": {
+          "graph_relevance": 0.9061577618122101,
+          "graph_novelty": 0.09029320478439329,
+          "graph_recency": 0.9119999999999999,
+          "citation_velocity": 0.20533333333333334
+        }
+      },
+      {
+        "rank": 2,
+        "id": "11816106_C1",
+        "rrf_score": 0.116845,
+        "s2_signals": {
+          "graph_relevance": 0.8845686912536621,
+          "graph_novelty": 0.09646957516670229,
+          "graph_recency": 0.984,
+          "citation_velocity": 0.044000000000000004
+        }
+      },
+      {
+        "rank": 3,
+        "id": "11816106_C6",
+        "rrf_score": 0.116691,
+        "s2_signals": {
+          "graph_relevance": 0.9538530111312866,
+          "graph_novelty": 0.05653609633445744,
+          "graph_recency": 0.9279999999999999,
+          "citation_velocity": 0.0924
+        }
+      },
+      {
+        "rank": 4,
+        "id": "11816106_C2",
+        "rrf_score": 0.116566,
+        "s2_signals": {
+          "graph_relevance": 0.9251861274242401,
+          "graph_novelty": 0.07474707961082461,
+          "graph_recency": 0.976,
+          "citation_velocity": 0.032799999999999996
+        }
+      },
+      {
+        "rank": 5,
+        "id": "11816106_A1",
+        "rrf_score": 0.116393,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 6,
+        "id": "11816106_Bgap1",
+        "rrf_score": 0.116393,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 7,
+        "id": "11816106_A2",
+        "rrf_score": 0.116129,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 8,
+        "id": "11816106_Bgap2",
+        "rrf_score": 0.116129,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 9,
+        "id": "11816106_A3",
+        "rrf_score": 0.115873,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      },
+      {
+        "rank": 10,
+        "id": "11816106_Bgap3",
+        "rrf_score": 0.115873,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      }
+    ]
+  },
+  {
+    "paper_id": "11816194",
+    "pool_size": 64,
+    "gt_matched": 1,
+    "ranked": [
+      {
+        "rank": 1,
+        "id": "11816194_C9",
+        "rrf_score": 0.152238,
+        "s2_signals": {
+          "graph_relevance": 0.5887264236807823,
+          "graph_novelty": 0.39817460179328923,
+          "graph_recency": 0.768,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 2,
+        "id": "11816194_C12",
+        "rrf_score": 0.151252,
+        "s2_signals": {
+          "graph_relevance": 0.6001671552658081,
+          "graph_novelty": 0.3871029898524284,
+          "graph_recency": 0.76,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 3,
+        "id": "11816194_C13",
+        "rrf_score": 0.150383,
+        "s2_signals": {
+          "graph_relevance": 0.5557235032320023,
+          "graph_novelty": 0.42595557272434237,
+          "graph_recency": 0.752,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 4,
+        "id": "11816194_C25",
+        "rrf_score": 0.149279,
+        "s2_signals": {
+          "graph_relevance": 0.7467354387044907,
+          "graph_novelty": 0.25155949294567104,
+          "graph_recency": 0.752,
+          "citation_velocity": 1.0
+        }
+      },
+      {
+        "rank": 5,
+        "id": "11816194_C4",
+        "rrf_score": 0.147124,
+        "s2_signals": {
+          "graph_relevance": 0.6035193130373955,
+          "graph_novelty": 0.3945988565683365,
+          "graph_recency": 0.808,
+          "citation_velocity": 0.8238666666666667
+        }
+      },
+      {
+        "rank": 6,
+        "id": "11816194_C5",
+        "rrf_score": 0.146127,
+        "s2_signals": {
+          "graph_relevance": 0.5759230405092239,
+          "graph_novelty": 0.4110530480742455,
+          "graph_recency": 0.808,
+          "citation_velocity": 0.8198666666666666
+        }
+      },
+      {
+        "rank": 7,
+        "id": "11816194_C6",
+        "rrf_score": 0.14558,
+        "s2_signals": {
+          "graph_relevance": 0.5730715170502663,
+          "graph_novelty": 0.40762825608253483,
+          "graph_recency": 0.808,
+          "citation_velocity": 0.8198666666666665
+        }
+      },
+      {
+        "rank": 8,
+        "id": "11816194_C8",
+        "rrf_score": 0.14426,
+        "s2_signals": {
+          "graph_relevance": 0.614701509475708,
+          "graph_novelty": 0.37837951481342313,
+          "graph_recency": 0.784,
+          "citation_velocity": 0.8140000000000001
+        }
+      },
+      {
+        "rank": 9,
+        "id": "11816194_C10",
+        "rrf_score": 0.142983,
+        "s2_signals": {
+          "graph_relevance": 0.6222301200032234,
+          "graph_novelty": 0.3737721920013428,
+          "graph_recency": 0.768,
+          "citation_velocity": 0.809952380952381
+        }
+      },
+      {
+        "rank": 10,
+        "id": "11816194_C14",
+        "rrf_score": 0.14229,
+        "s2_signals": {
+          "graph_relevance": 0.6205377206206322,
+          "graph_novelty": 0.3690383568406105,
+          "graph_recency": 0.76,
+          "citation_velocity": 0.825952380952381
+        }
+      }
+    ]
+  },
+  {
+    "paper_id": "11816205",
+    "pool_size": 13,
+    "gt_matched": 0,
+    "ranked": [
+      {
+        "rank": 1,
+        "id": "11816205_C1",
+        "rrf_score": 0.1122,
+        "s2_signals": {
+          "graph_relevance": 0.9259982705116272,
+          "graph_novelty": 0.07847531437873845,
+          "graph_recency": 0.8479999999999999,
+          "citation_velocity": 0.06366666666666668
+        }
+      },
+      {
+        "rank": 2,
+        "id": "11816205_A1",
+        "rrf_score": 0.016393,
+        "s2_signals": {}
+      },
+      {
+        "rank": 3,
+        "id": "11816205_Bgap1",
+        "rrf_score": 0.016393,
+        "s2_signals": {}
+      },
+      {
+        "rank": 4,
+        "id": "11816205_A2",
+        "rrf_score": 0.016129,
+        "s2_signals": {}
+      },
+      {
+        "rank": 5,
+        "id": "11816205_Bgap2",
+        "rrf_score": 0.016129,
+        "s2_signals": {}
+      },
+      {
+        "rank": 6,
+        "id": "11816205_A3",
+        "rrf_score": 0.015873,
+        "s2_signals": {}
+      },
+      {
+        "rank": 7,
+        "id": "11816205_Btheme1",
+        "rrf_score": 0.015873,
+        "s2_signals": {}
+      },
+      {
+        "rank": 8,
+        "id": "11816205_A4",
+        "rrf_score": 0.015625,
+        "s2_signals": {}
+      },
+      {
+        "rank": 9,
+        "id": "11816205_Btheme2",
+        "rrf_score": 0.015625,
+        "s2_signals": {}
+      },
+      {
+        "rank": 10,
+        "id": "11816205_A5",
+        "rrf_score": 0.015385,
+        "s2_signals": {}
+      }
+    ]
+  },
+  {
+    "paper_id": "11816211",
+    "pool_size": 31,
+    "gt_matched": 0,
+    "ranked": [
+      {
+        "rank": 1,
+        "id": "11816211_C14",
+        "rrf_score": 0.122541,
+        "s2_signals": {
+          "graph_relevance": 0.8538600206375122,
+          "graph_novelty": 0.12082394361495974,
+          "graph_recency": 0.8240000000000001,
+          "citation_velocity": 0.3818571428571429
+        }
+      },
+      {
+        "rank": 2,
+        "id": "11816211_C6",
+        "rrf_score": 0.122253,
+        "s2_signals": {
+          "graph_relevance": 0.921562910079956,
+          "graph_novelty": 0.09410342574119568,
+          "graph_recency": 0.9119999999999999,
+          "citation_velocity": 0.21435714285714286
+        }
+      },
+      {
+        "rank": 3,
+        "id": "11816211_C10",
+        "rrf_score": 0.119261,
+        "s2_signals": {
+          "graph_relevance": 0.8918960094451904,
+          "graph_novelty": 0.10945965647697453,
+          "graph_recency": 0.8560000000000001,
+          "citation_velocity": 0.24215714285714285
+        }
+      },
+      {
+        "rank": 4,
+        "id": "11816211_C4",
+        "rrf_score": 0.119074,
+        "s2_signals": {
+          "graph_relevance": 0.9087859690189362,
+          "graph_novelty": 0.09499461054801939,
+          "graph_recency": 0.944,
+          "citation_velocity": 0.12120000000000002
+        }
+      },
+      {
+        "rank": 5,
+        "id": "11816211_C8",
+        "rrf_score": 0.118912,
+        "s2_signals": {
+          "graph_relevance": 0.9082669615745544,
+          "graph_novelty": 0.09139218330383303,
+          "graph_recency": 0.9119999999999999,
+          "citation_velocity": 0.17246666666666666
+        }
+      },
+      {
+        "rank": 6,
+        "id": "11816211_C11",
+        "rrf_score": 0.118761,
+        "s2_signals": {
+          "graph_relevance": 0.9192006587982178,
+          "graph_novelty": 0.08672292232513423,
+          "graph_recency": 0.8560000000000001,
+          "citation_velocity": 0.23160952380952382
+        }
+      },
+      {
+        "rank": 7,
+        "id": "11816211_C13",
+        "rrf_score": 0.118429,
+        "s2_signals": {
+          "graph_relevance": 0.8559752702713013,
+          "graph_novelty": 0.10768520832061768,
+          "graph_recency": 0.8480000000000001,
+          "citation_velocity": 0.28295000000000003
+        }
+      },
+      {
+        "rank": 8,
+        "id": "11816211_C3",
+        "rrf_score": 0.117157,
+        "s2_signals": {
+          "graph_relevance": 0.9048123061656952,
+          "graph_novelty": 0.11172104477882383,
+          "graph_recency": 0.9359999999999999,
+          "citation_velocity": 0.07314285714285713
+        }
+      },
+      {
+        "rank": 9,
+        "id": "11816211_C2",
+        "rrf_score": 0.116929,
+        "s2_signals": {
+          "graph_relevance": 0.903503954410553,
+          "graph_novelty": 0.09898837804794314,
+          "graph_recency": 0.968,
+          "citation_velocity": 0.0455
+        }
+      },
+      {
+        "rank": 10,
+        "id": "11816211_A1",
+        "rrf_score": 0.116393,
+        "s2_signals": {
+          "graph_relevance": 0.5,
+          "graph_novelty": 0.5,
+          "graph_recency": 0.5,
+          "citation_velocity": 0.5
+        }
+      }
+    ]
+  }
+]
