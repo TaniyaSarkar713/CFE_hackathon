@@ -603,6 +603,35 @@ def test_entity_rerank_core_on_sets():
     assert info["a"]["gap_hits"] == 2 and info["b"]["gap_hits"] == 0
 
 
+# --- White-space gap-bridging generator ------------------------------------- #
+def test_whitespace_generates_adjacent_bridges():
+    from rank_fusion import whitespace_candidates, whitespace_source
+    seed = {"sexit", "school"}
+    neighbors = [
+        "sexit and intellectual disabilities in youth care",
+        "sexit screening for youth with intellectual disabilities",
+        "unrelated quantum computing error correction codes",   # non-adjacent
+    ]
+    cands = whitespace_candidates(seed, neighbors, min_support=2,
+                                  max_df_ratio=1.0, top_k=10)
+    ents = {c.entity for c in cands}
+    assert any("disabilities" in e for e in ents)       # adjacent+recurring bridge
+    assert not any("quantum" in e for e in ents)         # non-adjacent -> excluded
+    assert all(c.connects for c in cands)                # every bridge ties to the seed
+    assert whitespace_source(cands)[0].startswith("Investigate")
+
+
+def test_whitespace_prefers_sparse_over_ubiquitous():
+    from rank_fusion import whitespace_candidates
+    # 'rarebridge' co-occurs with seed in 2 of 10 docs (sparse, tight);
+    # 'common' co-occurs with seed but appears almost everywhere (generic)
+    seed = {"seed"}
+    docs = ["seed rarebridge"] * 2 + ["seed common filler%d" % i for i in range(8)]
+    cands = whitespace_candidates(seed, docs, min_support=2, max_df_ratio=1.0, top_k=10)
+    by = {c.entity: c.score for c in cands}
+    assert by.get("rarebridge", 0) > by.get("common", 0)   # sparse beats ubiquitous
+
+
 if __name__ == "__main__":
     import warnings
     warnings.filterwarnings("ignore")

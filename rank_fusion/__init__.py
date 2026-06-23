@@ -64,6 +64,9 @@ from .select import (
 from .entities import (
     keyphrases, entity_rerank, entity_rerank_texts, rerank_s2_source,
 )
+from .whitespace import (
+    WhitespaceCandidate, whitespace_candidates, whitespace_source,
+)
 from .diversity import (
     mmr_rerank, make_mmr_rank_fn, feature_embedding_sim, cosine_sim_callable,
 )
@@ -92,6 +95,7 @@ __all__ = [
     "build_consensus_query", "CONSENSUS_KEYS",
     "compare_strategies", "select_best_strategy", "strategy_rank_fns",
     "keyphrases", "entity_rerank", "entity_rerank_texts", "rerank_s2_source",
+    "WhitespaceCandidate", "whitespace_candidates", "whitespace_source",
     "mmr_rerank", "make_mmr_rank_fn", "feature_embedding_sim", "cosine_sim_callable",
     "swiss_tournament", "comparator_from_scores",
     "dedup_candidates", "embed_minilm",

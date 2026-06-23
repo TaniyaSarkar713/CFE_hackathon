@@ -26,6 +26,11 @@ be been being this that these those it its their our we they he she his her them
 study studies research future work directions direction need needs needed should could may might
 can will would also further more using used use based approach method methods results data paper
 among across between through over under about via per such other others including include included
+how why what when where which who whose toward towards given however therefore thus hence overall
+focus focuses focused focusing emphasis emphasise consideration considerations working work worked
+particular particularly specific specifically various several different key important role context
+analysis analyses analyse analyze understanding understand assessment evaluate evaluation evaluating
+high low new novel current existing potential significant relevant related associated within
 """.split())
 
 _TOKEN = re.compile(r"[a-z][a-z0-9\-]{2,}")
