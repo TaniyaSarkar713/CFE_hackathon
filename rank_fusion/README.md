@@ -22,6 +22,7 @@ retrieval / citation ────┘         └─► learned meta-ranker (stre
 | `significance.py` | **System-comparison rigor** — `paired_bootstrap_delta`, `paired_ttest` / `welch_ttest`, `bonferroni`, and `compare_to_baseline` ("is the MRR gain real after correction?"). |
 | `matching.py` | **The §1 match function** — `match_relevance` with a pluggable `embed_fn` (TF-IDF default; SPECTER2/SciBERT = the D4 dependency) + optional entailment judge (D5), and `calibrate_tau`. |
 | `agent.py` | **Autonomous candidate-harvesting agent** — runs Naz's S2 client in a tool-loop to read neighbours' keywords + future directions, adds non-duplicate candidates, and **stops when coverage of the paper's gaps stops improving**. The one agentic component; everything downstream stays a deterministic workflow. |
+| `integrate.py` | **Adapters into fusion** — `pool_to_query` (agent pool → `Query`), and `graph_signal_fn` / `attach_features` / `add_horizon_source` to feed Naz's S2 graph signals in as features, an extra RRF source, or meta-ranker features. |
 | `fusion.py` | **Weighted RRF** `Σ_a w_a/(k_a+r_a(c)) + β·x(c)` — per-source `k_a` and an additive feature term (Level 2), plus Borda & CombSUM baselines. |
 | `optimize.py` | **MRR-driven tuning** — random search + coordinate ascent over `(w, k)` to maximise **dev** MRR, optionally **cost-aware** `MRR − λ·cost` (Level 5). |
 | `meta_ranker.py` | **Learned meta-ranker** — pointwise logistic (or LightGBM `LGBMRanker`) over rank-fusion + agreement features; selected by dev MRR (Level 3). |
@@ -37,7 +38,23 @@ Top-level demos: **`run_synthetic.py`** (staged Level 1→5 ablation with CIs),
 **`run_realdata.py`** (MRR on the real `Data/` files + tau sweep),
 **`run_explain.py`** (Direction Cards), **`run_diversity.py`** (MMR + Swiss
 tournament + dedup), **`run_significance.py`** (paired-bootstrap + Bonferroni
-+ ranker separation), and **`run_candidate_agent.py`** (the autonomous agent).
++ ranker separation), **`run_candidate_agent.py`** (the autonomous agent), and
+**`run_integration.py`** (agent output + S2 graph signals → fusion).
+
+## Incorporating the agent output and S2 graph signals (`integrate.py`)
+
+Both upstream outputs enter through the `Query` contract:
+
+- **Agent pool → fusion.** `pool_to_query(query_id, agent_pool, paper_text, gt_texts)`
+  builds a `Query`: candidate ids, a `retrieval` ranking (similarity to the paper —
+  the agent is one fusion source), provenance in `candidate_sources`, and the eval
+  `relevance`. GPT/Claude lists slot into `rankings` when they exist.
+- **S2 graph signals → fusion** (Naz's `GraphSignalExtractor` → `graph_signal_fn`):
+  written onto `Query.features`, they enter three ways — (a) an extra RRF source
+  `add_horizon_source`, (b) the RRF feature-bias term `make_rrf_rank_fn(beta=...)`,
+  (c) learned features `MetaRanker(extra_feature_keys=HORIZON_KEYS)` — and render
+  as Direction-Card horizon badges automatically. In the demo an informative
+  signal lifts test MRR 0.31→0.45 (RRF source) and 0.41→0.64 (meta-ranker feature).
 
 ## Candidate-harvesting agent (the one agentic component)
 

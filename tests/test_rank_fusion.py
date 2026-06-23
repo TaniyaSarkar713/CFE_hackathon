@@ -429,6 +429,58 @@ def test_agent_evaluate_pool_recall():
     assert ev["recall"] == 1.0 and ev["n_covered_gt"] == 1
 
 
+# --- Integration: agent output + S2 graph signals -> rank fusion ------------ #
+def test_pool_to_query_from_agent_output():
+    from rank_fusion import Candidate, pool_to_query
+    cands = [Candidate("c0", "Evaluate across multiple datasets for generalization",
+                       [], "search:gap0", "A"),
+             Candidate("c1", "Develop a decision support tool for policymakers",
+                       [], "expand:X", "B")]
+    q = pool_to_query("P1", cands, paper_text="datasets generalization evaluation",
+                      gt_texts=["Evaluate on more datasets to test generalization"],
+                      tau=0.05)
+    assert q.candidate_ids == ["c0", "c1"]
+    assert set(q.rankings["retrieval"]) == {"c0", "c1"}
+    assert q.rankings["retrieval"][0] == "c0"          # most similar to the paper
+    assert "agent_search" in q.candidate_sources and "agent_expand" in q.candidate_sources
+    assert q.has_ground_truth()                        # c0 matches the GT
+
+
+def test_add_horizon_source_from_features():
+    from rank_fusion import Query, add_horizon_source
+    q = Query("p", ["a", "b"], {}, {}, features={
+        "a": {"recency": 0.9, "novelty": 0.8, "popularity": 0.1, "relevance": 0.7},
+        "b": {"recency": 0.1, "novelty": 0.1, "popularity": 0.1, "relevance": 0.1}})
+    add_horizon_source(q)
+    assert q.rankings["horizon"] == ["a", "b"]         # a has higher horizon_prior
+
+
+def test_graph_signal_fn_maps_names():
+    from rank_fusion import graph_signal_fn
+
+    class FakeExt:
+        def signals_for_text(self, text, ctx, top_k=5):
+            return {"graph_relevance": 0.7, "graph_novelty": 0.4,
+                    "graph_recency": 0.6, "citation_velocity": 0.3}
+
+    sig = graph_signal_fn(FakeExt(), ctx=None)("a direction")
+    assert sig["relevance"] == 0.7 and sig["popularity"] == 0.3
+    assert sig["recency"] == 0.6 and sig["novelty"] == 0.4
+
+
+def test_meta_ranker_consumes_query_features():
+    from rank_fusion import make_synthetic_dataset, linear_shap
+    from rank_fusion.meta_ranker import MetaRanker
+    ds = make_synthetic_dataset(n_papers=150, attach_features=True, seed=7)
+    src = ds.all_sources()
+    mr = MetaRanker(src, extra_feature_keys=["sim_to_paper", "novelty"]).fit(ds.train)
+    assert "sim_to_paper" in mr.feature_names and "novelty" in mr.feature_names
+    ranked = mr.rank_fn()(ds.test[0])
+    assert set(ranked) == set(ds.test[0].candidate_ids)   # valid permutation
+    shap = linear_shap(mr, ds.test[0], ds.test[0].candidate_ids[0])
+    assert any(k in ("sim_to_paper", "novelty") for k in shap)
+
+
 if __name__ == "__main__":
     import warnings
     warnings.filterwarnings("ignore")

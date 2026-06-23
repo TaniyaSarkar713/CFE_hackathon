@@ -38,6 +38,10 @@ from .agent import (
     CandidateHarvestAgent, AgentConfig, AgentState, Action, Candidate,
     evaluate_pool, candidate_texts_from_paper, keywords_of,
 )
+from .integrate import (
+    pool_to_query, graph_signal_fn, attach_features, add_horizon_source,
+    horizon_prior, beta_from_horizon_weights, HORIZON_KEYS, GRAPH_SIGNAL_MAP,
+)
 from .explain import (
     DirectionCard, build_direction_card, explain_ranking, render_card_markdown,
     rrf_attribution, linear_shap, ablation_probe, reason_logically,
@@ -65,6 +69,8 @@ __all__ = [
     "match_relevance", "similarity_matrix", "calibrate_tau",
     "CandidateHarvestAgent", "AgentConfig", "AgentState", "Action", "Candidate",
     "evaluate_pool", "candidate_texts_from_paper", "keywords_of",
+    "pool_to_query", "graph_signal_fn", "attach_features", "add_horizon_source",
+    "horizon_prior", "beta_from_horizon_weights", "HORIZON_KEYS", "GRAPH_SIGNAL_MAP",
     "make_candidate_generation_dataset", "make_redundancy_dataset", "DEFAULT_GENERATORS",
     "mmr_rerank", "make_mmr_rank_fn", "feature_embedding_sim", "cosine_sim_callable",
     "swiss_tournament", "comparator_from_scores",

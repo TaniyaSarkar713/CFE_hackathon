@@ -27,7 +27,8 @@ _BIG_RANK = 10_000.0  # rank assigned to a candidate a source did not rank
 # --------------------------------------------------------------------------- #
 # Feature engineering: rank-fusion + agreement features per candidate
 # --------------------------------------------------------------------------- #
-def feature_names(sources: Sequence[str]) -> List[str]:
+def feature_names(sources: Sequence[str],
+                  extra_feature_keys: Optional[Sequence[str]] = None) -> List[str]:
     names: List[str] = []
     for s in sources:
         names += [f"rank_{s}", f"present_{s}", f"rr_{s}"]
@@ -35,12 +36,20 @@ def feature_names(sources: Sequence[str]) -> List[str]:
         "rrf_score", "best_rank", "mean_rank", "rank_std",
         "num_sources", "frac_sources", "disagreement",
     ]
+    if extra_feature_keys:
+        names += list(extra_feature_keys)        # Query.features columns (e.g. graph signals)
     return names
 
 
-def _query_features(query: Query, sources: Sequence[str], k: float = 60.0
+def _query_features(query: Query, sources: Sequence[str], k: float = 60.0,
+                    extra_feature_keys: Optional[Sequence[str]] = None
                     ) -> Tuple[List[str], np.ndarray]:
-    """Return (candidate_ids, feature matrix) for one query."""
+    """Return (candidate_ids, feature matrix) for one query.
+
+    `extra_feature_keys` pulls per-candidate values from `Query.features` (e.g.
+    Semantic Scholar graph signals: recency / popularity / novelty / relevance),
+    appended after the rank-fusion features so the learned ranker can use them.
+    """
     pos: Dict[str, Dict[str, int]] = {}
     for s in sources:
         pos[s] = {d: i for i, d in enumerate(query.rankings.get(s, []), start=1)}
@@ -68,6 +77,9 @@ def _query_features(query: Query, sources: Sequence[str], k: float = 60.0
             rrf_scores.get(d, 0.0), best_rank, mean_rank, rank_std,
             float(num), num / n_src if n_src else 0.0, rank_std,
         ]
+        if extra_feature_keys:
+            fd = query.features.get(d, {})
+            feats += [float(fd.get(key, 0.0)) for key in extra_feature_keys]
         rows.append(feats)
     return cand_ids, np.asarray(rows, dtype=float)
 
@@ -82,13 +94,15 @@ def _labels(query: Query, cand_ids: Sequence[str]) -> np.ndarray:
 # --------------------------------------------------------------------------- #
 class MetaRanker:
     def __init__(self, sources: Sequence[str], model: str = "logistic",
-                 k: float = 60.0, seed: int = 0):
+                 k: float = 60.0, seed: int = 0,
+                 extra_feature_keys: Optional[Sequence[str]] = None):
         self.sources = list(sources)
         self.model_kind = model
         self.k = k
         self.seed = seed
         self.model = None
-        self.feature_names = feature_names(self.sources)
+        self.extra_feature_keys = list(extra_feature_keys) if extra_feature_keys else None
+        self.feature_names = feature_names(self.sources, self.extra_feature_keys)
 
     # -- assemble a design matrix over many queries ------------------------ #
     def _build_xy(self, queries: Sequence[Query]):
@@ -96,7 +110,7 @@ class MetaRanker:
         for q in queries:
             if not q.has_ground_truth():
                 continue
-            cand_ids, X = _query_features(q, self.sources, self.k)
+            cand_ids, X = _query_features(q, self.sources, self.k, self.extra_feature_keys)
             if X.shape[0] == 0:
                 continue
             X_parts.append(X)
@@ -150,7 +164,8 @@ class MetaRanker:
 
     def rank_fn(self):
         def fn(query: Query) -> List[str]:
-            cand_ids, X = _query_features(query, self.sources, self.k)
+            cand_ids, X = _query_features(query, self.sources, self.k,
+                                          self.extra_feature_keys)
             if X.shape[0] == 0:
                 return list(query.candidate_ids)
             scores = self._score_matrix(X)
