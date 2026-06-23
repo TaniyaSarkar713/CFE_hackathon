@@ -41,6 +41,7 @@ from .agent import (
 from .integrate import (
     pool_to_query, graph_signal_fn, attach_features, add_horizon_source,
     horizon_prior, beta_from_horizon_weights, HORIZON_KEYS, GRAPH_SIGNAL_MAP,
+    s2_agent_source, s2_agent_features,
 )
 from .explain import (
     DirectionCard, build_direction_card, explain_ranking, render_card_markdown,
@@ -56,6 +57,15 @@ from .consensus import (
     ConsensusConfig, consensus_score, make_consensus_rank_fn, corpus_mrr_at_k,
     tune_consensus, add_consensus_features, cluster_sources,
     build_consensus_query, CONSENSUS_KEYS,
+)
+from .select import (
+    compare_strategies, select_best_strategy, strategy_rank_fns,
+)
+from .entities import (
+    keyphrases, entity_rerank, entity_rerank_texts, rerank_s2_source,
+)
+from .whitespace import (
+    WhitespaceCandidate, whitespace_candidates, whitespace_source,
 )
 from .diversity import (
     mmr_rerank, make_mmr_rank_fn, feature_embedding_sim, cosine_sim_callable,
@@ -77,11 +87,15 @@ __all__ = [
     "evaluate_pool", "candidate_texts_from_paper", "keywords_of",
     "pool_to_query", "graph_signal_fn", "attach_features", "add_horizon_source",
     "horizon_prior", "beta_from_horizon_weights", "HORIZON_KEYS", "GRAPH_SIGNAL_MAP",
+    "s2_agent_source", "s2_agent_features",
     "make_candidate_generation_dataset", "make_redundancy_dataset",
     "make_consensus_dataset", "DEFAULT_GENERATORS",
     "ConsensusConfig", "consensus_score", "make_consensus_rank_fn", "corpus_mrr_at_k",
     "tune_consensus", "add_consensus_features", "cluster_sources",
     "build_consensus_query", "CONSENSUS_KEYS",
+    "compare_strategies", "select_best_strategy", "strategy_rank_fns",
+    "keyphrases", "entity_rerank", "entity_rerank_texts", "rerank_s2_source",
+    "WhitespaceCandidate", "whitespace_candidates", "whitespace_source",
     "mmr_rerank", "make_mmr_rank_fn", "feature_embedding_sim", "cosine_sim_callable",
     "swiss_tournament", "comparator_from_scores",
     "dedup_candidates", "embed_minilm",

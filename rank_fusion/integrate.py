@@ -136,3 +136,33 @@ def beta_from_horizon_weights(weights: Optional[Dict[str, float]] = None
                               ) -> Dict[str, float]:
     """Build the `beta` dict for `make_rrf_rank_fn(beta=...)` from horizon weights."""
     return dict(weights or DEFAULT_HORIZON_WEIGHTS)
+
+
+# --------------------------------------------------------------------------- #
+# Wire Naz's Agent C (S2 knowledge-graph agent) in as the `s2` fusion source
+# --------------------------------------------------------------------------- #
+def s2_agent_source(agent_output) -> List[str]:
+    """Convert `S2DirectionAgent.run()` output into the `s2` ranked text list.
+
+    `agent_output` is the tuple `(cand_ids, cand_texts, ranked_ids, features)`
+    returned by Naz's Agent C. Returns the candidate **texts** ordered best-first
+    (by the agent's horizon_prior) — ready to drop into `build_consensus_query`'s
+    `source_to_texts["s2"]` so the S2 directions are clustered and fused with the
+    two LLM sources.
+    """
+    cand_ids, cand_texts, ranked_ids, _features = agent_output
+    id2text = dict(zip(cand_ids, cand_texts))
+    return [id2text[c] for c in ranked_ids if c in id2text]
+
+
+def s2_agent_features(agent_output, id_map: Optional[Dict[str, str]] = None
+                      ) -> Dict[str, Dict[str, float]]:
+    """Agent C's per-candidate graph signals, optionally re-keyed to cluster ids.
+
+    Use to also feed the S2 signals (recency/novelty/relevance) into the horizon
+    source or the meta-ranker via `attach_features`.
+    """
+    _ids, _texts, _ranked, features = agent_output
+    if id_map is None:
+        return dict(features)
+    return {id_map[k]: v for k, v in features.items() if k in id_map}

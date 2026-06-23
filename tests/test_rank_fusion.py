@@ -518,6 +518,26 @@ def test_cluster_sources_merges_paraphrases():
     assert len(merged) == 1
 
 
+def test_s2_agent_source_follows_agent_rank():
+    from rank_fusion import s2_agent_source
+    # Agent C output: (cand_ids, cand_texts, ranked_ids, features)
+    out = (["p_C1", "p_C2", "p_C3"], ["beta", "alpha", "gamma"],
+           ["p_C1", "p_C3", "p_C2"], {})
+    assert s2_agent_source(out) == ["beta", "gamma", "alpha"]   # ranked order
+
+
+def test_s2_source_fuses_into_consensus_query():
+    from rank_fusion import build_consensus_query
+    q = build_consensus_query("p", {
+        "llm1": ["evaluate on multiple datasets for generalization"],
+        "llm2": ["test across many datasets"],
+        "s2": ["A study on dataset evaluation across clinical domains"]},
+        gt_texts=["evaluate on more datasets to test generalization"],
+        tau=0.05, threshold=0.5)
+    assert "s2" in q.rankings and q.rankings["s2"]    # the S2 source is fused in
+    assert q.candidate_ids
+
+
 def test_build_consensus_query_end_to_end():
     from rank_fusion import build_consensus_query, CONSENSUS_KEYS
     q = build_consensus_query("p", {
@@ -529,6 +549,87 @@ def test_build_consensus_query_end_to_end():
     assert q.candidate_ids and q.has_ground_truth()
     feats = next(iter(q.features.values()))
     assert all(key in feats for key in CONSENSUS_KEYS)
+
+
+# --- Best-of selection (LLM1 / LLM2 / S2 / fused, by MRR) -------------------- #
+def test_compare_and_select_strategies():
+    from rank_fusion import (make_consensus_dataset, compare_strategies,
+                             select_best_strategy, make_rrf_rank_fn)
+    ds = make_consensus_dataset(n_papers=150, seed=23)
+    src = ds.all_sources()                          # llm1, llm2, s2
+    fused = {"fused:RRF": make_rrf_rank_fn({s: 1.0 for s in src}, 60.0)}
+    rows = compare_strategies(ds.dev, src, fused_rank_fns=fused)
+    assert {r["name"] for r in rows} == {
+        "single:llm1", "single:llm2", "single:s2", "fused:RRF"}
+    assert rows == sorted(rows, key=lambda r: -r["mrr"])     # sorted desc
+    sel = select_best_strategy(ds.dev, src, fused_rank_fns=fused)
+    assert sel["best_dev_mrr"] == rows[0]["mrr"]             # winner tops the table
+    best_single = max(r["mrr"] for r in rows if r["name"].startswith("single:"))
+    assert sel["best_dev_mrr"] >= best_single - 1e-12        # never worse than best single
+
+
+def test_select_falls_back_when_fusion_dilutes():
+    from rank_fusion import Query, select_best_strategy
+    # llm1 is perfect (true 'a' at #1); llm2/s2 bury 'a' -> uniform RRF demotes it
+    qs = [Query(f"p{i}", ["a", "b", "c", "d"],
+                {"llm1": ["a", "b", "c", "d"], "llm2": ["b", "c", "d", "a"],
+                 "s2": ["c", "d", "b", "a"]}, {"g0": {"a"}}) for i in range(15)]
+    sel = select_best_strategy(qs, ["llm1", "llm2", "s2"])
+    assert sel["best_name"] == "single:llm1"                 # falls back to best single
+
+
+# --- Entity-grounded S2 re-ranking ------------------------------------------ #
+def test_entity_rerank_surfaces_gap_aligned():
+    from rank_fusion import entity_rerank_texts
+    gap = ("referral pathways for perpetrators; tailored adaptations for youths "
+           "with intellectual disabilities and limited language proficiency")
+    cands = ["Battery cathode materials optimization for energy storage",
+             "Adapt the tool for youths with intellectual disabilities and language barriers",
+             "Citation network recency trend analysis"]
+    ids = ["c0", "c1", "c2"]
+    ranked, info = entity_rerank_texts(ids, cands, gap)
+    assert ranked[0] == "c1"                       # gap-aligned candidate first
+    assert info["c1"]["gap_hits"] >= 2
+    assert info["c0"]["gap_hits"] == 0             # off-topic -> no gap entities
+
+
+def test_entity_rerank_core_on_sets():
+    from rank_fusion import entity_rerank
+    cand_ents = {"a": {"intellectual disabilities", "language"},
+                 "b": {"battery", "cathode"}}
+    ranked, info = entity_rerank(["a", "b"], cand_ents,
+                                 gap_entities={"intellectual disabilities", "language", "referral"})
+    assert ranked == ["a", "b"]
+    assert info["a"]["gap_hits"] == 2 and info["b"]["gap_hits"] == 0
+
+
+# --- White-space gap-bridging generator ------------------------------------- #
+def test_whitespace_generates_adjacent_bridges():
+    from rank_fusion import whitespace_candidates, whitespace_source
+    seed = {"sexit", "school"}
+    neighbors = [
+        "sexit and intellectual disabilities in youth care",
+        "sexit screening for youth with intellectual disabilities",
+        "unrelated quantum computing error correction codes",   # non-adjacent
+    ]
+    cands = whitespace_candidates(seed, neighbors, min_support=2,
+                                  max_df_ratio=1.0, top_k=10)
+    ents = {c.entity for c in cands}
+    assert any("disabilities" in e for e in ents)       # adjacent+recurring bridge
+    assert not any("quantum" in e for e in ents)         # non-adjacent -> excluded
+    assert all(c.connects for c in cands)                # every bridge ties to the seed
+    assert whitespace_source(cands)[0].startswith("Investigate")
+
+
+def test_whitespace_prefers_sparse_over_ubiquitous():
+    from rank_fusion import whitespace_candidates
+    # 'rarebridge' co-occurs with seed in 2 of 10 docs (sparse, tight);
+    # 'common' co-occurs with seed but appears almost everywhere (generic)
+    seed = {"seed"}
+    docs = ["seed rarebridge"] * 2 + ["seed common filler%d" % i for i in range(8)]
+    cands = whitespace_candidates(seed, docs, min_support=2, max_df_ratio=1.0, top_k=10)
+    by = {c.entity: c.score for c in cands}
+    assert by.get("rarebridge", 0) > by.get("common", 0)   # sparse beats ubiquitous
 
 
 if __name__ == "__main__":
