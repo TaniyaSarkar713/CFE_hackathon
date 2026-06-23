@@ -22,10 +22,13 @@ Usage
   python run.py --paper-id 11812686
 
   # tune weights and evaluate
-  python run.py --api-key YOUR_KEY --tune
+  python run.py --api-key s2k-VqZPfeS1kZk3Mqd5ac7i1PKN0rv15d8wrKm7LNUR --tune
 
   # save output
   python run.py --output results.json
+
+  ### API-key
+  s2k-VqZPfeS1kZk3Mqd5ac7i1PKN0rv15d8wrKm7LNUR
 """
 
 from __future__ import annotations
