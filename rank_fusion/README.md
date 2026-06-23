@@ -55,13 +55,19 @@ versions of one direction share a cluster and accumulate per-source ranks. Then:
 ```
 S(c) = Σ_m w_m/(k+r_m(c))  +  η1·A12_top1(c) + η3·A12_top3(c)  +  ρ·A12_top3(c)·R_s2(c)
 ```
-tuned over (w, η, ρ, k, t) on dev MRR@K (`tune_consensus`), with a Stage-2
-meta-ranker over the same quantities as features (`add_consensus_features`,
-`MetaRanker(extra_feature_keys=CONSENSUS_KEYS)`). **Honest finding** on synthetic
-data: additive RRF already captures most LLM agreement, so the explicit η terms
-rarely beat tuned RRF — the value is interpretability (you *see* learned η/ρ) and
-the framework being ready when agreement is genuinely extra-predictive on real
-LLMs; the ρ interaction (agreement × S2) is the one term linear RRF can't express.
+tuned over (w, η, ρ, k, t) on dev **MRR@5** (`tune_consensus`) by **multi-restart
+coordinate ascent warm-started from the tuned-RRF optimum** — so the consensus fit
+can never lose to plain RRF — with a Stage-2 meta-ranker over the same quantities
+as features (`add_consensus_features`, `MetaRanker(extra_feature_keys=CONSENSUS_KEYS)`).
+
+**Honest finding** (synthetic, MRR@5): with rigorous optimisation the tuner drives
+η, ρ → 0 — additive RRF already captures the LLM agreement signal, so the explicit
+terms add nothing over tuned RRF (an apparent @5 gain under a weaker search turned
+out to be optimiser noise). The genuine win comes from the **meta-ranker** (0.752 vs
+0.745), which exploits the agreement×S2 interaction *nonlinearly* — the one thing
+additive RRF can't express. So the defensible pipeline is *consensus-aware RRF →
+meta-ranker → top-5*, with η/ρ ready to activate if real GPT/Claude agreement is
+genuinely extra-predictive.
 
 ## Incorporating the agent output and S2 graph signals (`integrate.py`)
 

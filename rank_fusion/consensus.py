@@ -109,14 +109,20 @@ def tune_consensus(
     dev_queries: Sequence[Query],
     llm_sources: Tuple[str, str] = ("llm1", "llm2"),
     s2_source: str = "s2",
-    mrr_k: int = 3,
-    n_random: int = 600,
-    coord_rounds: int = 3,
+    mrr_k: int = 5,
+    n_random: int = 400,
+    coord_rounds: int = 6,
+    restarts: int = 4,
     use_consensus_terms: bool = True,
     seed: int = 0,
     verbose: bool = False,
 ) -> ConsensusConfig:
     """Maximise dev MRR@`mrr_k` over the consensus-aware RRF parameters.
+
+    Optimiser: a short random search to seed promising starts, then **multi-
+    restart coordinate ascent** (iterated local search) from the best `restarts`
+    seeds plus a uniform warm-start — robust for this non-convex MRR objective and
+    guarantees the consensus fit is never worse than plain RRF (a sub-case).
 
     `use_consensus_terms=False` pins eta1=eta3=rho=0 -> a plain weighted-RRF
     tuner under the *same* objective, for a fair consensus-vs-RRF baseline.
@@ -127,13 +133,29 @@ def tune_consensus(
     def score(cfg):
         return corpus_mrr_at_k(dev_queries, cfg.rank_fn(), mrr_k)
 
-    best = ConsensusConfig(weights={s: 1.0 for s in srcs}, k=60.0,
-                           llm_sources=llm_sources, s2_source=s2_source)
-    best.dev_mrr = score(best)
-
     k_choices = (1, 2, 5, 10, 20, 60)
     eta_choices = (0.0, 0.25, 0.5, 1.0, 2.0, 4.0) if use_consensus_terms else (0.0,)
     t_choices = (1, 2, 3, 5)
+
+    def uniform_cfg():
+        c = ConsensusConfig(weights={s: 1.0 for s in srcs}, k=60.0,
+                            llm_sources=llm_sources, s2_source=s2_source)
+        c.dev_mrr = score(c)
+        return c
+
+    # warm-start: seed with the fully-tuned plain weighted-RRF config (eta=rho=0)
+    # so the consensus coordinate ascent starts from the RRF optimum and can only
+    # improve on it (never lose to plain RRF). The recursion ends immediately
+    # because the inner call has use_consensus_terms=False.
+    seeds = [uniform_cfg()]
+    if use_consensus_terms:
+        seeds.append(tune_consensus(
+            dev_queries, llm_sources=llm_sources, s2_source=s2_source, mrr_k=mrr_k,
+            n_random=n_random, coord_rounds=coord_rounds, restarts=restarts,
+            use_consensus_terms=False, seed=seed))
+
+    # short random search -> keep the best `restarts` seeds
+    pool: List[ConsensusConfig] = []
     for _ in range(n_random):
         cfg = ConsensusConfig(
             weights={s: round(rng.uniform(0, 2), 3) for s in srcs},
@@ -143,14 +165,29 @@ def tune_consensus(
             llm_sources=llm_sources, s2_source=s2_source)
         if sum(cfg.weights.values()) == 0:
             cfg.weights[srcs[0]] = 1.0
-        m = score(cfg)
-        if m > best.dev_mrr:
-            cfg.dev_mrr = m
-            best = cfg
+        cfg.dev_mrr = score(cfg)
+        pool.append(cfg)
+    pool.sort(key=lambda c: -c.dev_mrr)
+    seeds += pool[:restarts]
 
-    # coordinate ascent on each continuous knob
-    w_grid = [0.0, 0.25, 0.5, 1.0, 1.5, 2.0]
-    for _round in range(coord_rounds):
+    # multi-restart coordinate ascent
+    best = max((_coord_ascent(s0, score, srcs, eta_choices, k_choices,
+                              t_choices, coord_rounds) for s0 in seeds),
+               key=lambda c: c.dev_mrr)
+    if verbose:
+        print(f"  best dev MRR@{mrr_k}={best.dev_mrr:.4f} eta1={best.eta1} "
+              f"eta3={best.eta3} rho={best.rho} t={best.t} "
+              f"w={ {s: round(best.weights[s], 2) for s in srcs} }")
+    return best
+
+
+def _coord_ascent(start: ConsensusConfig, score, srcs, eta_choices, k_choices,
+                  t_choices, rounds: int) -> ConsensusConfig:
+    """Greedy coordinate ascent from `start`; fine weight grid, fixed-point stop."""
+    best = _clone(start)
+    best.dev_mrr = score(best)
+    w_grid = [0.0, 0.1, 0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 2.0]
+    for _round in range(rounds):
         improved = False
 
         def try_set(mutate):
@@ -173,11 +210,6 @@ def tune_consensus(
             try_set(lambda t, c=cand: setattr(t, "k", float(c)))
         for cand in t_choices:
             try_set(lambda t, c=cand: setattr(t, "t", c))
-
-        if verbose:
-            print(f"  [round {_round}] dev MRR@{mrr_k}={best.dev_mrr:.4f} "
-                  f"eta1={best.eta1} eta3={best.eta3} rho={best.rho} "
-                  f"t={best.t} w={ {s: round(best.weights[s], 2) for s in srcs} }")
         if not improved:
             break
     return best

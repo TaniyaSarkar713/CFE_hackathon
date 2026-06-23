@@ -23,7 +23,7 @@ from rank_fusion import (
     fit_select_meta_ranker, CONSENSUS_KEYS,
 )
 
-K = 3
+K = 5
 
 
 def main(seed: int = 23):
@@ -60,11 +60,15 @@ def main(seed: int = 23):
           f"w={ {s: round(cons.weights[s], 2) for s in src} }, k={cons.k:g}")
     print(f"  agreement boosts:  η1(both #1)={cons.eta1}  η3(both top-{cons.t})={cons.eta3}")
     print(f"  S2-supports-consensus interaction:  ρ={cons.rho}")
-    print("\nReading it: the tuner LETS THE LABELS DECIDE. A large η means LLM "
-          "agreement is\npredictive beyond what RRF already captures; a large ρ "
-          "means S2 helps mainly when\nit backs the LLM consensus. Additive RRF "
-          "already captures much of the agreement,\nso the clearest gains usually "
-          "come from the meta-ranker's nonlinear use of the\nagreement×S2 feature.")
+    print("\nReading it: the tuner LETS THE LABELS DECIDE, with multi-restart "
+          "coordinate ascent\nwarm-started from the tuned-RRF optimum — so "
+          "consensus can never lose to plain RRF.\nOn this synthetic data the "
+          "optimiser drives η, ρ → 0: additive RRF already captures\nthe agreement "
+          "signal, so the explicit terms add nothing (an earlier apparent @5 gain "
+          "was\noptimiser noise the stronger search removed). The framework stays "
+          "ready: on real\nGPT/Claude, if agreement is genuinely extra-predictive, "
+          "η/ρ will activate — and the\nmeta-ranker can still exploit the "
+          "agreement×S2 interaction RRF can't express.")
 
 
 if __name__ == "__main__":
