@@ -299,6 +299,238 @@ def test_dedup_removes_duplicate():
     assert kept == ["a", "c"] and rep == {"b": "a"}
 
 
+# --- Significance, separation diagnostic, match function -------------------- #
+def test_paired_bootstrap_detects_real_gap():
+    from rank_fusion import (paired_bootstrap_delta, make_rrf_rank_fn,
+                             make_single_source_rank_fn)
+    ds = make_synthetic_dataset(n_papers=300, seed=7)
+    src = ds.all_sources()
+    fused = make_rrf_rank_fn({s: 1.0 for s in src}, 60.0)
+    weak = make_single_source_rank_fn("citation")   # clearly worse
+    res = paired_bootstrap_delta(ds.queries, fused, weak, n_boot=1000, seed=0)
+    assert res["delta"] > 0 and res["significant"] and res["p_value"] < 0.05
+
+
+def test_paired_bootstrap_no_gap_for_identical():
+    from rank_fusion import paired_bootstrap_delta, make_rrf_rank_fn
+    ds = make_synthetic_dataset(n_papers=150, seed=7)
+    fn = make_rrf_rank_fn({s: 1.0 for s in ds.all_sources()}, 60.0)
+    res = paired_bootstrap_delta(ds.queries, fn, fn, n_boot=500, seed=0)
+    assert abs(res["delta"]) < 1e-9 and not res["significant"]
+
+
+def test_bonferroni_correction():
+    from rank_fusion import bonferroni
+    out = bonferroni([0.01, 0.04], alpha=0.05)   # *2 -> 0.02 sig, 0.08 not
+    assert out[0]["significant"] and not out[1]["significant"]
+
+
+def test_separation_diagnostic():
+    from rank_fusion import topk_bottomk_separation, make_rrf_rank_fn
+    ds = make_synthetic_dataset(n_papers=200, seed=7)
+    fn = make_rrf_rank_fn({s: 1.0 for s in ds.all_sources()}, 60.0)
+    sep = topk_bottomk_separation(ds.queries, fn, k=5)
+    assert sep["gap"] > 0 and sep["top_k_relevance"] > sep["bottom_k_relevance"]
+
+
+def test_match_relevance_and_tau_calibration():
+    from rank_fusion import match_relevance, calibrate_tau
+    cand_ids = ["d1", "d2", "d3"]
+    cand_texts = ["Evaluate on multiple datasets to test generalization",
+                  "Develop a user-friendly decision support tool",
+                  "Quantify long-term outcomes with longitudinal cohorts"]
+    gt = ["Further evaluation across multiple datasets is needed for generalization"]
+    rel = match_relevance(cand_ids, cand_texts, gt, tau=0.05)
+    assert "g0" in rel and "d1" in rel["g0"]      # d1 matches the GT
+    best = calibrate_tau([("multi dataset evaluation", "evaluate on many datasets"),
+                          ("user tool", "quantify health outcomes")], [1, 0])
+    assert 0.0 <= best["tau"] <= 0.5 and best["f1"] >= 0.0
+
+
+# --- Autonomous candidate-harvesting agent ---------------------------------- #
+class _FakeS2:
+    """Canned S2 client: maps (kind, key) -> list of paper dicts."""
+    def __init__(self, table):
+        self.table = table
+    def get_paper(self, cid):
+        return {}
+    def get_citations(self, cid, limit=50):
+        return self.table.get(("cite", cid), [])
+    def get_references(self, cid, limit=50):
+        return self.table.get(("ref", cid), [])
+    def search(self, query, limit=5):
+        for (kind, key), v in self.table.items():
+            if kind == "search" and key in query:
+                return v
+        return []
+
+
+def _paper(pid, fd_title, fd_rationale):
+    return {"paperId": pid, "title": fd_title, "fieldsOfStudy": ["X"],
+            "future_directions": [{"title": fd_title, "rationale": fd_rationale}]}
+
+
+def test_agent_stops_when_all_gaps_covered():
+    from rank_fusion import CandidateHarvestAgent, AgentConfig
+    gaps = ["Establish referral pathways for perpetrators of violence identified by the tool",
+            "Develop tailored adaptations for youths with limited language proficiency"]
+    table = {
+        ("cite", "SEED"): [_paper("A",
+            "Establish referral pathways for perpetrators of violence identified by screening",
+            "create clear referral pathways for perpetrators of violence identified")],
+        ("search", gaps[1]): [_paper("B",
+            "Develop tailored adaptations for youths with limited language proficiency",
+            "tailored language adaptations for youths with limited proficiency")],
+    }
+    agent = CandidateHarvestAgent(_FakeS2(table), AgentConfig(match_tau=0.15))
+    res = agent.run("SEED", gaps)
+    assert res["coverage"]["n_covered"] == 2
+    assert res["stop_reason"] == "all_gaps_covered"
+    assert len(res["pool"]) >= 2
+
+
+def test_agent_stops_on_no_improvement():
+    from rank_fusion import CandidateHarvestAgent, AgentConfig
+    gaps = ["Establish referral pathways for perpetrators of violence",
+            "An entirely unrelated gap about quantum error correction codes"]
+    table = {  # only gap 0 is ever coverable; gap 1 never matches anything
+        ("cite", "SEED"): [_paper("A",
+            "Establish referral pathways for perpetrators of violence",
+            "clear referral pathways for perpetrators of violence")],
+        ("cite", "A"): [_paper("A2", "More on referral pathways for perpetrators",
+                                "referral pathways for perpetrators of violence again")],
+    }
+    agent = CandidateHarvestAgent(_FakeS2(table), AgentConfig(match_tau=0.15, patience=2))
+    res = agent.run("SEED", gaps)
+    assert res["coverage"]["n_covered"] == 1            # only gap 0
+    assert res["stop_reason"].startswith("no_improvement")
+    assert res["s2_calls"] < 30                          # stopped early, didn't burn budget
+
+
+def test_agent_respects_budget():
+    from rank_fusion import CandidateHarvestAgent, AgentConfig
+    gaps = ["gap that is never covered by anything here"]
+    table = {("cite", "SEED"): [_paper("A", "irrelevant topic one", "nothing matching"),
+                                _paper("B", "irrelevant topic two", "still nothing")]}
+    # patience high so it would keep going; budget must be the thing that stops it
+    agent = CandidateHarvestAgent(_FakeS2(table),
+                                  AgentConfig(max_s2_calls=4, patience=99, max_rounds=99))
+    res = agent.run("SEED", gaps)
+    assert res["s2_calls"] <= 4
+    assert res["stop_reason"] in ("budget_exhausted", "frontier_exhausted")
+
+
+def test_agent_evaluate_pool_recall():
+    from rank_fusion import Candidate, evaluate_pool
+    pool = [Candidate("c0", "Evaluate the tool across multiple datasets for generalization",
+                      [], "seed", None)]
+    gt = ["Further evaluation across multiple datasets is needed to test generalization"]
+    ev = evaluate_pool(pool, gt, tau=0.08)
+    assert ev["recall"] == 1.0 and ev["n_covered_gt"] == 1
+
+
+# --- Integration: agent output + S2 graph signals -> rank fusion ------------ #
+def test_pool_to_query_from_agent_output():
+    from rank_fusion import Candidate, pool_to_query
+    cands = [Candidate("c0", "Evaluate across multiple datasets for generalization",
+                       [], "search:gap0", "A"),
+             Candidate("c1", "Develop a decision support tool for policymakers",
+                       [], "expand:X", "B")]
+    q = pool_to_query("P1", cands, paper_text="datasets generalization evaluation",
+                      gt_texts=["Evaluate on more datasets to test generalization"],
+                      tau=0.05)
+    assert q.candidate_ids == ["c0", "c1"]
+    assert set(q.rankings["retrieval"]) == {"c0", "c1"}
+    assert q.rankings["retrieval"][0] == "c0"          # most similar to the paper
+    assert "agent_search" in q.candidate_sources and "agent_expand" in q.candidate_sources
+    assert q.has_ground_truth()                        # c0 matches the GT
+
+
+def test_add_horizon_source_from_features():
+    from rank_fusion import Query, add_horizon_source
+    q = Query("p", ["a", "b"], {}, {}, features={
+        "a": {"recency": 0.9, "novelty": 0.8, "popularity": 0.1, "relevance": 0.7},
+        "b": {"recency": 0.1, "novelty": 0.1, "popularity": 0.1, "relevance": 0.1}})
+    add_horizon_source(q)
+    assert q.rankings["horizon"] == ["a", "b"]         # a has higher horizon_prior
+
+
+def test_graph_signal_fn_maps_names():
+    from rank_fusion import graph_signal_fn
+
+    class FakeExt:
+        def signals_for_text(self, text, ctx, top_k=5):
+            return {"graph_relevance": 0.7, "graph_novelty": 0.4,
+                    "graph_recency": 0.6, "citation_velocity": 0.3}
+
+    sig = graph_signal_fn(FakeExt(), ctx=None)("a direction")
+    assert sig["relevance"] == 0.7 and sig["popularity"] == 0.3
+    assert sig["recency"] == 0.6 and sig["novelty"] == 0.4
+
+
+def test_meta_ranker_consumes_query_features():
+    from rank_fusion import make_synthetic_dataset, linear_shap
+    from rank_fusion.meta_ranker import MetaRanker
+    ds = make_synthetic_dataset(n_papers=150, attach_features=True, seed=7)
+    src = ds.all_sources()
+    mr = MetaRanker(src, extra_feature_keys=["sim_to_paper", "novelty"]).fit(ds.train)
+    assert "sim_to_paper" in mr.feature_names and "novelty" in mr.feature_names
+    ranked = mr.rank_fn()(ds.test[0])
+    assert set(ranked) == set(ds.test[0].candidate_ids)   # valid permutation
+    shap = linear_shap(mr, ds.test[0], ds.test[0].candidate_ids[0])
+    assert any(k in ("sim_to_paper", "novelty") for k in shap)
+
+
+# --- Consensus-aware fusion (GPT + Claude + S2/KG) -------------------------- #
+def test_consensus_agreement_and_interaction_terms():
+    from rank_fusion import Query, ConsensusConfig, consensus_score
+    # 'a' is ranked #1 by both LLMs and present in s2; 'b' is not both-#1
+    q = Query("p", ["a", "b", "c"],
+              {"llm1": ["a", "b", "c"], "llm2": ["a", "c", "b"], "s2": ["a", "b", "c"]}, {})
+    w = {"llm1": 1.0, "llm2": 1.0, "s2": 1.0}
+    base = consensus_score(q, ConsensusConfig(weights=w, k=60))
+    boosted = consensus_score(q, ConsensusConfig(weights=w, k=60, eta1=5.0))
+    assert abs((boosted["a"] - base["a"]) - 5.0) < 1e-9   # a got the both-#1 boost
+    assert abs(boosted["b"] - base["b"]) < 1e-9           # b did not
+    # rho interaction: a is both-top-t AND in s2 -> extra support
+    inter = consensus_score(q, ConsensusConfig(weights=w, k=60, rho=10.0, t=3))
+    assert inter["a"] > base["a"]
+
+
+def test_tune_consensus_beats_uniform_on_dev():
+    from rank_fusion import (make_consensus_dataset, tune_consensus,
+                             make_rrf_rank_fn, corpus_mrr_at_k)
+    ds = make_consensus_dataset(n_papers=150, seed=23)
+    src = ds.all_sources()
+    cfg = tune_consensus(ds.dev, n_random=150, coord_rounds=2, mrr_k=3, seed=23)
+    uni = corpus_mrr_at_k(ds.dev, make_rrf_rank_fn({s: 1.0 for s in src}, 60.0), 3)
+    assert cfg.dev_mrr >= uni - 1e-9
+
+
+def test_cluster_sources_merges_paraphrases():
+    from rank_fusion import cluster_sources
+    cl, rk, txt = cluster_sources({
+        "llm1": ["extend the method to multimodal data"],
+        "llm2": ["extend method to multimodal data now"],
+        "s2": ["a totally different research topic"]}, threshold=0.3)
+    assert len(cl) == 2                              # the two paraphrases merged
+    merged = set(rk["llm1"]) & set(rk["llm2"])       # same cluster ranked by both LLMs
+    assert len(merged) == 1
+
+
+def test_build_consensus_query_end_to_end():
+    from rank_fusion import build_consensus_query, CONSENSUS_KEYS
+    q = build_consensus_query("p", {
+        "llm1": ["evaluate on multiple datasets for generalization"],
+        "llm2": ["test the method across many datasets"],
+        "s2": ["dataset evaluation across domains"]},
+        gt_texts=["evaluate on more datasets to test generalization"],
+        tau=0.05, threshold=0.2)
+    assert q.candidate_ids and q.has_ground_truth()
+    feats = next(iter(q.features.values()))
+    assert all(key in feats for key in CONSENSUS_KEYS)
+
+
 if __name__ == "__main__":
     import warnings
     warnings.filterwarnings("ignore")

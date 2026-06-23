@@ -103,12 +103,13 @@ def linear_shap(meta_ranker, query: Query, cand_id: str) -> Dict[str, float]:
 
     if getattr(meta_ranker, "model_kind", "logistic") != "logistic":
         return {}
-    cand_ids, X = _query_features(query, meta_ranker.sources, meta_ranker.k)
+    xfk = getattr(meta_ranker, "extra_feature_keys", None)
+    cand_ids, X = _query_features(query, meta_ranker.sources, meta_ranker.k, xfk)
     if cand_id not in cand_ids:
         return {}
     i = cand_ids.index(cand_id)
     keep = meta_ranker.keep_cols
-    names = [n for n, kp in zip(feature_names(meta_ranker.sources), keep) if kp]
+    names = [n for n, kp in zip(feature_names(meta_ranker.sources, xfk), keep) if kp]
     z = (X[i, keep] - meta_ranker.scaler.mean_) / meta_ranker.scaler.scale_
     coef = meta_ranker.model.coef_[0]
     return {n: float(coef[j] * z[j]) for j, n in enumerate(names)}

@@ -18,7 +18,12 @@ retrieval / citation ────┘         └─► learned meta-ranker (stre
 |------|------|
 | `schema.py` | `Query` (one paper: candidate pool, per-source rankings, free-text ground truth, optional candidate provenance + features) and `Dataset` (train/dev/test split). |
 | `metrics.py` | **MRR harness** — per-direction Paper MRR (plan §1), corpus MRR, MRR@K, Recall@K, nDCG@K, and `evaluate()` for the full bundle. |
-| `diagnostics.py` | **Level 1** — `oracle_mrr` (the ranking-independent ceiling), per-source `candidate_recall_table`, and `bootstrap_mrr_ci` (95% CIs). |
+| `diagnostics.py` | **Level 1 + validation** — `oracle_mrr` (ceiling), per-source `candidate_recall_table`, `bootstrap_mrr_ci` (95% CIs), and `topk_bottomk_separation` (does the ranker separate good from bad? — Si et al. Table 1). |
+| `significance.py` | **System-comparison rigor** — `paired_bootstrap_delta`, `paired_ttest` / `welch_ttest`, `bonferroni`, and `compare_to_baseline` ("is the MRR gain real after correction?"). |
+| `matching.py` | **The §1 match function** — `match_relevance` with a pluggable `embed_fn` (TF-IDF default; SPECTER2/SciBERT = the D4 dependency) + optional entailment judge (D5), and `calibrate_tau`. |
+| `agent.py` | **Autonomous candidate-harvesting agent** — runs Naz's S2 client in a tool-loop to read neighbours' keywords + future directions, adds non-duplicate candidates, and **stops when coverage of the paper's gaps stops improving**. The one agentic component; everything downstream stays a deterministic workflow. |
+| `integrate.py` | **Adapters into fusion** — `pool_to_query` (agent pool → `Query`), and `graph_signal_fn` / `attach_features` / `add_horizon_source` to feed Naz's S2 graph signals in as features, an extra RRF source, or meta-ranker features. |
+| `consensus.py` | **Consensus-aware fusion** (GPT + Claude + S2/KG) — cross-source clustering, RRF + LLM-agreement (η) + agreement×S2-support (ρ) terms, an MRR@K tuner over (w, η, ρ, k, t), and consensus features for the meta-ranker. |
 | `fusion.py` | **Weighted RRF** `Σ_a w_a/(k_a+r_a(c)) + β·x(c)` — per-source `k_a` and an additive feature term (Level 2), plus Borda & CombSUM baselines. |
 | `optimize.py` | **MRR-driven tuning** — random search + coordinate ascent over `(w, k)` to maximise **dev** MRR, optionally **cost-aware** `MRR − λ·cost` (Level 5). |
 | `meta_ranker.py` | **Learned meta-ranker** — pointwise logistic (or LightGBM `LGBMRanker`) over rank-fusion + agreement features; selected by dev MRR (Level 3). |
@@ -32,8 +37,78 @@ retrieval / citation ────┘         └─► learned meta-ranker (stre
 
 Top-level demos: **`run_synthetic.py`** (staged Level 1→5 ablation with CIs),
 **`run_realdata.py`** (MRR on the real `Data/` files + tau sweep),
-**`run_explain.py`** (Direction Cards), and **`run_diversity.py`** (MMR +
-Swiss tournament + dedup).
+**`run_explain.py`** (Direction Cards), **`run_diversity.py`** (MMR + Swiss
+tournament + dedup), **`run_significance.py`** (paired-bootstrap + Bonferroni
++ ranker separation), **`run_candidate_agent.py`** (the autonomous agent),
+**`run_integration.py`** (agent output + S2 graph signals → fusion), and
+**`run_consensus.py`** (consensus-aware GPT+Claude+S2 fusion).
+
+## Consensus-aware fusion (`consensus.py`)
+
+Encodes the intuition *"when both LLMs independently rank the same direction
+near the top, that's strong evidence; the S2 knowledge graph is a supporting
+signal — strongest when it backs the LLM consensus — and dev MRR decides how
+much each matters."* Candidates from the three sources are first **clustered**
+semantically (`cluster_sources` / `build_consensus_query`) so differently-phrased
+versions of one direction share a cluster and accumulate per-source ranks. Then:
+
+```
+S(c) = Σ_m w_m/(k+r_m(c))  +  η1·A12_top1(c) + η3·A12_top3(c)  +  ρ·A12_top3(c)·R_s2(c)
+```
+tuned over (w, η, ρ, k, t) on dev **MRR@5** (`tune_consensus`) by **multi-restart
+coordinate ascent warm-started from the tuned-RRF optimum** — so the consensus fit
+can never lose to plain RRF — with a Stage-2 meta-ranker over the same quantities
+as features (`add_consensus_features`, `MetaRanker(extra_feature_keys=CONSENSUS_KEYS)`).
+
+**Honest finding** (synthetic, MRR@5): with rigorous optimisation the tuner drives
+η, ρ → 0 — additive RRF already captures the LLM agreement signal, so the explicit
+terms add nothing over tuned RRF (an apparent @5 gain under a weaker search turned
+out to be optimiser noise). The genuine win comes from the **meta-ranker** (0.752 vs
+0.745), which exploits the agreement×S2 interaction *nonlinearly* — the one thing
+additive RRF can't express. So the defensible pipeline is *consensus-aware RRF →
+meta-ranker → top-5*, with η/ρ ready to activate if real GPT/Claude agreement is
+genuinely extra-predictive.
+
+## Incorporating the agent output and S2 graph signals (`integrate.py`)
+
+Both upstream outputs enter through the `Query` contract:
+
+- **Agent pool → fusion.** `pool_to_query(query_id, agent_pool, paper_text, gt_texts)`
+  builds a `Query`: candidate ids, a `retrieval` ranking (similarity to the paper —
+  the agent is one fusion source), provenance in `candidate_sources`, and the eval
+  `relevance`. GPT/Claude lists slot into `rankings` when they exist.
+- **S2 graph signals → fusion** (Naz's `GraphSignalExtractor` → `graph_signal_fn`):
+  written onto `Query.features`, they enter three ways — (a) an extra RRF source
+  `add_horizon_source`, (b) the RRF feature-bias term `make_rrf_rank_fn(beta=...)`,
+  (c) learned features `MetaRanker(extra_feature_keys=HORIZON_KEYS)` — and render
+  as Direction-Card horizon badges automatically. In the demo an informative
+  signal lifts test MRR 0.31→0.45 (RRF source) and 0.41→0.64 (meta-ranker feature).
+
+## Candidate-harvesting agent (the one agentic component)
+
+`agent.py` is the independent AI agent of ResearchHorizon. Given a masked paper,
+it runs tools in a loop — read the citation neighbourhood via Naz's S2 client,
+harvest neighbours' **keywords + realized future directions**, dedup and add them
+to the candidate pool — and **decides for itself when to stop**: when newly
+harvested candidates stop improving coverage of the paper's open `key_gaps` (the
+coverage/recall harness). The tool-call trace differs per paper (search a gap,
+expand a citation, …), which is what makes it an agent rather than a workflow.
+Everything downstream (rank → fuse → explain → MRR) stays deterministic — the
+agent only *gathers*; the metric still decides the order.
+
+```python
+from rank_fusion import CandidateHarvestAgent, AgentConfig, evaluate_pool
+from s2_tools import EnrichedS2Client, LocalCorpusS2Client   # repo root
+agent = CandidateHarvestAgent(EnrichedS2Client(api_key=...))  # or LocalCorpusS2Client (offline)
+res = agent.run(seed_corpus_id, gaps=[g["description"] for g in key_gaps])
+# res["pool"] -> candidates; res["trace"] -> tool-loop; res["stop_reason"]
+```
+
+The decision policy is pluggable (`policy=` argument): the default is an
+autonomous heuristic controller; swap in an LLM (Claude tool-use) to make the
+"decide what to do next" step LLM-driven. The **stop** signal uses `key_gaps`
+(inference-safe); the masked future-work is used only by `evaluate_pool` to score
+the harvested pool afterwards (no leakage).
 
 ## Explainability — Direction Cards (§6)
 

@@ -25,6 +25,22 @@ from .learned_rankers import (
 )
 from .diagnostics import (
     oracle_mrr, candidate_recall, candidate_recall_table, bootstrap_mrr_ci,
+    topk_bottomk_separation,
+)
+from .significance import (
+    per_paper_mrr, paired_bootstrap_delta, paired_ttest, welch_ttest,
+    bonferroni, compare_to_baseline,
+)
+from .matching import (
+    match_relevance, similarity_matrix, calibrate_tau,
+)
+from .agent import (
+    CandidateHarvestAgent, AgentConfig, AgentState, Action, Candidate,
+    evaluate_pool, candidate_texts_from_paper, keywords_of,
+)
+from .integrate import (
+    pool_to_query, graph_signal_fn, attach_features, add_horizon_source,
+    horizon_prior, beta_from_horizon_weights, HORIZON_KEYS, GRAPH_SIGNAL_MAP,
 )
 from .explain import (
     DirectionCard, build_direction_card, explain_ranking, render_card_markdown,
@@ -33,7 +49,13 @@ from .explain import (
 )
 from .synthetic import (
     make_synthetic_dataset, make_candidate_generation_dataset,
-    make_redundancy_dataset, DEFAULT_SKILLS, DEFAULT_GENERATORS,
+    make_redundancy_dataset, make_consensus_dataset,
+    DEFAULT_SKILLS, DEFAULT_GENERATORS,
+)
+from .consensus import (
+    ConsensusConfig, consensus_score, make_consensus_rank_fn, corpus_mrr_at_k,
+    tune_consensus, add_consensus_features, cluster_sources,
+    build_consensus_query, CONSENSUS_KEYS,
 )
 from .diversity import (
     mmr_rerank, make_mmr_rank_fn, feature_embedding_sim, cosine_sim_callable,
@@ -47,7 +69,19 @@ __all__ = [
     "PairwiseRankNet", "ListNetRanker", "SoftMRRRanker",
     "fit_select_ranknet", "fit_select_listnet", "fit_select_soft_mrr",
     "oracle_mrr", "candidate_recall", "candidate_recall_table", "bootstrap_mrr_ci",
-    "make_candidate_generation_dataset", "make_redundancy_dataset", "DEFAULT_GENERATORS",
+    "topk_bottomk_separation",
+    "per_paper_mrr", "paired_bootstrap_delta", "paired_ttest", "welch_ttest",
+    "bonferroni", "compare_to_baseline",
+    "match_relevance", "similarity_matrix", "calibrate_tau",
+    "CandidateHarvestAgent", "AgentConfig", "AgentState", "Action", "Candidate",
+    "evaluate_pool", "candidate_texts_from_paper", "keywords_of",
+    "pool_to_query", "graph_signal_fn", "attach_features", "add_horizon_source",
+    "horizon_prior", "beta_from_horizon_weights", "HORIZON_KEYS", "GRAPH_SIGNAL_MAP",
+    "make_candidate_generation_dataset", "make_redundancy_dataset",
+    "make_consensus_dataset", "DEFAULT_GENERATORS",
+    "ConsensusConfig", "consensus_score", "make_consensus_rank_fn", "corpus_mrr_at_k",
+    "tune_consensus", "add_consensus_features", "cluster_sources",
+    "build_consensus_query", "CONSENSUS_KEYS",
     "mmr_rerank", "make_mmr_rank_fn", "feature_embedding_sim", "cosine_sim_callable",
     "swiss_tournament", "comparator_from_scores",
     "dedup_candidates", "embed_minilm",
