@@ -347,6 +347,88 @@ def test_match_relevance_and_tau_calibration():
     assert 0.0 <= best["tau"] <= 0.5 and best["f1"] >= 0.0
 
 
+# --- Autonomous candidate-harvesting agent ---------------------------------- #
+class _FakeS2:
+    """Canned S2 client: maps (kind, key) -> list of paper dicts."""
+    def __init__(self, table):
+        self.table = table
+    def get_paper(self, cid):
+        return {}
+    def get_citations(self, cid, limit=50):
+        return self.table.get(("cite", cid), [])
+    def get_references(self, cid, limit=50):
+        return self.table.get(("ref", cid), [])
+    def search(self, query, limit=5):
+        for (kind, key), v in self.table.items():
+            if kind == "search" and key in query:
+                return v
+        return []
+
+
+def _paper(pid, fd_title, fd_rationale):
+    return {"paperId": pid, "title": fd_title, "fieldsOfStudy": ["X"],
+            "future_directions": [{"title": fd_title, "rationale": fd_rationale}]}
+
+
+def test_agent_stops_when_all_gaps_covered():
+    from rank_fusion import CandidateHarvestAgent, AgentConfig
+    gaps = ["Establish referral pathways for perpetrators of violence identified by the tool",
+            "Develop tailored adaptations for youths with limited language proficiency"]
+    table = {
+        ("cite", "SEED"): [_paper("A",
+            "Establish referral pathways for perpetrators of violence identified by screening",
+            "create clear referral pathways for perpetrators of violence identified")],
+        ("search", gaps[1]): [_paper("B",
+            "Develop tailored adaptations for youths with limited language proficiency",
+            "tailored language adaptations for youths with limited proficiency")],
+    }
+    agent = CandidateHarvestAgent(_FakeS2(table), AgentConfig(match_tau=0.15))
+    res = agent.run("SEED", gaps)
+    assert res["coverage"]["n_covered"] == 2
+    assert res["stop_reason"] == "all_gaps_covered"
+    assert len(res["pool"]) >= 2
+
+
+def test_agent_stops_on_no_improvement():
+    from rank_fusion import CandidateHarvestAgent, AgentConfig
+    gaps = ["Establish referral pathways for perpetrators of violence",
+            "An entirely unrelated gap about quantum error correction codes"]
+    table = {  # only gap 0 is ever coverable; gap 1 never matches anything
+        ("cite", "SEED"): [_paper("A",
+            "Establish referral pathways for perpetrators of violence",
+            "clear referral pathways for perpetrators of violence")],
+        ("cite", "A"): [_paper("A2", "More on referral pathways for perpetrators",
+                                "referral pathways for perpetrators of violence again")],
+    }
+    agent = CandidateHarvestAgent(_FakeS2(table), AgentConfig(match_tau=0.15, patience=2))
+    res = agent.run("SEED", gaps)
+    assert res["coverage"]["n_covered"] == 1            # only gap 0
+    assert res["stop_reason"].startswith("no_improvement")
+    assert res["s2_calls"] < 30                          # stopped early, didn't burn budget
+
+
+def test_agent_respects_budget():
+    from rank_fusion import CandidateHarvestAgent, AgentConfig
+    gaps = ["gap that is never covered by anything here"]
+    table = {("cite", "SEED"): [_paper("A", "irrelevant topic one", "nothing matching"),
+                                _paper("B", "irrelevant topic two", "still nothing")]}
+    # patience high so it would keep going; budget must be the thing that stops it
+    agent = CandidateHarvestAgent(_FakeS2(table),
+                                  AgentConfig(max_s2_calls=4, patience=99, max_rounds=99))
+    res = agent.run("SEED", gaps)
+    assert res["s2_calls"] <= 4
+    assert res["stop_reason"] in ("budget_exhausted", "frontier_exhausted")
+
+
+def test_agent_evaluate_pool_recall():
+    from rank_fusion import Candidate, evaluate_pool
+    pool = [Candidate("c0", "Evaluate the tool across multiple datasets for generalization",
+                      [], "seed", None)]
+    gt = ["Further evaluation across multiple datasets is needed to test generalization"]
+    ev = evaluate_pool(pool, gt, tau=0.08)
+    assert ev["recall"] == 1.0 and ev["n_covered_gt"] == 1
+
+
 if __name__ == "__main__":
     import warnings
     warnings.filterwarnings("ignore")

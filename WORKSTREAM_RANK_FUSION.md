@@ -41,6 +41,7 @@ LightGBM is an optional path). **21/21 tests pass.**
 | `rank_fusion/diversity.py` | **MMR re-ranking** — diversity-aware re-rank so the top-K covers distinct gaps (lifts per-direction MRR under near-duplicates). | §9.3 |
 | `rank_fusion/pairwise.py` | **Swiss-tournament** aggregation of pairwise comparisons into a global ranking (cheaper than Bradley-Terry/Elo). | §4, §9.4 |
 | `rank_fusion/dedup.py` | **Candidate dedup** (Si et al.) — all-MiniLM-L6-v2 cosine ≥ 0.8 (TF-IDF fallback). | §3 |
+| `rank_fusion/agent.py` + `s2_tools.py` | **Autonomous candidate-harvesting agent** — runs Naz's S2 client in a tool-loop (read neighbours' keywords + future directions), dedups/adds candidates, stops when coverage of the paper's gaps stops improving. The one agentic component; `EnrichedS2Client` (live API) + `LocalCorpusS2Client` (offline). | §3, agent |
 | `rank_fusion/diagnostics.py` | **Candidate-recall ceiling** — `oracle_mrr`, per-source `candidate_recall_table`, and `bootstrap_mrr_ci` (95% CIs). | §8.2 |
 
 ### Explainability layer (§6)
@@ -139,10 +140,20 @@ then call `tune_rrf(...)` and `explain_ranking(...)` exactly as the demos do.
 - [ ] Match-function sensitivity (sweep `tau`) on real data (`run_realdata.py` already does this for TF-IDF).
 - [ ] *Upstream-dependent:* style normalization to remove GPT-vs-Claude writing confounders (needs an LLM pass — Nourah).
 
+### The autonomous agent (built here, with a pluggable LLM policy)
+`agent.py` is the project's independent AI agent: it harvests candidates by
+driving Naz's S2 client in a tool-loop and stops on the coverage harness. The
+decision policy is pluggable — the default is an autonomous heuristic controller;
+**the remaining upstream piece is swapping in an LLM policy** (Claude tool-use)
+so the "decide next action" step is LLM-driven, and wiring `EnrichedS2Client` to a
+live S2 key. Verified offline against the local corpus (`run_candidate_agent.py`):
+the agentic loop beats a fixed one-shot expand on held-out GT recall (0.47 vs 0.40
+on the GBV seed) and self-terminates in ~7 S2 calls.
+
 ### Not in scope for this workstream
-Agent-1 comprehension, Agent-2 prompt engineering, candidate generation, and the
-Semantic Scholar / Connected-Papers integration (Nourah & Naz). This workstream
-consumes their outputs through the `Query` contract.
+Agent-1 comprehension, Agent-2 prompt engineering, and the Semantic Scholar /
+Connected-Papers signal extraction (Nourah & Naz). This workstream consumes their
+outputs through the `Query` contract and drives Naz's S2 client from the agent.
 
 ---
 

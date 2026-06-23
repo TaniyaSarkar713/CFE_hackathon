@@ -21,6 +21,7 @@ retrieval / citation ────┘         └─► learned meta-ranker (stre
 | `diagnostics.py` | **Level 1 + validation** — `oracle_mrr` (ceiling), per-source `candidate_recall_table`, `bootstrap_mrr_ci` (95% CIs), and `topk_bottomk_separation` (does the ranker separate good from bad? — Si et al. Table 1). |
 | `significance.py` | **System-comparison rigor** — `paired_bootstrap_delta`, `paired_ttest` / `welch_ttest`, `bonferroni`, and `compare_to_baseline` ("is the MRR gain real after correction?"). |
 | `matching.py` | **The §1 match function** — `match_relevance` with a pluggable `embed_fn` (TF-IDF default; SPECTER2/SciBERT = the D4 dependency) + optional entailment judge (D5), and `calibrate_tau`. |
+| `agent.py` | **Autonomous candidate-harvesting agent** — runs Naz's S2 client in a tool-loop to read neighbours' keywords + future directions, adds non-duplicate candidates, and **stops when coverage of the paper's gaps stops improving**. The one agentic component; everything downstream stays a deterministic workflow. |
 | `fusion.py` | **Weighted RRF** `Σ_a w_a/(k_a+r_a(c)) + β·x(c)` — per-source `k_a` and an additive feature term (Level 2), plus Borda & CombSUM baselines. |
 | `optimize.py` | **MRR-driven tuning** — random search + coordinate ascent over `(w, k)` to maximise **dev** MRR, optionally **cost-aware** `MRR − λ·cost` (Level 5). |
 | `meta_ranker.py` | **Learned meta-ranker** — pointwise logistic (or LightGBM `LGBMRanker`) over rank-fusion + agreement features; selected by dev MRR (Level 3). |
@@ -35,8 +36,34 @@ retrieval / citation ────┘         └─► learned meta-ranker (stre
 Top-level demos: **`run_synthetic.py`** (staged Level 1→5 ablation with CIs),
 **`run_realdata.py`** (MRR on the real `Data/` files + tau sweep),
 **`run_explain.py`** (Direction Cards), **`run_diversity.py`** (MMR + Swiss
-tournament + dedup), and **`run_significance.py`** (paired-bootstrap + Bonferroni
-+ ranker separation).
+tournament + dedup), **`run_significance.py`** (paired-bootstrap + Bonferroni
++ ranker separation), and **`run_candidate_agent.py`** (the autonomous agent).
+
+## Candidate-harvesting agent (the one agentic component)
+
+`agent.py` is the independent AI agent of ResearchHorizon. Given a masked paper,
+it runs tools in a loop — read the citation neighbourhood via Naz's S2 client,
+harvest neighbours' **keywords + realized future directions**, dedup and add them
+to the candidate pool — and **decides for itself when to stop**: when newly
+harvested candidates stop improving coverage of the paper's open `key_gaps` (the
+coverage/recall harness). The tool-call trace differs per paper (search a gap,
+expand a citation, …), which is what makes it an agent rather than a workflow.
+Everything downstream (rank → fuse → explain → MRR) stays deterministic — the
+agent only *gathers*; the metric still decides the order.
+
+```python
+from rank_fusion import CandidateHarvestAgent, AgentConfig, evaluate_pool
+from s2_tools import EnrichedS2Client, LocalCorpusS2Client   # repo root
+agent = CandidateHarvestAgent(EnrichedS2Client(api_key=...))  # or LocalCorpusS2Client (offline)
+res = agent.run(seed_corpus_id, gaps=[g["description"] for g in key_gaps])
+# res["pool"] -> candidates; res["trace"] -> tool-loop; res["stop_reason"]
+```
+
+The decision policy is pluggable (`policy=` argument): the default is an
+autonomous heuristic controller; swap in an LLM (Claude tool-use) to make the
+"decide what to do next" step LLM-driven. The **stop** signal uses `key_gaps`
+(inference-safe); the masked future-work is used only by `evaluate_pool` to score
+the harvested pool afterwards (no leakage).
 
 ## Explainability — Direction Cards (§6)
 
