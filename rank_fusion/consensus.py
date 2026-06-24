@@ -113,6 +113,7 @@ def tune_consensus(
     n_random: int = 400,
     coord_rounds: int = 6,
     restarts: int = 4,
+    per_direction: bool = True,
     use_consensus_terms: bool = True,
     seed: int = 0,
     verbose: bool = False,
@@ -131,7 +132,7 @@ def tune_consensus(
     srcs = [llm_sources[0], llm_sources[1], s2_source]
 
     def score(cfg):
-        return corpus_mrr_at_k(dev_queries, cfg.rank_fn(), mrr_k)
+        return corpus_mrr_at_k(dev_queries, cfg.rank_fn(), mrr_k, per_direction)
 
     k_choices = (1, 2, 5, 10, 20, 60)
     eta_choices = (0.0, 0.25, 0.5, 1.0, 2.0, 4.0) if use_consensus_terms else (0.0,)
@@ -152,7 +153,7 @@ def tune_consensus(
         seeds.append(tune_consensus(
             dev_queries, llm_sources=llm_sources, s2_source=s2_source, mrr_k=mrr_k,
             n_random=n_random, coord_rounds=coord_rounds, restarts=restarts,
-            use_consensus_terms=False, seed=seed))
+            per_direction=per_direction, use_consensus_terms=False, seed=seed))
 
     # short random search -> keep the best `restarts` seeds
     pool: List[ConsensusConfig] = []
