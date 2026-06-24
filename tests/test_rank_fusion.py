@@ -585,6 +585,18 @@ def test_select_top_sources_fair_scoring():
     assert all(r["n_papers"] == 2 for r in res["ranked"])
 
 
+def test_select_cv_prefers_simpler_on_near_tie():
+    from rank_fusion import Query, select_best_strategy_cv, make_rrf_rank_fn
+    # llm1 always ranks the true 'a' first (MRR 1.0); a "fusion" that's ~equal
+    # should NOT be chosen over the simpler single source on a near-tie.
+    qs = [Query(f"p{i}", ["a", "b"], {"llm1": ["a", "b"], "llm2": ["a", "b"]},
+                {"g": {"a"}}) for i in range(20)]
+    builders = {"uniform RRF": lambda tr: make_rrf_rank_fn({"llm1": 1.0, "llm2": 1.0}, 60.0)}
+    res = select_best_strategy_cv(qs, ["llm1", "llm2"], fused_builders=builders,
+                                  n_folds=4, margin=0.02)
+    assert res["best_name"].startswith("single:")      # simpler wins the near-tie
+
+
 def test_select_falls_back_when_fusion_dilutes():
     from rank_fusion import Query, select_best_strategy
     # llm1 is perfect (true 'a' at #1); llm2/s2 bury 'a' -> uniform RRF demotes it

@@ -28,14 +28,14 @@ warnings.filterwarnings("ignore")
 from rank_fusion import (
     Query, match_relevance, select_top_sources, build_consensus_query,
     tune_consensus, corpus_mrr_at_k, make_rrf_rank_fn, make_single_source_rank_fn,
-    compare_strategies, select_best_strategy,
+    compare_strategies, select_best_strategy_cv,
     whitespace_candidates, whitespace_source, keyphrases,
 )
 
 DATA = os.path.join(os.path.dirname(__file__), "Data")
 SUMM = os.path.join(DATA, "Paper_summaries")
 GT_DIR = os.path.join(DATA, "Ground Truth Entities", "future_sec_NER_ground_truth")
-PD = False                       # first-relevant MRR throughout
+PD = True                        # per-direction MRR (credit multiple true dirs)
 
 
 # --------------------------------------------------------------------------- #
@@ -120,7 +120,7 @@ def main():
     ap.add_argument("--papers", type=int, default=150)
     ap.add_argument("--tau", type=float, default=0.10)
     ap.add_argument("--neighbours", type=int, default=30)
-    ap.add_argument("--mrr-k", type=int, default=10, help="tune/eval on MRR@K")
+    ap.add_argument("--mrr-k", type=int, default=3, help="tune/eval on MRR@K (top-K dirs)")
     args = ap.parse_args()
     K = args.mrr_k
 
@@ -176,34 +176,48 @@ def main():
     print(f"   built {len(queries)} 3-source queries "
           f"(llm1 + llm2 + S2 white-space), clustered + matched to GT")
 
-    # ---- STAGE 3: consensus RRF (tune MRR@K) + best-of fallback ---------- #
+    # ---- STAGE 3: consensus RRF + CV best-of fallback ------------------- #
     print("\n" + "=" * 64)
-    print(f"STAGE 3 — RANK FUSION: consensus RRF (consensus.py, tune MRR@{K}) "
-          f"+ best-of fallback")
+    print(f"STAGE 3 — RANK FUSION: consensus RRF (consensus.py, MRR@{K}) "
+          f"+ CV best-of fallback")
     print("=" * 64)
     cut = len(queries) // 2
     dev, test = queries[:cut], queries[cut:]
     srcs = ["llm1", "llm2", "s2"]
-    # consensus.py: weighted RRF + LLM-agreement (eta) + agreement x S2-support
-    # (rho), tuned on dev MRR@K by multi-restart coord ascent warm-started from
-    # plain RRF (so it never loses to plain RRF on dev).
+
+    def consensus_builder(train):
+        return tune_consensus(train, llm_sources=("llm1", "llm2"), s2_source="s2",
+                              mrr_k=K, per_direction=PD, n_random=120,
+                              coord_rounds=2, restarts=1).rank_fn()
+
+    def uniform_builder(train):
+        return make_rrf_rank_fn({s: 1.0 for s in srcs}, 60.0)
+
+    fused_builders = {"uniform RRF": uniform_builder, "consensus RRF": consensus_builder}
+    # show what consensus learns on the full dev set
     cfg = tune_consensus(dev, llm_sources=("llm1", "llm2"), s2_source="s2",
-                         mrr_k=K, per_direction=PD, n_random=250, coord_rounds=3,
-                         restarts=2)
-    fused = {"uniform RRF": make_rrf_rank_fn({s: 1.0 for s in srcs}, 60.0),
-             "consensus RRF": cfg.rank_fn()}
-    # fallback: emit the best of {llm1, llm2, s2, consensus} by dev MRR@K
-    chosen = select_best_strategy(dev, srcs, fused_rank_fns=fused, mrr_k=K, per_direction=PD)
-    wstr = ", ".join(f"{s}={cfg.weights[s]:.2f}" for s in srcs)
-    print(f"   consensus weights: {wstr}, k={cfg.k:g}")
-    print(f"   agreement eta1={cfg.eta1} eta3={cfg.eta3} | S2-support rho={cfg.rho}")
-    print(f"   best-of fallback chose (on dev MRR@{K}): {chosen['best_name']}")
+                         mrr_k=K, per_direction=PD, n_random=200, coord_rounds=3, restarts=2)
+    print(f"   consensus (full dev): w=" +
+          ", ".join(f"{s}={cfg.weights[s]:.2f}" for s in srcs) +
+          f", k={cfg.k:g}, eta1={cfg.eta1} eta3={cfg.eta3} rho={cfg.rho}")
+
+    # CV selection: re-fit each fusion per fold; prefer the simplest strategy
+    # within `margin` of the best cross-validated MRR -> robust to dev/test gap.
+    chosen = select_best_strategy_cv(dev, srcs, fused_builders=fused_builders,
+                                     mrr_k=K, per_direction=PD, n_folds=5, margin=0.01)
+    print(f"\n   5-fold CV MRR@{K} on dev:")
+    for r in chosen["table"]:
+        mark = "  <- chosen" if r["name"] == chosen["best_name"] else ""
+        print(f"      {r['name']:<22}{r['cv_mrr']:>8.4f}{mark}")
+    print(f"   fallback emits: {chosen['best_name']}  "
+          f"(simplest within {0.01:.2f} of best CV MRR)")
 
     # ---- STAGE 4: ablation table on TEST -------------------------------- #
     print("\n" + "=" * 64)
     print(f"STAGE 4 — EVALUATION on TEST ({len(test)} papers), MRR@{K}")
     print("=" * 64)
-    rows = compare_strategies(test, srcs, fused_rank_fns=fused, mrr_k=K, per_direction=PD)
+    fused_full = {n: b(dev) for n, b in fused_builders.items()}
+    rows = compare_strategies(test, srcs, fused_rank_fns=fused_full, mrr_k=K, per_direction=PD)
     best_single = max(r["mrr"] for r in rows if r["name"].startswith("single:"))
     print(f"   {'system':<22}{'test MRR':>10}")
     print("   " + "-" * 32)
@@ -212,12 +226,10 @@ def main():
         print(f"   {r['name']:<22}{r['mrr']:>10.4f}{tag}")
     chosen_mrr = corpus_mrr_at_k(test, chosen["best_rank_fn"], K, PD)
     print("   " + "-" * 32)
-    print(f"   {'SELECTED (best-of)':<22}{chosen_mrr:>10.4f}   <- emitted "
+    print(f"   {'SELECTED (CV best-of)':<22}{chosen_mrr:>10.4f}   <- emitted "
           f"({chosen['best_name']})")
-    best_fused = max(r["mrr"] for r in rows if "RRF" in r["name"])
-    print(f"\n   best fusion vs best single source: {best_fused - best_single:+.4f}")
-    print("   (consensus is warm-started from RRF -> >= plain RRF on dev; the "
-          "best-of\n    fallback then guarantees >= best single source on dev)")
+    print(f"\n   emitted vs best single source on test: "
+          f"{chosen_mrr - best_single:+.4f}  (CV picks the generaliser)")
 
 
 if __name__ == "__main__":
