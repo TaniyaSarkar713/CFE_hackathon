@@ -30,6 +30,7 @@ from rank_fusion import (
     tune_consensus, corpus_mrr_at_k, make_rrf_rank_fn, make_single_source_rank_fn,
     compare_strategies, select_best_strategy_cv,
     whitespace_candidates, whitespace_source, keyphrases,
+    mlrc_benchmark, format_benchmark,
 )
 
 DATA = os.path.join(os.path.dirname(__file__), "Data")
@@ -230,6 +231,14 @@ def main():
           f"({chosen['best_name']})")
     print(f"\n   emitted vs best single source on test: "
           f"{chosen_mrr - best_single:+.4f}  (CV picks the generaliser)")
+
+    # ---- MLRC-style benchmark: improvement over the random baseline ----- #
+    print("\n   MLRC benchmark (improvement over random baseline):")
+    methods = {f"single:{s}": make_single_source_rank_fn(s) for s in srcs}
+    methods.update(fused_full)
+    methods[f"SELECTED:{chosen['best_name']}"] = chosen["best_rank_fn"]
+    report = mlrc_benchmark(test, methods, mrr_k=K, per_direction=PD)
+    print(format_benchmark(report))
 
 
 if __name__ == "__main__":

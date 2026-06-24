@@ -73,10 +73,12 @@ from .diversity import (
 )
 from .pairwise import swiss_tournament, comparator_from_scores
 from .dedup import dedup_candidates, embed_minilm
+from .benchmark import random_baseline_mrr, mlrc_benchmark, format_benchmark
 from .realdata import load_real_dataset
 
 __all__ = [
     "load_real_dataset",
+    "random_baseline_mrr", "mlrc_benchmark", "format_benchmark",
     "PairwiseRankNet", "ListNetRanker", "SoftMRRRanker",
     "fit_select_ranknet", "fit_select_listnet", "fit_select_soft_mrr",
     "oracle_mrr", "candidate_recall", "candidate_recall_table", "bootstrap_mrr_ci",
