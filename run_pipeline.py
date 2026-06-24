@@ -169,7 +169,9 @@ def main():
         sources = {
             "llm1": directions_of(s1),
             "llm2": directions_of(s2),
-            "s2": s2_whitespace_source(pid, s1, neigh, args.neighbours),
+            # S2 source = Agent C proxy (neighbour papers ranked by similarity to
+            # the seed) — the source study found it beats the white-space generator
+            "s2": neigh.docs(pid, args.neighbours),
         }
         q = build_consensus_query(pid, sources, gt_texts=gt[pid],
                                   tau=args.tau, threshold=0.5)
