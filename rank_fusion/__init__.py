@@ -59,7 +59,7 @@ from .consensus import (
     build_consensus_query, CONSENSUS_KEYS,
 )
 from .select import (
-    compare_strategies, select_best_strategy, strategy_rank_fns,
+    compare_strategies, select_best_strategy, select_top_sources, strategy_rank_fns,
 )
 from .entities import (
     keyphrases, entity_rerank, entity_rerank_texts, rerank_s2_source,
@@ -93,7 +93,7 @@ __all__ = [
     "ConsensusConfig", "consensus_score", "make_consensus_rank_fn", "corpus_mrr_at_k",
     "tune_consensus", "add_consensus_features", "cluster_sources",
     "build_consensus_query", "CONSENSUS_KEYS",
-    "compare_strategies", "select_best_strategy", "strategy_rank_fns",
+    "compare_strategies", "select_best_strategy", "select_top_sources", "strategy_rank_fns",
     "keyphrases", "entity_rerank", "entity_rerank_texts", "rerank_s2_source",
     "WhitespaceCandidate", "whitespace_candidates", "whitespace_source",
     "mmr_rerank", "make_mmr_rank_fn", "feature_embedding_sim", "cosine_sim_callable",

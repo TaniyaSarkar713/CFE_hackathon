@@ -18,7 +18,7 @@ from __future__ import annotations
 from typing import Callable, Dict, List, Optional, Sequence
 
 from .fusion import make_single_source_rank_fn, make_rrf_rank_fn
-from .metrics import corpus_mrr
+from .metrics import corpus_mrr, paper_mrr
 from .consensus import corpus_mrr_at_k
 
 
@@ -64,6 +64,48 @@ def compare_strategies(
             for n, f in fns.items()]
     rows.sort(key=lambda r: -r["mrr"])
     return rows
+
+
+def select_top_sources(
+    source_to_queries: Dict[str, Sequence],
+    k: int = 2,
+    mrr_k: Optional[int] = None,
+    per_direction: bool = False,
+    score_all: bool = True,
+) -> Dict:
+    """Rank *independent* sources (each with its OWN candidate pool) by MRR and
+    return the top-k.
+
+    Use this when several rankers produce DIFFERENT candidate lists — e.g. N LLM
+    agents each emitting their own ranked `future_directions`. Each source maps
+    to its own list of `Query` whose `candidate_ids` are already in that source's
+    ranked order; we score each by mean Paper MRR against `relevance`.
+
+    `score_all=True` (default, **fair**) scores every supplied paper — a paper
+    where this source matched no ground-truth direction counts as MRR 0, so all
+    sources share the same denominator. `score_all=False` scores only matched
+    papers (ranking quality given a hit), which favours selective sources.
+
+    Returns {ranked: [{source, mrr, n_papers}], top_k: [source names]}.
+    """
+    rows: List[Dict] = []
+    for name, queries in source_to_queries.items():
+        if score_all:
+            vals = []
+            for q in queries:
+                ranked = list(q.candidate_ids)
+                if mrr_k:
+                    ranked = ranked[:mrr_k]
+                vals.append(paper_mrr(ranked, q.relevance, per_direction))
+            mrr = sum(vals) / len(vals) if vals else 0.0
+            n = len(queries)
+        else:
+            labelled = [q for q in queries if q.has_ground_truth()]
+            mrr = _score(labelled, lambda q: list(q.candidate_ids), mrr_k, per_direction)
+            n = len(labelled)
+        rows.append({"source": name, "mrr": mrr, "n_papers": n})
+    rows.sort(key=lambda r: -r["mrr"])
+    return {"ranked": rows, "top_k": [r["source"] for r in rows[:k]]}
 
 
 def select_best_strategy(

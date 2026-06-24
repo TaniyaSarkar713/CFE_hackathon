@@ -568,6 +568,23 @@ def test_compare_and_select_strategies():
     assert sel["best_dev_mrr"] >= best_single - 1e-12        # never worse than best single
 
 
+def test_select_top_sources_fair_scoring():
+    from rank_fusion import Query, select_top_sources
+    # A: relevant at rank 1 (MRR 1.0); B: rank 2 (0.5); C: no match anywhere (0)
+    qA = [Query("p1", ["a", "b"], {}, {"g": {"a"}}),
+          Query("p2", ["a", "b"], {}, {"g": {"a"}})]
+    qB = [Query("p1", ["b", "a"], {}, {"g": {"a"}}),
+          Query("p2", ["b", "a"], {}, {"g": {"a"}})]
+    qC = [Query("p1", ["b", "c"], {}, {}),          # empty relevance -> miss -> 0
+          Query("p2", ["b", "c"], {}, {})]
+    res = select_top_sources({"A": qA, "B": qB, "C": qC}, k=2)
+    assert res["top_k"] == ["A", "B"]
+    mrr = {r["source"]: r["mrr"] for r in res["ranked"]}
+    assert abs(mrr["A"] - 1.0) < 1e-9 and abs(mrr["B"] - 0.5) < 1e-9 and mrr["C"] == 0.0
+    # fair denominator: C's misses are scored (0), not skipped
+    assert all(r["n_papers"] == 2 for r in res["ranked"])
+
+
 def test_select_falls_back_when_fusion_dilutes():
     from rank_fusion import Query, select_best_strategy
     # llm1 is perfect (true 'a' at #1); llm2/s2 bury 'a' -> uniform RRF demotes it
